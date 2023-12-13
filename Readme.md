@@ -1,5 +1,6 @@
 <!-----------Login/Sign in----------------->
---When a user registers, it creates an account and uses it for authentication
+--When a user registers, a verification email is sent to the email address provided 
+--it creates an account and uses it for authentication
 --old users can easily sign in if they already have an account.
 
 <!-----------Profile----------------->
