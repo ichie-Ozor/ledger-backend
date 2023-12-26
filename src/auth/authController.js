@@ -45,6 +45,5 @@ export const createAccount = async(req, res) => {
             status: "Failed",
             message: "Account creation failed"
           })
-    )
-    
+    )  
 }
