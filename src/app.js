@@ -1,6 +1,7 @@
 import Express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
+import authRoute from "./auth/authRoutes.js";
 dotenv.config();
 
 export const app = Express();
@@ -11,10 +12,12 @@ app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 
 
+app.use("/auth", authRoute)
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to SHOPEE API!"
+    message: "Welcome to LEDGER API!"
   });
 });
 
