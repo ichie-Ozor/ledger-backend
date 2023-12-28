@@ -21,6 +21,10 @@ const authSchema = new Schema({
    role: {
     type: String,
     enum: ["admin", "owner", "user"]
+   },
+   verification: {
+      type: Boolean,
+      default: true  //should be false
    }
 }, {timestamps: true});
 

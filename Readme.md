@@ -2,7 +2,7 @@
 --When a user registers, a verification email is sent to the email address provided 
 --it creates an account and uses it for authentication
 <!-----------Login/Sign in----------------->(Me)
---old users can easily sign in if they already have an account.
+--old users can easily sign in if they already have an account.  (done)
 
 <!-----------Profile----------------->
 --Only the admin can register as an admin as it will be used to allow for the edit and delete
