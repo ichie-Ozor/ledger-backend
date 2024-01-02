@@ -5,7 +5,7 @@ import authRoute from "./auth/authRoutes.js";
 dotenv.config();
 
 export const app = Express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
 
 app.use(Express.json());

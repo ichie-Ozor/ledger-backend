@@ -32,6 +32,14 @@ export const accountExistService = async(email) => {
     return true
    }
 }
+
+/////////////get All the accounts
+export const getAllAccountsService = async() => {
+   const allAccount = AuthModel.find()
+   return allAccount
+}
+
+
 /////////////get individual account
 export const getAccountByEmail = async(email) => {
     const findAccount = await AuthModel.findOne({email})

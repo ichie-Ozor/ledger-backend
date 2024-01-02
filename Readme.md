@@ -1,6 +1,6 @@
 <------------Registration/Account----------------> (Me)
 --When a user registers, a verification email is sent to the email address provided 
---it creates an account and uses it for authentication
+--it creates an account and uses it for authentication  (done)
 <!-----------Login/Sign in----------------->(Me)
 --old users can easily sign in if they already have an account.  (done)
 

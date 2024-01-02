@@ -1,4 +1,4 @@
-import { createAccountService, accountExistService, getAccountByEmail } from './authServices.js'
+import { createAccountService, accountExistService, getAccountByEmail, getAllAccountsService } from './authServices.js'
 import { AuthModel } from "./authModel.js";
 import bcrypt from 'bcryptjs'
 
@@ -50,6 +50,41 @@ export const createAccount = async(req, res) => {
             message: "Account creation failed"
           })
     )  
+}
+
+//////////////////get all Accounts
+export const getAllAcountController = async(req, res) => {
+    try{
+       const allAccount = await getAllAccountsService()
+       res.json({
+        status: "Success",
+        message: "All account fetched successfully",
+        allAccount,
+       })
+    } catch(error){
+        res.json({
+            status: "Failed",
+            message: "Internal server error"
+        })
+    }
+}
+
+////////////////////get An account by Email
+export const getAccountByEmailController = async(req, res) => {
+    const {email} = req.body
+    if(email){
+       const getAccount = await getAccountByEmail(email)
+       res.json({
+        status: "Success",
+        message: `${email} retrieved successfully`,
+        getAccount
+       })
+    } else {
+       res.json({
+        status: "Failed",
+        message: "Sorry we could not get the account you seek"
+       })
+    }
 }
 
 ///////////////////SignIn
