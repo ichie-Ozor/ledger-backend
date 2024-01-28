@@ -1,5 +1,10 @@
 import express from 'express'
-import { createAccount, signInAccount, getAllAcountController, getAccountByEmailController } from './authController.js';
+import { 
+    createAccount, 
+    signInAccount, 
+    getAllAcountController, 
+    getAccountByEmailController 
+} from './authController.js';
 
 const authRoute = express.Router();
 

@@ -71,7 +71,8 @@ export const getAllAcountController = async(req, res) => {
 
 ////////////////////get An account by Email
 export const getAccountByEmailController = async(req, res) => {
-    const {email} = req.body
+    const {email} = req.params
+    console.log(req)
     if(email){
        const getAccount = await getAccountByEmail(email)
        res.json({
@@ -91,7 +92,7 @@ export const getAccountByEmailController = async(req, res) => {
 
 export const signInAccount = async(req, res) => {
    const { fullName, email, password } = req.body
-   if(fullName == "" || email == "" || password == ""){
+   if(email == "" || password == ""){
     return res.json({
         status: "Failed",
         message: "Please enter your login credentials."
@@ -99,8 +100,8 @@ export const signInAccount = async(req, res) => {
    }
 
    const checkEmail = await getAccountByEmail(email)
-//    console.log(checkEmail.password)
-   if(!checkEmail.verification){
+   console.log(checkEmail.password, password,checkEmail)
+   if(!checkEmail.verification){           //this helps us to make sure that the person has confirmed their email therefore avoiding invalid email address
     return res.json({
         status: "Failed",
         message: "You are yet to verify your email, please do that so you can sign in"

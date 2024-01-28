@@ -50,9 +50,6 @@ export const getAccountByEmail = async(email) => {
     }
 }
 
-
-
-
 /////////////////////Email Verification/////////////////////////
 const sendVerificationEmail = ({_id, email}, res) => {
    console.log("email sent successfully")
