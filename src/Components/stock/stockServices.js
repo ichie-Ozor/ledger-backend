@@ -1,21 +1,21 @@
-import { Stock } from "../../models/stockModel";
+import { Stock } from "../../models/stockModel.js";
 
 export const createStockService = async(data) => {
     const newStock = await Stock.create(data)
     return newStock
 }
 
-export const getStockService = async() => {
+export const getStocksService = async() => {
     const stock = await Stock.find()
     return stock
 }
 
-export const getStockByIdService = async(id) => {
+export const getStocksByIdService = async(id) => {
     const stock = await Stock.findById(id)
     return stock
 }
 
-export const editStockService = async(id, data) => {
+export const editStocksService = async(id, data) => {
     const updatedStock = await Stock.findByIdAndUpdate(id, data)
     return updatedStock
 }

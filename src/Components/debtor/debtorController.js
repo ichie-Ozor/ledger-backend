@@ -4,7 +4,7 @@ import {
     getDebtorsByIdService, 
     getDebtorsService, 
     deleteDebtorService
-} from './debtServices.js'
+} from './debtorServices.js'
 import APIError from '../../utils/customError.js';
 
 export const createDebtor = async(req, res, next) => {

@@ -1,6 +1,6 @@
 import {
     createStockService, 
-    editStockService, 
+    editStocksService, 
     getStocksByIdService, 
     getStocksService, 
     deleteStockService
@@ -97,7 +97,7 @@ export const deleteStock = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Stock deleted successfully!',
-            Stock: deleteStock
+            Stock: deletedStock
          })
     } catch (error) {
         next(APIError.customError(error.message))

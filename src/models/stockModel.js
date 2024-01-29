@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-export const salesSchema = new Schema({
+export const stockSchema = new Schema({
     account: {
         type: Schema.Types.ObjectId,
         ref: "Account",
@@ -29,4 +29,4 @@ export const salesSchema = new Schema({
     },
     }, {timestamps: true});
 
-export const Sales = model("Sales", salesSchema);
+export const Stock = model("Stock", stockSchema);

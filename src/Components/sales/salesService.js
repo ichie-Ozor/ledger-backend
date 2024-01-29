@@ -1,4 +1,4 @@
-import { Sales } from "../../models/salesModel";
+import { Sales } from "../../models/salesModel.js";
 
 export const createSalesService = async(data) => {
     const newSales = await Sales.create(data)

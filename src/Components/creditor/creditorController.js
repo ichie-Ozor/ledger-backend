@@ -4,7 +4,7 @@ import {
     getCreditorsByIdService, 
     getCreditorsService, 
     deleteCreditorService
-} from './creditServices.js'
+} from './creditorServices.js'
 import APIError from '../../utils/customError.js';
 
 export const createCreditor = async(req, res, next) => {
