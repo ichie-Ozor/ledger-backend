@@ -1,7 +1,11 @@
 import express from 'express'
-import { createStock, deleteStock, editStock, getStocks } from './salesController'
+import { createStock, deleteStock, editStock, getStocks } from './stockController.js'
 
-const salesRouter = express.Router()
+const stockRouter = express.Router()
 
-salesRouter.route('/').post(createStock).get(getStocks)
-            .route('/:id').put(editStock).delete(deleteStock)
+stockRouter.route('/').post(createStock).get(getStocks)
+stockRouter.route('/:id').put(editStock).delete(deleteStock)
+
+
+
+export default stockRouter;

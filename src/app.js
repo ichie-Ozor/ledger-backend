@@ -2,10 +2,15 @@ import Express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoute from "./auth/authRoutes.js";
+import creditorRouter from "./Components/creditor/creditorRoutes.js";
+import debtorRouter from "./Components/debtor/debtorRoutes.js";
+import stockRouter from "./Components/stock/stockRoutes.js";
+import salesRouter from "./Components/sales/salesRouter.js";
+import accountRoute from "./account/accountRoutes.js";
 dotenv.config();
 
 export const app = Express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
 
 app.use(Express.json());
@@ -13,6 +18,11 @@ app.use(Express.urlencoded({ extended: true }));
 
 
 app.use("/auth", authRoute)
+app.use("/account",accountRoute)
+app.use("/sales", salesRouter)
+app.use("/stock", stockRouter)
+app.use("/debtor", debtorRouter)
+app.use("/creditor", creditorRouter)
 
 app.get("/", (req, res) => {
   res.status(200).json({

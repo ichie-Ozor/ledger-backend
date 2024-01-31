@@ -1,6 +1,6 @@
 <------------Registration/Account----------------> (Me)
 --When a user registers, a verification email is sent to the email address provided 
---it creates an account and uses it for authentication
+--it creates an account and uses it for authentication  (done)
 <!-----------Login/Sign in----------------->(Me)
 --old users can easily sign in if they already have an account.  (done)
 
@@ -37,4 +37,4 @@ This accepts debtors' input, goods given to people on credit
 This accepts sales input, goods sold 
 --once you click a submit button, it sends the collected data to the backend
 --It should have a search input which filters the item brings out the name and displays it
---It collects all the sum of goods 
+--It collects all the sum of goods.

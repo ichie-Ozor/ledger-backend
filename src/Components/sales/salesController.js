@@ -1,10 +1,10 @@
 import {
     createSalesService, 
     editSalesService, 
-    getSalessByIdService, 
-    getSalessService, 
+    getSalesByIdService, 
+    getSalesService, 
     deleteSalesService
-} from './salesServices.js'
+} from './salesService.js'
 import APIError from '../../utils/customError.js';
 
 export const createSales = async(req, res, next) => {
@@ -26,9 +26,9 @@ export const createSales = async(req, res, next) => {
    }
 }
 
-export const getSaless = async(req, res, next) => {
+export const getSales = async(req, res, next) => {
  try {
-       const creditors = await getSalessService()
+       const creditors = await getSalesService()
        if (!creditors) {
        return next(APIError.notFound('No creditor found!'))
        }
@@ -48,7 +48,7 @@ export const getSalesById = async(req, res, next) => {
         return next(APIError.badRequest('Sales ID is required'))
     }
     try {
-        const findSales = await getSalessByIdService(id)
+        const findSales = await getSalesByIdService(id)
         if (!findSales) {
             return next(APIError.notFound('Sales not found!'))
         }
@@ -68,7 +68,7 @@ export const editSales = async(req, res, next) => {
         return next(APIError.badRequest('Sales ID are is required'))
     }
     try {
-        const findSales = await getSalessByIdService(id)
+        const findSales = await getSalesByIdService(id)
         if (!findSales) {
             return next(APIError.notFound('Sales not found!'))
         }
@@ -89,7 +89,7 @@ export const deleteSales = async(req, res, next) => {
         return next(APIError.badRequest('Sales ID is required'))
     }
     try {
-        const findSales = await getSalessByIdService(id)
+        const findSales = await getSalesByIdService(id)
         if (!findSales) {
             return next(APIError.notFound('Sales not found!'))
         }

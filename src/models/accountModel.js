@@ -4,26 +4,30 @@ export const accountSchema = new Schema({
     fullName: {
         type: Schema.Types.ObjectId,
         ref: "Account",
-        required: true
+        required: [true, 'Please add your fullname']
     },
     businessName: {
         type: String,
-        required: true
+        required: [true, 'Business name is needed']
     },
     email: {
         type: String,
         unique: true,
-        required: true
+        required: [true, 'email is needed']
     },
     password: {
         type: String,
-        required: true
+        required: [true, 'Please add  your password']
         },
     role: {
         type: String,
         enum: ["admin", "owner", "user"],
         default: "user"
     },
+    verification: {
+        type: Boolean,
+        default: true  //should be false
+     }
     }, {timestamps: true});
 
-export const Account = model("Account", accountSchema);
+export const Account = model("Account", salesSchema);
