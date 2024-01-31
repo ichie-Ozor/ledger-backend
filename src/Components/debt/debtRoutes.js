@@ -1,7 +1,7 @@
 import express from 'express'
-import { createDebt, deleteDebt, editDebt, getDebts } from './debtController'
+import { createDebt, deleteDebt, editDebt, getDebts } from './creditController'
 
-const debtorRouter = express.Router()
+const creditorRouter = express.Router()
 
-debtorRouter.route('/').post(createDebt).get(getDebts)
+creditorRouter.route('/').post(createDebt).get(getDebts)
             .route('/:id').put(editDebt).delete(deleteDebt)
