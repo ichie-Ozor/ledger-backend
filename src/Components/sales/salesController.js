@@ -93,7 +93,7 @@ export const deleteSales = async(req, res, next) => {
         if (!findSales) {
             return next(APIError.notFound('Sales not found!'))
         }
-        const deletedSales = await deleteSalesService(id, req.body)
+        await deleteSalesService(id, req.body)
         res.status(200).json({
             success: true,
             message: 'Sales deleted successfully!',

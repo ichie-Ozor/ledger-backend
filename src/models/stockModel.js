@@ -23,7 +23,7 @@ export const stockSchema = new Schema({
         type: Number,
         required: true
     },
-    salingPrice: {
+    sellingPrice: {
         type: Number,
         required: true
     },
