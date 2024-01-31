@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 
-export const creditorSchema = new Schema({
-    account: {
+export const creditSchema = new Schema({
+    creditor: {
         type: Schema.Types.ObjectId,
-        ref: "Account",
+        ref: "Creditor",
         required: true
     },
     description: {
@@ -41,4 +41,4 @@ export const creditorSchema = new Schema({
     }
     }, {timestamps: true});
 
-export const Creditor = model("Creditor", creditorSchema);
+export const Credit = model("Credit", creditSchema);

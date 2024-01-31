@@ -26,4 +26,4 @@ export const accountSchema = new Schema({
     },
     }, {timestamps: true});
 
-export const Account = model("Account", salesSchema);
+export const Account = model("Account", accountSchema);

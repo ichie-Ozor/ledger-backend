@@ -7,7 +7,7 @@ import {
 } from './creditServices.js'
 import APIError from '../../utils/customError.js';
 
-export const createCreditor = async(req, res, next) => {
+export const createCredit = async(req, res, next) => {
     const {account, description, category, qty, rate, date} = req.body;
     if (!account || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -15,26 +15,26 @@ export const createCreditor = async(req, res, next) => {
     const total = qty * rate
    try {
      req.body.total = total
-     const newCreditor = await createCreditorService(req.body)
+     const newCredit = await createCreditService(req.body)
      res.status(201).json({
         success: true,
-        message: 'Creditor created successfully!',
-        creditor: newCreditor
+        message: 'Credit created successfully!',
+        creditor: newCredit
      })
    } catch (error) {
     next(APIError.customError(error.message))
    }
 }
 
-export const getCreditors = async(req, res, next) => {
+export const getCredits = async(req, res, next) => {
  try {
-       const creditors = await getCreditorsService()
+       const creditors = await getCreditsService()
        if (!creditors) {
        return next(APIError.notFound('No creditor found!'))
        }
        res.status(200).json({
            success: true,
-           message: 'Creditors retrieved successfully!',
+           message: 'Credits retrieved successfully!',
            creditors
         })
  } catch (error) {
@@ -42,62 +42,62 @@ export const getCreditors = async(req, res, next) => {
  }
 }
 
-export const getCreditorById = async(req, res, next) => {
+export const getCreditById = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Creditor ID is required'))
+        return next(APIError.badRequest('Credit ID is required'))
     }
     try {
-        const findCreditor = await getCreditorsByIdService(id)
-        if (!findCreditor) {
-            return next(APIError.notFound('Creditor not found!'))
+        const findCredit = await getCreditsByIdService(id)
+        if (!findCredit) {
+            return next(APIError.notFound('Credit not found!'))
         }
         res.status(200).json({
             success: true,
-            message: 'Creditor retrieved successfully!',
-            creditor: findCreditor
+            message: 'Credit retrieved successfully!',
+            creditor: findCredit
          })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const editCreditor = async(req, res, next) => {
+export const editCredit = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Creditor ID is required'))
+        return next(APIError.badRequest('Credit ID is required'))
     }
     try {
-        const findCreditor = await getCreditorsByIdService(id)
-        if (!findCreditor) {
-            return next(APIError.notFound('Creditor not found!'))
+        const findCredit = await getCreditsByIdService(id)
+        if (!findCredit) {
+            return next(APIError.notFound('Credit not found!'))
         }
-        const updatedCreditor = await editCreditorService(id, req.body)
+        const updatedCredit = await editCreditService(id, req.body)
         res.status(200).json({
             success: true,
-            message: 'Creditor updated successfully!',
-            creditor: updatedCreditor
+            message: 'Credit updated successfully!',
+            creditor: updatedCredit
          })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const deleteCreditor = async(req, res, next) => {
+export const deleteCredit = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Creditor ID is required'))
+        return next(APIError.badRequest('Credit ID is required'))
     }
     try {
-        const findCreditor = await getCreditorsByIdService(id)
-        if (!findCreditor) {
-            return next(APIError.notFound('Creditor not found!'))
+        const findCredit = await getCreditsByIdService(id)
+        if (!findCredit) {
+            return next(APIError.notFound('Credit not found!'))
         }
-        const deletedCreditor = await deleteCreditorService(id, req.body)
+        const deletedCredit = await deleteCreditService(id, req.body)
         res.status(200).json({
             success: true,
-            message: 'Creditor deleted successfully!',
-            creditor: deleteCreditor
+            message: 'Credit deleted successfully!',
+            creditor: deleteCredit
          })
     } catch (error) {
         next(APIError.customError(error.message))

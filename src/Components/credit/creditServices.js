@@ -1,26 +1,26 @@
-import { Creditor } from "../../models/creditModel";
+import { Credit } from "../../models/creditModel";
 
 export const createCreditService = async(data) => {
-    const newCredit = await Creditor.create(data)
+    const newCredit = await Credit.create(data)
     return newCredit
 }
 
-export const getCreditorsService = async() => {
-    const creditors = await Creditor.find()
+export const getCreditsService = async() => {
+    const creditors = await Credit.find()
     return creditors
 }
 
-export const getCreditorsByIdService = async(id) => {
-    const creditor = await Creditor.findById(id)
+export const getCreditsByIdService = async(id) => {
+    const creditor = await Credit.findById(id)
     return creditor
 }
 
-export const editCreditorService = async(id, data) => {
-    const updatedCreditor = await Creditor.findByIdAndUpdate(id, data)
-    return updatedCreditor
+export const editCreditService = async(id, data) => {
+    const updatedCredit = await Credit.findByIdAndUpdate(id, data)
+    return updatedCredit
 }
 
-export const deleteCreditorService = async(id) => {
-    const deletedCreditor = await Creditor.findByIdAndDelete(id)
-    return deletedCreditor
+export const deleteCreditService = async(id) => {
+    const deletedCredit = await Credit.findByIdAndDelete(id)
+    return deletedCredit
 }
