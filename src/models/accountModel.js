@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 export const accountSchema = new Schema({
     fullName: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "Account",
         required: [true, 'Please add your fullname']
     },
