@@ -1,9 +1,9 @@
 import {
-    createCreditorService, 
-    editCreditorService, 
-    getCreditorsByIdService, 
-    getCreditorsService, 
-    deleteCreditorService
+    createCreditService, 
+    editCreditService, 
+    getCreditsByIdService, 
+    getCreditsService, 
+    deleteCreditService
 } from './creditServices.js'
 import APIError from '../../utils/customError.js';
 
