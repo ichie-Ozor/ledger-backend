@@ -2,8 +2,7 @@ import { Schema, model } from "mongoose";
 
 export const accountSchema = new Schema({
     fullName: {
-        type: Schema.Types.ObjectId,
-        ref: "Account",
+        type: String,
         required: [true, 'Please add your fullname']
     },
     businessName: {
@@ -30,4 +29,4 @@ export const accountSchema = new Schema({
      }
     }, {timestamps: true});
 
-export const Account = model("Account", salesSchema);
+export const AccountModel = model("Account", accountSchema);

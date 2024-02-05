@@ -13,7 +13,7 @@ export const createAccount = async(req, res) => {
     
     const { fullName, businessName, email, password } = req.body
     if(!fullName || !businessName || !email || !password){
-        res.json({
+        return res.json({
             status: "Failed",
             message: "Incomplete credentials, Please complete the inputs"
         })
@@ -33,7 +33,6 @@ export const createAccount = async(req, res) => {
             message: "Password is too small"
         })
     }
-
     const accountExist = await accountExistService(email)
     console.log(accountExist, "this ")
     if(accountExist){

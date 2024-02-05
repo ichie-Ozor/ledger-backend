@@ -1,4 +1,4 @@
-import { Creditor } from "../../models/creditModel";
+import { Creditor } from "../../models/creditorModel.js";
 
 export const createCreditorService = async(data) => {
     const newCreditor = await Creditor.create(data)
@@ -16,7 +16,7 @@ export const getCreditorsByIdService = async(id) => {
 }
 
 export const editCreditorService = async(id, data) => {
-    const updatedCreditor = await Creditor.findByIdAndUpdate(id, data)
+    const updatedCreditor = await Creditor.findByIdAndUpdate(id, data, {new: true})
     return updatedCreditor
 }
 

@@ -3,7 +3,8 @@ import {
     editDebtorService, 
     getDebtorsByIdService, 
     getDebtorsService, 
-    deleteDebtorService
+    deleteDebtorService,
+    emailExistService
 } from './debtorServices.js'
 import APIError from '../../utils/customError.js';
 
@@ -13,6 +14,10 @@ export const createDebtor = async(req, res, next) => {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
    try {
+    const emailExist = await emailExistService(email)
+    if (emailExist) {
+        return next(APIError.badRequest('Email already exists!'))
+    }
      const newDebtor = await createDebtorService(req.body)
      res.status(201).json({
         success: true,
@@ -41,7 +46,7 @@ export const getDebtors = async(req, res, next) => {
 }
 
 export const getDebtorById = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
@@ -61,7 +66,7 @@ export const getDebtorById = async(req, res, next) => {
 }
 
 export const editDebtor = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
@@ -82,7 +87,7 @@ export const editDebtor = async(req, res, next) => {
 }
 
 export const deleteDebtor = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }

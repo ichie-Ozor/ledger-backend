@@ -15,6 +15,11 @@ export const getDebtsByIdService = async(id) => {
     return debt
 }
 
+export const getDebtsByDebtorIdService = async(debtorId) => {
+    const debts = await Debt.find({debtor: Types.ObjectId(debtorId)})
+    return debts
+}
+
 export const editDebtService = async(id, data) => {
     const updatedDebt = await Debt.findByIdAndUpdate(id, data)
     return updatedDebt

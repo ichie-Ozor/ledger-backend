@@ -3,7 +3,7 @@ import bycryptjs from 'bcryptjs'
 
 
 ////////////creating an account
-export const createAccountService = async(body, res) => {
+export const createAccountService = async(body) => {
    const auth = new AccountModel(body)
    const salt = bycryptjs.genSaltSync(10)
    const hashedPassword = bycryptjs.hashSync(body.password, salt)
@@ -14,13 +14,13 @@ export const createAccountService = async(body, res) => {
    .then(result => {
       sendVerificationEmail(result, res)
    })
-   .catch((error) => {
-      console.log(error)
-      res.json({
-         status: "Failed",
-         message: "email was Not sent!"
-      })
-   })
+   // .catch((error) => {
+   //    console.log(error)
+   //    res.json({
+   //       status: "Failed",
+   //       message: "email was Not sent!"
+   //    })
+   // })
    return auth
 }
 ////////////if the account exist

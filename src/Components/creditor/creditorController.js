@@ -8,8 +8,8 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCreditor = async(req, res, next) => {
-    const {firstName, lastName, phoneNumber, businessName, email} = req.body;
-    if (!firstName || !lastName || !phoneNumber || !businessName || !email) {
+    const {firstName, lastName, phoneNumber, businessName, email, createdBy} = req.body;
+    if (!firstName || !lastName || !phoneNumber || !businessName || !email || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
    try {
@@ -41,7 +41,7 @@ export const getCreditors = async(req, res, next) => {
 }
 
 export const getCreditorById = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
@@ -61,7 +61,7 @@ export const getCreditorById = async(req, res, next) => {
 }
 
 export const editCreditor = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
@@ -82,7 +82,7 @@ export const editCreditor = async(req, res, next) => {
 }
 
 export const deleteCreditor = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
