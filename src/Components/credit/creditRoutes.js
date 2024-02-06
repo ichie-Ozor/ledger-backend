@@ -1,7 +1,9 @@
 import express from 'express'
 import { createCredit, deleteCredit, editCredit, getCredits } from './creditController'
 
-const creditorRouter = express.Router()
+const creditRouter = express.Router()
 
-creditorRouter.route('/').post(createCredit).get(getCredits)
-            .route('/:id').put(editCredit).delete(deleteCredit)
+creditRouter.route('/').post(createCredit).get(getCredits)
+creditRouter.route('/:id').put(editCredit).delete(deleteCredit)
+
+export default creditRouter

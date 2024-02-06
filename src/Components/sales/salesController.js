@@ -8,6 +8,7 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createSales = async(req, res, next) => {
+    console.log(req.body)
     const {account, description, category, qty, rate, date} = req.body;
     if (!account || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))

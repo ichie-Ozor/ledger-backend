@@ -4,6 +4,7 @@ import bycryptjs from 'bcryptjs'
 
 ////////////creating an account
 export const createAccountService = async(body, res) => {
+   console.log(body)
    const auth = new AccountModel(body)
    const salt = bycryptjs.genSaltSync(10)
    const hashedPassword = bycryptjs.hashSync(body.password, salt)
