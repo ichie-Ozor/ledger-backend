@@ -5,6 +5,7 @@ import authRoute from "./auth/authRoutes.js";
 import {creditorRouter} from "./Components/creditor/creditorRoutes.js";
 import {creditRouter} from "./Components/credit/creditRoutes.js";
 import {debtorRouter} from "./Components/debtor/debtorRoutes.js";
+import {debtRouter} from "./Components/debt/debtRoutes.js";
 import {stockRouter} from "./Components/stock/stockRoutes.js";
 import {salesRouter} from "./Components/sales/salesRoutes.js";
 import {accountRoute} from "./account/accountRoutes.js";
@@ -26,6 +27,7 @@ app.use("/stock", stockRouter)
 app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)
 app.use("/credit", creditRouter)
+app.use("/debt", debtRouter)
 
 app.get("/", (req, res) => {
   res.status(200).json({
