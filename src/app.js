@@ -3,11 +3,15 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoute from "./auth/authRoutes.js";
-import creditorRouter from "./Components/creditor/creditorRoutes.js";
-// import debtorRouter from "./Components/debtor/debtorRoutes.js";
-import stockRouter from "./Components/stock/stockRoutes.js";
-import salesRouter from "./Components/sales/salesRouter.js";
-import accountRoute from "./account/accountRoutes.js";
+
+import {creditorRouter} from "./Components/creditor/creditorRoutes.js";
+import {creditRouter} from "./Components/credit/creditRoutes.js";
+import {debtorRouter} from "./Components/debtor/debtorRoutes.js";
+import {stockRouter} from "./Components/stock/stockRoutes.js";
+import {salesRouter} from "./Components/sales/salesRoutes.js";
+import {accountRoute} from "./account/accountRoutes.js";
+import { errorHandler, notFound } from "./middleware/authMiddleware.js";
+
 dotenv.config();
 
 const corsOptions = {
@@ -32,6 +36,7 @@ app.use("/sales", salesRouter)
 app.use("/stock", stockRouter)
 // app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)
+app.use("/credit", creditRouter)
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -39,6 +44,9 @@ app.get("/", (req, res) => {
     message: "Welcome to LEDGER API!"
   });
 });
+
+app.use(notFound)
+app.use(errorHandler)
 
 
 

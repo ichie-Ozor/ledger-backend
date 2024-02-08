@@ -1,26 +1,30 @@
-import { Creditor } from "../../models/creditModel";
+import { Debtor } from "../../models/debtorModel.js";
 
-export const createCreditorService = async(data) => {
-    const newCreditor = await Creditor.create(data)
-    return newCreditor
+export const createDebtorService = async(data) => {
+    const newDebtor = await Debtor.create(data)
+    return newDebtor
 }
 
-export const getCreditorsService = async() => {
-    const creditors = await Creditor.find()
+export const getDebtorsService = async() => {
+    const creditors = await Debtor.find()
     return creditors
 }
 
-export const getCreditorsByIdService = async(id) => {
-    const creditor = await Creditor.findById(id)
+export const getDebtorsByIdService = async(id) => {
+    const creditor = await Debtor.findById(id)
     return creditor
 }
 
-export const editCreditorService = async(id, data) => {
-    const updatedCreditor = await Creditor.findByIdAndUpdate(id, data)
-    return updatedCreditor
+export const editDebtorService = async(id, data) => {
+    const updatedDebtor = await Debtor.findByIdAndUpdate(id, data)
+    return updatedDebtor
 }
 
-export const deleteCreditorService = async(id) => {
-    const deletedCreditor = await Creditor.findByIdAndDelete(id)
-    return deletedCreditor
+export const deleteDebtorService = async(id) => {
+    const deletedDebtor = await Debtor.findByIdAndDelete(id)
+    return deletedDebtor
+}
+
+export const emailExistService = (email) => {
+    return Debtor.exists({email})
 }

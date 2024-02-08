@@ -1,4 +1,5 @@
-import { Credit } from "../../models/creditModel";
+import { Credit } from "../../models/creditModel.js";
+import {Types} from "mongoose";
 
 export const createCreditService = async(data) => {
     const newCredit = await Credit.create(data)
@@ -13,6 +14,11 @@ export const getCreditsService = async() => {
 export const getCreditsByIdService = async(id) => {
     const creditor = await Credit.findById(id)
     return creditor
+}
+
+export const getCreditsByCreditorIdService = async(creditorId) => {
+    const credits = await Credit.find({creditor: Types.ObjectId(creditorId)})
+    return credits
 }
 
 export const editCreditService = async(id, data) => {

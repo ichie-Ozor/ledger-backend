@@ -62,6 +62,26 @@ export const getDebtorById = async(req, res, next) => {
     }
 }
 
+export const getDebtByDebtorId = async(req, res, next) => {
+    const {debtorId} = req.params
+    if (!debtorId) {
+        return next(APIError.badRequest('Debt ID is required'))
+    }
+    try {
+        const findDebt = await getDebtsByDebtorIdService(debtorId)
+        if (!findDebt) {
+            return next(APIError.notFound('Debt not found!'))
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Debt retrieved successfully!',
+            credits: findDebt
+         })
+    } catch (error) {
+        next(APIError.customError(error.message))
+    }
+}
+
 export const editDebtor = async(req, res, next) => {
     const {id} = req.body
     if (!id) {

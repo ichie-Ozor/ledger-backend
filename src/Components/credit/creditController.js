@@ -3,7 +3,8 @@ import {
     editCreditService, 
     getCreditsByIdService, 
     getCreditsService, 
-    deleteCreditService
+    deleteCreditService,
+    getCreditsByCreditorIdService
 } from './creditServices.js'
 import APIError from '../../utils/customError.js';
 
@@ -56,6 +57,26 @@ export const getCreditById = async(req, res, next) => {
             success: true,
             message: 'Credit retrieved successfully!',
             creditor: findCredit
+         })
+    } catch (error) {
+        next(APIError.customError(error.message))
+    }
+}
+
+export const getCreditByCreditorId = async(req, res, next) => {
+    const {creditorId} = req.params
+    if (!creditorId) {
+        return next(APIError.badRequest('Credit ID is required'))
+    }
+    try {
+        const findCredit = await getCreditsByCreditorIdService(creditorId)
+        if (!findCredit) {
+            return next(APIError.notFound('Credit not found!'))
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Credit retrieved successfully!',
+            credits: findCredit
          })
     } catch (error) {
         next(APIError.customError(error.message))

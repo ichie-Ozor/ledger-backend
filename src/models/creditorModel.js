@@ -21,6 +21,11 @@ export const creditorSchema = new Schema({
         type: String,
         unique: true,
         required: true
+    },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account',
+        required: true
     }
     }, {timestamps: true});
 

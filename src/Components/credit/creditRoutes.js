@@ -1,9 +1,7 @@
 import express from 'express'
-import { createCredit, deleteCredit, editCredit, getCredits } from './creditController'
+import { createCredit, deleteCredit, editCredit, getCreditByCreditorId, getCredits } from './creditController.js'
 
-const creditRouter = express.Router()
+export const creditorRouter = express.Router()
 
-creditRouter.route('/').post(createCredit).get(getCredits)
-creditRouter.route('/:id').put(editCredit).delete(deleteCredit)
-
-export default creditRouter
+creditorRouter.route('/').post(createCredit).get(getCredits)
+creditorRouter.route('/:id').put(editCredit).delete(deleteCredit)
