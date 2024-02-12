@@ -11,8 +11,8 @@ export const stockSchema = new Schema({
         required: true
     },
     category: {
-        type: String,
-        enum: ["food", "transport", "home", "fun", "health", "other"],
+        type: Schema.Types.ObjectId,
+        ref: 'Category',
         required: true
     },
     qty: {
