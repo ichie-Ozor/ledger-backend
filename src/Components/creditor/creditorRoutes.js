@@ -6,4 +6,3 @@ export const creditorRouter = express.Router()
 creditorRouter.route('/').post(createCreditor).get(getCreditors)
 creditorRouter.route('/:id').put(editCreditor).delete(deleteCreditor).get(getCreditorById)
 
-export default creditorRouter

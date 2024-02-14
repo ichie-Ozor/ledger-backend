@@ -1,13 +1,14 @@
 import {
-    createDebtorService, 
-    editDebtorService, 
-    getDebtorsByIdService, 
-    getDebtorsService, 
-    deleteDebtorService
+    createDebtService, 
+    editDebtService, 
+    getDebtsByIdService, 
+    getDebtsService, 
+    getDebtsByDebtorIdService,
+    deleteDebtService
 } from './debtServices.js'
 import APIError from '../../utils/customError.js';
 
-export const createDebtor = async(req, res, next) => {
+export const createDebt = async(req, res, next) => {
     const {account, description, category, qty, rate, date} = req.body;
     if (!account || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -15,7 +16,7 @@ export const createDebtor = async(req, res, next) => {
     const total = qty * rate
    try {
      req.body.total = total
-     const newDebtor = await createDebtorService(req.body)
+     const newDebtor = await createDebtService(req.body)
      res.status(201).json({
         success: true,
         message: 'Debtor created successfully!',
@@ -26,9 +27,9 @@ export const createDebtor = async(req, res, next) => {
    }
 }
 
-export const getDebtors = async(req, res, next) => {
+export const getDebts = async(req, res, next) => {
  try {
-       const Debtors = await getDebtorsService()
+       const Debtors = await getDebtsService()
        if (!Debtors) {
        return next(APIError.notFound('No Debtor found!'))
        }
@@ -48,7 +49,7 @@ export const getDebtorById = async(req, res, next) => {
         return next(APIError.badRequest('Debtor ID is required'))
     }
     try {
-        const findDebtor = await getDebtorsByIdService(id)
+        const findDebtor = await getDebtsByIdService(id)
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }
@@ -82,17 +83,17 @@ export const getDebtByDebtorId = async(req, res, next) => {
     }
 }
 
-export const editDebtor = async(req, res, next) => {
+export const editDebt = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
     try {
-        const findDebtor = await getDebtorsByIdService(id)
+        const findDebtor = await getDebtsByIdService(id)
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }
-        const updatedDebtor = await editDebtorService(id, req.body)
+        const updatedDebtor = await editDebtService(id, req.body)
         res.status(200).json({
             success: true,
             message: 'Debtor updated successfully!',
@@ -103,17 +104,17 @@ export const editDebtor = async(req, res, next) => {
     }
 }
 
-export const deleteDebtor = async(req, res, next) => {
+export const deleteDebt = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
     try {
-        const findDebtor = await getDebtorsByIdService(id)
+        const findDebtor = await getDebtsByIdService(id)
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }
-        const deletedDebtor = await deleteDebtorService(id, req.body)
+        const deletedDebtor = await deleteDebtService(id, req.body)
         res.status(200).json({
             success: true,
             message: 'Debtor deleted successfully!',
