@@ -11,7 +11,7 @@ export const createAccountService = async(body) => {
    await auth
    .save()
    .then(result => {
-      sendVerificationEmail(result, res)
+      sendVerificationEmail(result)
    })
    // .catch((error) => {
    //    console.log(error)

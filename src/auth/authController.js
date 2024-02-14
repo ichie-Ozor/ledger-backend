@@ -1,11 +1,12 @@
 import { getAccountByEmail } from '../account/accountServices.js'
+import bcrypt from "bcryptjs"
 
 
 ///////////////////SignIn
 
 export const signInAccount = async(req, res) => {
     const { email, password } = req.body
-    console.log(email, password)
+    // console.log(email, password)
     if(email == "" || password == ""){
      return res.json({
          status: "Failed",
@@ -13,7 +14,7 @@ export const signInAccount = async(req, res) => {
      })
     }
     const checkEmail = await getAccountByEmail(email)
-    console.log(checkEmail, checkEmail.verification, "this")
+    // console.log(checkEmail, checkEmail.verification, "this")
     if(!checkEmail){               //this checks for wrong email and password
         return res.json({
             status: "Failed",
@@ -27,7 +28,9 @@ export const signInAccount = async(req, res) => {
      })
     } 
     const comparePassword = await bcrypt.compare(password, checkEmail.password)
-    console.log(comparePassword, "ok")
+    const {fullName, businessName, role, _id} = checkEmail
+    const userDetail ={ fullName, businessName, role, _id}
+    // console.log(comparePassword, "ok")
     if(!comparePassword || email !== checkEmail.email){
      return res.json({
          status: "Failed",
@@ -36,7 +39,9 @@ export const signInAccount = async(req, res) => {
     } else {
      res.json({
          status: "Success",
-         message: "You have successfully signed in"
+         message: "You have successfully signed in",
+         userDetail
+
      })
     }
  }

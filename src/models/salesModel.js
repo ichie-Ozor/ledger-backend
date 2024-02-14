@@ -12,7 +12,7 @@ export const salesSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ["food", "transport", "home", "fun", "health", "other"],
+        // enum: ["food", "transport", "home", "fun", "health", "other"],
         required: true
     },
     qty: {

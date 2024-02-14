@@ -34,7 +34,7 @@ app.use("/auth", authRoute)
 app.use("/account",accountRoute)
 app.use("/sales", salesRouter)
 app.use("/stock", stockRouter)
-// app.use("/debtor", debtorRouter)
+app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)
 app.use("/credit", creditRouter)
 

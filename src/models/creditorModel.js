@@ -29,4 +29,4 @@ export const creditorSchema = new Schema({
     }
     }, {timestamps: true});
 
-export const CreditorModel = model("Creditor", creditorSchema);
+export const Creditor = model("Creditor", creditorSchema);
