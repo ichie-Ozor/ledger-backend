@@ -8,13 +8,12 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCategory = async(req, res, next) => {
-    const {account, description, category, qty, rate, date} = req.body;
-    if (!account || !description || !category || !qty || !rate || !date) {
+    console.log(req.body)
+    const categoryItem = req.body;
+    if (!categoryItem) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    const total = qty * rate
    try {
-     req.body.total = total
      const newCategory = await createCategoryService(req.body)
      res.status(201).json({
         success: true,
