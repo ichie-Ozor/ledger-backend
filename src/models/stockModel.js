@@ -11,7 +11,8 @@ export const stockSchema = new Schema({
         required: true
     },
     category: {
-        type: Schema.Types.ObjectId,
+        // type: Schema.Types.ObjectId,
+        type: String,
         ref: 'Category',
         required: true
     },
