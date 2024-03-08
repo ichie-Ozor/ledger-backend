@@ -1,4 +1,4 @@
-import { Debt } from "../../models/debtModel";
+import { Debt } from "../../models/debtModel.js";
 
 export const createDebtService = async(data) => {
     const newDebt = await Debt.create(data)

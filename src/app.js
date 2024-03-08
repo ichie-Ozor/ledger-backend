@@ -10,6 +10,7 @@ import {stockRouter} from "./Components/stock/stockRoutes.js";
 import {salesRouter} from "./Components/sales/salesRoutes.js";
 import {accountRoute} from "./account/accountRoutes.js";
 import { errorHandler, notFound } from "./middleware/authMiddleware.js";
+import cors from "cors"
 dotenv.config();
 
 export const app = Express();
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
 
 app.use(Express.json());
+app.use(cors())
 app.use(Express.urlencoded({ extended: true }));
 
 
