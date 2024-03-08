@@ -5,3 +5,4 @@ export const debtorRouter = express.Router()
 
 debtorRouter.route('/').post(createDebtor).get(getDebtors)
 debtorRouter.route('/:id').put(editDebtor).delete(deleteDebtor).get(getDebtorById)
+

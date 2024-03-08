@@ -8,7 +8,7 @@ export const createAccountService = async(body, res) => {
    const salt = bycryptjs.genSaltSync(10)
    const hashedPassword = bycryptjs.hashSync(body.password, salt)
    auth.password = hashedPassword
-   console.log(auth)
+   // console.log(auth)
    await auth
    .save()
    .then(result => {

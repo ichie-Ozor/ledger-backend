@@ -8,13 +8,18 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createStock = async(req, res, next) => {
-    const {account, description, category, qty, rate, date} = req.body;
-    if (!account || !description || !category || !qty || !rate || !date) {
+    const incomingData = req.body
+    try {
+    for (let i = 0; i < incomingData.length; i++){
+    const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
+    console.log(req.body, account, goods)
+    if (!account || !goods || !category || !qty || !cost || !date || !sellingPrice) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    const total = qty * rate
-   try {
+    const total = qty * cost
+   
      req.body.total = total
+    }
      const newStock = await createStockService(req.body)
      res.status(201).json({
         success: true,

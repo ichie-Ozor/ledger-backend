@@ -1,5 +1,6 @@
 import { Creditor } from "../../models/creditorModel.js";
 
+
 export const createCreditorService = async(data) => {
     const newCreditor = await Creditor.create(data)
     return newCreditor

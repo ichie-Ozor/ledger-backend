@@ -1,5 +1,5 @@
 import express from 'express'
-import { createDebt, deleteDebt, editDebt, getDebtByDebtorId, getDebts } from './debtController.js'
+import { createDebt, deleteDebt, editDebt, getDebtByDebtorId, getDebts } from './debtController'
 
 export const debtRouter = express.Router()
 

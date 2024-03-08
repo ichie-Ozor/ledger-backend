@@ -34,7 +34,6 @@ export const createAccount = async(req, res) => {
         })
     }
     const accountExist = await accountExistService(email)
-    console.log(accountExist, "this ")
     if(accountExist){
         return res.json({
             status: "Failed",

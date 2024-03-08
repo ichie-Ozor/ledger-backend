@@ -11,8 +11,7 @@ export const salesSchema = new Schema({
         required: true
     },
     category: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
+        type: String,
         required: true
     },
     qty: {
@@ -27,14 +26,14 @@ export const salesSchema = new Schema({
         type: Number,
         required: true
     },
-    paid: {
-        type: Boolean,
-        required: true
-    },
-    balance: {
-        type: Number,
-        required: true
-    },
+    // paid: {
+    //     type: Boolean,
+    //     required: true
+    // },
+    // balance: {
+    //     type: Number,
+    //     required: true
+    // },
     date: {
         type: Date,
         required: true

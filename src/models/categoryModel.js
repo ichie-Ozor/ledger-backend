@@ -7,10 +7,7 @@ export const categorySchema = new Schema({
         required: true
     },
     name: {
-        type: String,
-        required: true
-    },
-    description: {
+        // type: Schema.Types.ObjectId,
         type: String,
         required: true
     }

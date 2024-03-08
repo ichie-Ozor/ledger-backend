@@ -8,11 +8,10 @@ export const createAccountService = async(body) => {
    const salt = bycryptjs.genSaltSync(10)
    const hashedPassword = bycryptjs.hashSync(body.password, salt)
    auth.password = hashedPassword
-   console.log(auth)
    await auth
    .save()
    .then(result => {
-      sendVerificationEmail(result, res)
+      sendVerificationEmail(result)
    })
    // .catch((error) => {
    //    console.log(error)
@@ -43,6 +42,7 @@ export const getAllAccountsService = async() => {
 /////////////get individual account   +  needed for signin
 export const getAccountByEmail = async(email) => {
     const findAccount = await AccountModel.findOne({email})
+    console.log(findAccount, "here")
     if (!findAccount || !findAccount.email){
       return false 
     } else {

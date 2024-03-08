@@ -1,20 +1,19 @@
 import {
     createCategoryService, 
     editCategoryService, 
-    getCategorysByIdService, 
-    getCategorysService, 
+    getCategoryByIdService, 
+    getCategoryService, 
     deleteCategoryService
-} from './categoryServices.js'
+} from './categoryService.js'
 import APIError from '../../utils/customError.js';
 
 export const createCategory = async(req, res, next) => {
-    const {account, description, category, qty, rate, date} = req.body;
-    if (!account || !description || !category || !qty || !rate || !date) {
+    console.log(req.body)
+    const categoryItem = req.body;
+    if (!categoryItem) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    const total = qty * rate
    try {
-     req.body.total = total
      const newCategory = await createCategoryService(req.body)
      res.status(201).json({
         success: true,
@@ -26,9 +25,9 @@ export const createCategory = async(req, res, next) => {
    }
 }
 
-export const getCategories = async(req, res, next) => {
+export const getCategory = async(req, res, next) => {
  try {
-       const categories = await getCategorysService()
+       const categories = await getCategoryService()
        if (!categories) {
        return next(APIError.notFound('No category found!'))
        }
@@ -48,7 +47,7 @@ export const getCategoryById = async(req, res, next) => {
         return next(APIError.badRequest('Category ID is required'))
     }
     try {
-        const findCategory = await getCategorysByIdService(id)
+        const findCategory = await getCategoryByIdService(id)
         if (!findCategory) {
             return next(APIError.notFound('Category not found!'))
         }
@@ -68,7 +67,7 @@ export const editCategory = async(req, res, next) => {
         return next(APIError.badRequest('Category ID are is required'))
     }
     try {
-        const findCategory = await getCategorysByIdService(id)
+        const findCategory = await getCategoryByIdService(id)
         if (!findCategory) {
             return next(APIError.notFound('Category not found!'))
         }
@@ -89,7 +88,7 @@ export const deleteCategory = async(req, res, next) => {
         return next(APIError.badRequest('Category ID is required'))
     }
     try {
-        const findCategory = await getCategorysByIdService(id)
+        const findCategory = await getCategoryByIdService(id)
         if (!findCategory) {
             return next(APIError.notFound('Category not found!'))
         }

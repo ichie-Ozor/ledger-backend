@@ -1,4 +1,4 @@
-import { Category } from "../../models/categoryModel";
+import { Category } from "../../models/categoryModel.js";
 
 export const createCategoryService = async(data) => {
     const newCategory = await Category.create(data)

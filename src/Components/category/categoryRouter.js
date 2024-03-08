@@ -1,7 +1,7 @@
 import express from 'express'
-import { createCategory, deleteCategory, editCategory, getcategory } from './categoryController'
+import { createCategory, deleteCategory, editCategory, getCategory } from './categoryController.js'
 
-const salesRouter = express.Router()
+export const categoryRouter = express.Router()
 
-salesRouter.route('/').post(createCategory).get(getcategory)
-            .route('/:id').put(editCategory).delete(deleteCategory)
+categoryRouter.route('/').post(createCategory).get(getCategory)
+categoryRouter.route('/:id').put(editCategory).delete(deleteCategory)
