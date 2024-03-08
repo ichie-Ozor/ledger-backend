@@ -16,7 +16,7 @@ import { categoryRouter } from "./Components/category/categoryRouter.js";
 dotenv.config();
 
 const corsOptions = {
-  origin: 'htps://localhost:3000',
+  Origin: 'htps://localhost:3000',
   credentials: true,
   optionSuccessStatus: 200
 }
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
-
+app.use(cors(corsOptions))
 
 app.use("/auth", authRoute)
 app.use("/account",accountRoute)
