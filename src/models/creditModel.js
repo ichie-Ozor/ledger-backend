@@ -1,9 +1,14 @@
 import { Schema, model } from "mongoose";
 
 export const creditSchema = new Schema({
-    creditor: {
+    creditorId: {
         type: Schema.Types.ObjectId,
         ref: "Creditor",
+        required: true
+    },
+    businessId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account',
         required: true
     },
     description: {
@@ -12,7 +17,7 @@ export const creditSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ["food", "transport", "home", "fun", "health", "other"],
+        enum: ['Animal', 'Cotton', 'Food', 'Tools',"food", "transport", "home", "fun", "health", "other"],
         required: true
     },
     qty: {
@@ -27,14 +32,14 @@ export const creditSchema = new Schema({
         type: Number,
         required: true
     },
-    paid: {
-        type: Boolean,
-        required: true
-    },
-    balance: {
-        type: Number,
-        required: true
-    },
+    // paid: {
+    //     type: Number,
+    //     required: true
+    // },
+    // balance: {
+    //     type: Number,
+    //     required: true
+    // },
     date: {
         type: Date,
         required: true

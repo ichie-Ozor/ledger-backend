@@ -17,11 +17,6 @@ export const creditorSchema = new Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true
-    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'Account',

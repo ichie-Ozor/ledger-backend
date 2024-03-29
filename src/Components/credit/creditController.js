@@ -9,19 +9,27 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCredit = async(req, res, next) => {
-    const {account, description, category, qty, rate, date} = req.body;
-    if (!account || !description || !category || !qty || !rate || !date) {
+    console.log(req.body)
+    const incomingData = req.body
+    try {
+    for(let i = 0; i < incomingData.length; i++){
+        console.log(incomingData[i])
+
+    const {businessId, creditorId, description, category, qty, rate, date} = incomingData[i];
+    if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    const total = qty * rate
-   try {
-     req.body.total = total
-     const newCredit = await createCreditService(req.body)
+    // const total = qty * rate
+   
+    //  req.body.total = total
+   
+     const newCredit = await createCreditService(incomingData[i])
      res.status(201).json({
         success: true,
         message: 'Credit created successfully!',
         creditor: newCredit
      })
+    }
    } catch (error) {
     next(APIError.customError(error.message))
    }
@@ -44,6 +52,7 @@ export const getCredits = async(req, res, next) => {
 }
 
 export const getCreditById = async(req, res, next) => {
+    // console.log(req.body)
     const {id} = req.body
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))
@@ -65,6 +74,7 @@ export const getCreditById = async(req, res, next) => {
 
 export const getCreditByCreditorId = async(req, res, next) => {
     const {creditorId} = req.params
+    console.log(req.params)
     if (!creditorId) {
         return next(APIError.badRequest('Credit ID is required'))
     }

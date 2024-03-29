@@ -13,6 +13,7 @@ import {salesRouter} from "./Components/sales/salesRoutes.js";
 import {accountRoute} from "./account/accountRoutes.js";
 import { errorHandler, notFound } from "./middleware/authMiddleware.js";
 import { categoryRouter } from "./Components/category/categoryRouter.js";
+import { creditorBalRouter } from "./Components/creditorBal/creditorBalRoutes.js";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
 
 app.use(cors(corsOptions));
-app.use(Express.json());
+app.use(Express.json());   //this collect whatever data we are passing in, convert it to Js object and pass it to the neccessary handler
 app.use(Express.urlencoded({ extended: true }));
 
 
@@ -41,6 +42,7 @@ app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)
 app.use("/credit", creditRouter)
 app.use("/debt", debtRouter)
+app.use("/creditorBal", creditorBalRouter)
 
 app.get("/", (req, res) => {
   res.status(200).json({

@@ -42,7 +42,8 @@ export const getCategory = async(req, res, next) => {
 }
 
 export const getCategoryById = async(req, res, next) => {
-    const {id} = req.body
+    const id = req.params.id
+    console.log(req.params.id)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
     }
