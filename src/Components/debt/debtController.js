@@ -16,11 +16,11 @@ export const createDebt = async(req, res, next) => {
     const total = qty * rate
    try {
      req.body.total = total
-     const newDebtor = await createDebtService(req.body)
+     const newDebt= await createDebtService(req.body)
      res.status(201).json({
         success: true,
-        message: 'Debtor created successfully!',
-        Debtor: newDebtor
+        message: 'Debt created successfully!',
+        Debt: newDebt
      })
    } catch (error) {
     next(APIError.customError(error.message))
@@ -29,47 +29,48 @@ export const createDebt = async(req, res, next) => {
 
 export const getDebts = async(req, res, next) => {
  try {
-       const Debtors = await getDebtsService()
-       if (!Debtors) {
-       return next(APIError.notFound('No Debtor found!'))
+       const Debts = await getDebtsService()
+       if (!Debts) {
+       return next(APIError.notFound('No Debt found!'))
        }
        res.status(200).json({
            success: true,
-           message: 'Debtors retrieved successfully!',
-           Debtors
+           message: 'Debts retrieved successfully!',
+           Debts
         })
  } catch (error) {
     next(APIError.customError(error.message))
  }
 }
 
-export const getDebtorById = async(req, res, next) => {
+export const getDebtById = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Debtor ID is required'))
+        return next(APIError.badRequest('Debt ID is required'))
     }
     try {
-        const findDebtor = await getDebtsByIdService(id)
-        if (!findDebtor) {
-            return next(APIError.notFound('Debtor not found!'))
+        const findDebt= await getDebtsByIdService(id)
+        if (!findDebt) {
+            return next(APIError.notFound('Debtnot found!'))
         }
         res.status(200).json({
             success: true,
-            message: 'Debtor retrieved successfully!',
-            Debtor: findDebtor
+            message: 'Debt retrieved successfully!',
+            Debt: findDebt
          })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
+
 export const getDebtByDebtorId = async(req, res, next) => {
-    const {debtorId} = req.params
-    if (!debtorId) {
+    const {DebtId} = req.params
+    if (!DebtId) {
         return next(APIError.badRequest('Debt ID is required'))
     }
     try {
-        const findDebt = await getDebtsByDebtorIdService(debtorId)
+        const findDebt = await getDebtsByDebtorIdService(DebtId)
         if (!findDebt) {
             return next(APIError.notFound('Debt not found!'))
         }
@@ -86,39 +87,39 @@ export const getDebtByDebtorId = async(req, res, next) => {
 export const editDebt = async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Debtor ID is required'))
+        return next(APIError.badRequest('Debt ID is required'))
     }
     try {
-        const findDebtor = await getDebtsByIdService(id)
-        if (!findDebtor) {
-            return next(APIError.notFound('Debtor not found!'))
+        const findDebt= await getDebtsByIdService(id)
+        if (!findDebt) {
+            return next(APIError.notFound('Debt not found!'))
         }
-        const updatedDebtor = await editDebtService(id, req.body)
+        const updatedDebt= await editDebtService(id, req.body)
         res.status(200).json({
             success: true,
-            message: 'Debtor updated successfully!',
-            Debtor: updatedDebtor
+            message: 'Debt updated successfully!',
+            Debt: updatedDebt
          })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const deleteDebt = async(req, res, next) => {
+export const deleteDebt= async(req, res, next) => {
     const {id} = req.body
     if (!id) {
-        return next(APIError.badRequest('Debtor ID is required'))
+        return next(APIError.badRequest('Debt ID is required'))
     }
     try {
-        const findDebtor = await getDebtsByIdService(id)
-        if (!findDebtor) {
-            return next(APIError.notFound('Debtor not found!'))
+        const findDebt= await getDebtsByIdService(id)
+        if (!findDebt) {
+            return next(APIError.notFound('Debtnot found!'))
         }
-        const deletedDebtor = await deleteDebtService(id, req.body)
+        const deletedDebt= await deleteDebtService(id, req.body)
         res.status(200).json({
             success: true,
-            message: 'Debtor deleted successfully!',
-            Debtor: deleteDebtor
+            message: 'Debt deleted successfully!',
+            Debt: deleteDebt
          })
     } catch (error) {
         next(APIError.customError(error.message))

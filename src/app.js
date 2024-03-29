@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoute from "./auth/authRoutes.js";
-
 import {creditorRouter} from "./Components/creditor/creditorRoutes.js";
 import {creditRouter} from "./Components/credit/creditRoutes.js";
 import {debtorRouter} from "./Components/debtor/debtorRoutes.js";
@@ -18,7 +17,7 @@ import { creditorBalRouter } from "./Components/creditorBal/creditorBalRoutes.js
 dotenv.config();
 
 const corsOptions = {
-  origin: 'htps://localhost:3000',
+  Origin: 'htps://localhost:3000',
   credentials: true,
   optionSuccessStatus: 200
 }
@@ -27,11 +26,9 @@ const corsOptions = {
 export const app = Express();
 const PORT = process.env.PORT || 8080;
 const MONGODB_URL = process.env.MONGODB_URI;
-
-app.use(cors(corsOptions));
 app.use(Express.json());   //this collect whatever data we are passing in, convert it to Js object and pass it to the neccessary handler
 app.use(Express.urlencoded({ extended: true }));
-
+app.use(cors(corsOptions))
 
 app.use("/auth", authRoute)
 app.use("/account",accountRoute)

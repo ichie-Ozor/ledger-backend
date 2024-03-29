@@ -11,7 +11,8 @@ export const creditorSchema = new Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     businessName: {
         type: String,
