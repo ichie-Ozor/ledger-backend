@@ -53,7 +53,8 @@ export const getCredits = async(req, res, next) => {
 
 export const getCreditById = async(req, res, next) => {
     // console.log(req.body)
-    const {id} = req.body
+    const {id} = req.params
+    console.log(id)
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))
     }

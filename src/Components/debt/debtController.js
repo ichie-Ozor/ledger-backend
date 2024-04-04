@@ -64,7 +64,7 @@ export const getDebtById = async(req, res, next) => {
 }
 
 
-export const getDebtByDebtorId = async(req, res, next) => {
+export const getDebtsByDebtorId = async(req, res, next) => {
     const {DebtId} = req.params
     if (!DebtId) {
         return next(APIError.badRequest('Debt ID is required'))
