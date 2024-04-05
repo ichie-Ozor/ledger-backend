@@ -8,9 +8,9 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCreditor = async(req, res, next) => {
+    console.log(req.body, "see me")
     const {firstName, lastName, phoneNumber, businessName, email, createdBy} = req.body;
-    console.log(req.body)
-    if (!firstName || !lastName || !phoneNumber || !businessName || !email || !createdBy) {
+    if (!firstName || !lastName || !phoneNumber || !businessName || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
    try {
@@ -42,6 +42,7 @@ export const getCreditors = async(req, res, next) => {
 }
 
 export const getCreditorById = async(req, res, next) => {
+    console.log(req.params)
     const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))

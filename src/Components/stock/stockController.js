@@ -13,7 +13,7 @@ export const createStock = async(req, res, next) => {
     for (let i = 0; i < incomingData.length; i++){
     const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
     console.log(req.body, account, goods)
-    if (!account || !goods || !category || !qty || !cost || !date || !sellingPrice) {
+    if (!account || !goods || !category || !qty || !cost || !sellingPrice) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
     const total = qty * cost
