@@ -8,7 +8,7 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCreditor = async(req, res, next) => {
-    console.log(req.body, "see me")
+    // console.log(req.body, "see me")
     const {firstName, lastName, phoneNumber, businessName, email, createdBy} = req.body;
     if (!firstName || !lastName || !phoneNumber || !businessName || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))

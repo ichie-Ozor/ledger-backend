@@ -1,4 +1,5 @@
 import { Debt } from "../../models/debtModel.js";
+import { Types } from "mongoose";
 
 export const createDebtService = async(data) => {
     const newDebt = await Debt.create(data)
@@ -16,7 +17,7 @@ export const getDebtsByIdService = async(id) => {
 }
 
 export const getDebtsByDebtorIdService = async(debtorId) => {
-    const debts = await Debt.find({debtor: Types.ObjectId(debtorId)})
+    const debts = await Debt.find({debtor: new Types.ObjectId(debtorId)})
     return debts
 }
 

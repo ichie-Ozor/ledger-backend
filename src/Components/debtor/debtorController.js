@@ -9,15 +9,16 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createDebtor = async(req, res, next) => {
-    const {firstName, lastName, phoneNumber, businessName, email} = req.body;
-    if (!firstName || !lastName || !phoneNumber || !businessName || !email) {
+    console.log(req.body)
+    const {firstName, lastName, phoneNumber, businessName, createdBy} = req.body;
+    if (!firstName || !lastName || !phoneNumber || !businessName || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
    try {
-    const emailExist = await emailExistService(email)
-    if (emailExist) {
-        return next(APIError.badRequest('Email already exists!'))
-    }
+    // const emailExist = await emailExistService(email)
+    // if (emailExist) {
+    //     return next(APIError.badRequest('Email already exists!'))
+    // }
      const newDebtor = await createDebtorService(req.body)
      res.status(201).json({
         success: true,

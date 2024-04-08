@@ -65,21 +65,22 @@ export const getDebtById = async(req, res, next) => {
 
 
 export const getDebtsByDebtorId = async(req, res, next) => {
-    const {DebtId} = req.params
-    if (!DebtId) {
+    const {debtorId} = req.params
+    if (!debtorId) {
         return next(APIError.badRequest('Debt ID is required'))
     }
     try {
-        const findDebt = await getDebtsByDebtorIdService(DebtId)
+        const findDebt = await getDebtsByDebtorIdService(debtorId)
         if (!findDebt) {
             return next(APIError.notFound('Debt not found!'))
         }
         res.status(200).json({
             success: true,
             message: 'Debt retrieved successfully!',
-            credits: findDebt
+            debts: findDebt
          })
     } catch (error) {
+        console.log(error)
         next(APIError.customError(error.message))
     }
 }

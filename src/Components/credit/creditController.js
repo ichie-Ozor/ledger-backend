@@ -54,7 +54,7 @@ export const getCredits = async(req, res, next) => {
 export const getCreditById = async(req, res, next) => {
     // console.log(req.body)
     const {id} = req.params
-    console.log(id)
+    console.log(id, "id hereeee")
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))
     }
@@ -75,14 +75,14 @@ export const getCreditById = async(req, res, next) => {
 
 export const getCreditByCreditorId = async(req, res, next) => {
     const {creditorId} = req.params
-    console.log(req.params)
+    console.log(req.params, "here")
     if (!creditorId) {
         return next(APIError.badRequest('Credit ID is required'))
     }
     try {
         const findCredit = await getCreditsByCreditorIdService(creditorId)
         if (!findCredit) {
-            return next(APIError.notFound('Credit not found!'))
+            return next(APIError.notFound('Credit not found!!!'))
         }
         res.status(200).json({
             success: true,
