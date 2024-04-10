@@ -18,7 +18,7 @@ export const getCreditorBalByIdService = async(id) => {
 }
 
 export const getCreditorBalByCreditorIdService = async(creditorId) => {
-    const creditorBal = await CreditorBal.find({creditor: new Types.ObjectId(creditorId)})
+    const creditorBal = await CreditorBal.find({creditorId: new Types.ObjectId(creditorId)})
     return creditorBal
 }
 

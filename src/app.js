@@ -13,6 +13,7 @@ import {accountRoute} from "./account/accountRoutes.js";
 import { errorHandler, notFound } from "./middleware/authMiddleware.js";
 import { categoryRouter } from "./Components/category/categoryRouter.js";
 import { creditorBalRouter } from "./Components/creditorBal/creditorBalRoutes.js";
+import { debtorBalRouter } from "./Components/debtorBal/debtorBalRoutes.js";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)
 app.use("/credit", creditRouter)
 app.use("/debt", debtRouter)
+app.use("/debtorBal", debtorBalRouter)
 app.use("/creditorBal", creditorBalRouter)
 
 app.get("/", (req, res) => {

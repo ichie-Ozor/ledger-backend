@@ -17,7 +17,7 @@ export const getDebtsByIdService = async(id) => {
 }
 
 export const getDebtsByDebtorIdService = async(debtorId) => {
-    const debts = await Debt.find({debtor: new Types.ObjectId(debtorId)})
+    const debts = await Debt.find({debtorId: new Types.ObjectId(debtorId)})
     return debts
 }
 

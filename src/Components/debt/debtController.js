@@ -9,19 +9,25 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createDebt = async(req, res, next) => {
-    const {account, description, category, qty, rate, date} = req.body;
-    if (!account || !description || !category || !qty || !rate || !date) {
+    console.log(req.body, "here")
+    const incomingData = req.body
+    try {
+    for (let i = 0; i < incomingData.length; i++){
+        console.log(incomingData[i])
+        const {businessId, debtorId, description, category, qty, rate, date} = incomingData[i];
+    if (!businessId || !debtorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    const total = qty * rate
-   try {
-     req.body.total = total
-     const newDebt= await createDebtService(req.body)
+    // const total = qty * rate
+   
+    //  req.body.total = total
+     const newDebt= await createDebtService(incomingData[i])
      res.status(201).json({
         success: true,
         message: 'Debt created successfully!',
         Debt: newDebt
      })
+    }
    } catch (error) {
     next(APIError.customError(error.message))
    }
@@ -66,11 +72,13 @@ export const getDebtById = async(req, res, next) => {
 
 export const getDebtsByDebtorId = async(req, res, next) => {
     const {debtorId} = req.params
+    console.log(debtorId, "na me be this")
     if (!debtorId) {
         return next(APIError.badRequest('Debt ID is required'))
     }
     try {
         const findDebt = await getDebtsByDebtorIdService(debtorId)
+        console.log(findDebt)
         if (!findDebt) {
             return next(APIError.notFound('Debt not found!'))
         }
