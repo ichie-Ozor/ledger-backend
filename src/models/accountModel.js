@@ -1,6 +1,9 @@
 import { Schema, model } from "mongoose";
 
 export const accountSchema = new Schema({
+    id: {
+        type: Schema.Types.ObjectId
+    },
     fullName: {
         type: String,
         required: [true, 'Please add your fullname']
@@ -26,6 +29,14 @@ export const accountSchema = new Schema({
     verification: {
         type: Boolean,
         default: true  //should be false
+     },
+     approval: {
+        type: Number,
+        default: null  
+     },
+     phoneNumber: {
+        type: Number,
+        required: [true, 'Please add  your phone Number']  
      }
     }, {timestamps: true});
 

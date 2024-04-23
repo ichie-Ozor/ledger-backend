@@ -1,9 +1,14 @@
+import JWT from 'jsonwebtoken'
 import { 
     createAccountService, 
     accountExistService, 
     getAccountByEmail, 
-    getAllAccountsService 
+    getAllAccountsService,
+    getAccountById,
+    editAccountService,
+    deleteAccountService 
 } from './accountServices.js'
+import APIError from '../utils/customError.js'
 
 
 
@@ -42,9 +47,27 @@ export const createAccount = async(req, res) => {
     }
     const newUser = await createAccountService(req.body)
     if(newUser){
+        /////////assess Tokem
+        const assessToken = await JWT.sign(
+            { businessName },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "15000s"
+            }
+        );
+        //////////////Refresh Token
+        const refreshToken = await JWT.sign(
+            { businessName },
+            process.env.REFRESH_SECRET,
+            {
+                expiresIn: "15000s"
+            }
+        );
         res.json({
             status: "Success",
-            message: `Account with the name ${newUser.fullName} has being created successfully`
+            message: `Account with the name ${newUser.fullName} has being created successfully`,
+            assessToken,
+            refreshToken
           })
     } else(
         res.json({
@@ -90,3 +113,45 @@ export const getAccountByEmailController = async(req, res) => {
     }
 }
 
+export const editAccount = async(req, res, next) => {
+    const {id} = req.params
+    console.log(req.params, req.body)
+    if(!id){
+        return next(APIError.badRequest("update id required"))
+    }
+    try {
+        const findAccount = await getAccountById(id)
+        console.log(findAccount, "see am")
+        if(!findAccount){
+            return next(APIError.notFound('Account not found'))
+        }
+        const updatedAccount = await editAccountService(id, req.body)
+        res.status(200).json({
+            success: true,
+            message: "Account updated successfully",
+            Account: updatedAccount
+        })
+    } catch (error) {
+        next(APIError.customError(error.message))
+    }
+}
+
+export const deleteAccount = async(req, res, next) => {
+    const {id} = req.body
+    if(!id) {
+        return next(APIError.badRequest('Account Id is required'))
+    }
+    try {
+        const findAccount = await getAccountById(id)
+        if(!findAccount) {
+            return next(APIError.badRequest("Account not found"))
+        }
+        const deletedAccount = await deleteAccountService(id, req.body)
+        res.status(200).json({
+            success: true,
+            message: "Account deleted successfully"
+        })
+    }catch (error) {
+        next(APIError.customError(error.message))
+    }
+}

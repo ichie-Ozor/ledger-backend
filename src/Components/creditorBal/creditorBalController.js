@@ -43,7 +43,7 @@ export const getCreditorBal = async(req, res, next) => {
 }
 
 export const getCreditorBalById = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
     if(!id){
         return next(APIError.badRequest("creditor Id required"))
     }
@@ -64,6 +64,7 @@ export const getCreditorBalById = async(req, res, next) => {
 
 export const getCreditorBalByCreditorId = async(req, res, next) => {
     const {creditorId} = req.params
+    console.log(creditorId)
     if(!creditorId){
         return next(APIError.badRequest('Creditor Id required'))
     }

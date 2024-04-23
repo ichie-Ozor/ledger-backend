@@ -75,7 +75,7 @@ export const getCreditById = async(req, res, next) => {
 
 export const getCreditByCreditorId = async(req, res, next) => {
     const {creditorId} = req.params
-    console.log(req.params, "here")
+    // console.log(req.params, "here")
     if (!creditorId) {
         return next(APIError.badRequest('Credit ID is required'))
     }
@@ -129,7 +129,7 @@ export const deleteCredit = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Credit deleted successfully!',
-            creditor: deleteCredit
+            creditor: deletedCredit
          })
     } catch (error) {
         next(APIError.customError(error.message))

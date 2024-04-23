@@ -11,5 +11,5 @@ import {
 export const creditorBalRouter = express.Router()
 
 creditorBalRouter.route('/').post(createCreditorBal).get(getCreditorBal)
-creditorBalRouter.route('/:id').put(editCreditorBal).delete(deleteCreditorBal).get(getCreditorBalById)
+creditorBalRouter.route('/:id').put(editCreditorBal).delete(deleteCreditorBal)
 creditorBalRouter.route('/:creditorId').get(getCreditorBalByCreditorId)

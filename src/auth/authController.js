@@ -1,5 +1,6 @@
 import { getAccountByEmail } from '../account/accountServices.js'
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
+import JWT from 'jsonwebtoken';
 
 
 ///////////////////SignIn
@@ -14,7 +15,7 @@ export const signInAccount = async(req, res) => {
      })
     }
     const checkEmail = await getAccountByEmail(email)
-    // console.log(checkEmail, checkEmail.verification, "this")
+    console.log(checkEmail, checkEmail.verification, "this")
     if(!checkEmail){               //this checks for wrong email and password
         return res.json({
             status: "Failed",
@@ -28,8 +29,9 @@ export const signInAccount = async(req, res) => {
      })
     } 
     const comparePassword = await bcrypt.compare(password, checkEmail.password)
-    const {fullName, businessName, role, _id} = checkEmail
-    const userDetail ={ fullName, businessName, role, _id}
+    console.log(checkEmail)
+    const {fullName, businessName, role, _id, verification,  phoneNumber, approval} = checkEmail
+    const userDetail ={ fullName, businessName, role, _id, verification, email, phoneNumber, approval}
     // console.log(comparePassword, "ok")
     if(!comparePassword || email !== checkEmail.email){
      return res.json({
@@ -37,10 +39,28 @@ export const signInAccount = async(req, res) => {
          message: "You have entered an invalid email and password"
      })
     } else {
+        ///JWT token is created here
+        const assessToken = await JWT.sign(
+            { businessName },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "15000s"
+            }
+        );
+        //////////////Refresh Token
+        const refreshToken = await JWT.sign(
+            { businessName },
+            process.env.REFRESH_SECRET,
+            {
+                expiresIn: "15000s"
+            }
+        );
      res.json({
          status: "Success",
          message: "You have successfully signed in",
-         userDetail
+         userDetail,
+         assessToken,
+         refreshToken
 
      })
     }
