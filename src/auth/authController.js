@@ -18,7 +18,7 @@ export const signInAccount = async(req, res) => {
     const {fullName, businessName, role, _id, verification,  phoneNumber, approval} = checkEmail
     const userDetail ={ fullName, businessName, role, _id, verification, email, phoneNumber, approval}
     const timer = Date.now() - approval
-    console.log(checkEmail, checkEmail.verification, approval, "this")
+    // console.log(checkEmail, checkEmail.verification, approval, "this")
     if(!checkEmail){               //this checks for wrong email and password
         return res.json({
             status: "Failed",

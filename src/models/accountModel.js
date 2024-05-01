@@ -28,7 +28,7 @@ export const accountSchema = new Schema({
     },
     verification: {
         type: Boolean,
-        default: true  //should be false
+        default: false  //should be false
      },
      approval: {
         type: Number,

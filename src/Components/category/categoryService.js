@@ -1,4 +1,5 @@
 import { Category } from "../../models/categoryModel.js";
+import {Types} from "mongoose";
 
 export const createCategoryService = async(data) => {
     const newCategory = await Category.create(data)
@@ -11,7 +12,9 @@ export const getCategoryService = async() => {
 }
 
 export const getCategoryByIdService = async(id) => {
-    const category = await Category.findById(id)
+    // const category = await Category.findById(id)
+    const category = await Category.find({account: new Types.ObjectId(id)})
+    // console.log(category, id)
     return category
 }
 

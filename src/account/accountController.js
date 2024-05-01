@@ -97,7 +97,7 @@ export const getAllAcountController = async(req, res) => {
 ////////////////////get An account by Email
 export const getAccountByEmailController = async(req, res) => {
     const {email} = req.params
-    console.log(req)
+    // console.log(req)
     if(email){
        const getAccount = await getAccountByEmail(email)
        res.json({
@@ -115,13 +115,13 @@ export const getAccountByEmailController = async(req, res) => {
 
 export const editAccount = async(req, res, next) => {
     const {id} = req.params
-    console.log(req.params, req.body)
+    // console.log(req.params, req.body)
     if(!id){
         return next(APIError.badRequest("update id required"))
     }
     try {
         const findAccount = await getAccountById(id)
-        console.log(findAccount, "see am")
+        // console.log(findAccount, "see am")
         if(!findAccount){
             return next(APIError.notFound('Account not found'))
         }

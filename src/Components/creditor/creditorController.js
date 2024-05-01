@@ -42,13 +42,14 @@ export const getCreditors = async(req, res, next) => {
 }
 
 export const getCreditorById = async(req, res, next) => {
-    console.log(req.params)
+    // console.log(req.params)
     const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
     try {
         const findCreditor = await getCreditorsByIdService(id)
+        // console.log(findCreditor, id)
         if (!findCreditor) {
             return next(APIError.notFound('Creditor not found!'))
         }

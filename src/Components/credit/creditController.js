@@ -6,6 +6,7 @@ import {
     deleteCreditService,
     getCreditsByCreditorIdService
 } from './creditServices.js'
+import { getStocksByIdService, editStocksService } from '../stock/stockServices.js';
 import APIError from '../../utils/customError.js';
 
 export const createCredit = async(req, res, next) => {
@@ -19,11 +20,42 @@ export const createCredit = async(req, res, next) => {
     if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    // const total = qty * rate
-   
-    //  req.body.total = total
-   
-     const newCredit = await createCreditService(incomingData[i])
+    
+    
+    //get the stock 
+    const getStock = await getStocksByIdService(businessId)
+    console.log(getStock, businessId, "see stock")
+
+    //if the stock is less than the credit, return a response
+    if(getStock.category !== category && getStock.qty < qty){
+        return res.status(200).json({
+            success: true,
+            message: 'There is not enough items in the stock DB'
+          })
+    }
+
+   //check if the stock has the item
+   if(getStock.category !== category || getStock.length === 0) {
+     return res.status(200).json({
+       success: true,
+       message: 'There is no item in the stock DB'
+     })
+   }
+    //if the stock is greater than the credit, subtract it
+    if(getStock.qty >= qty) {
+        let stockDiff = getStock.qty - qty
+        const editedStock = {...getStock}
+        editedStock.qty = stockDiff
+        const updatedStock = await editStocksService(businessId, editedStock)
+
+        return res.status(201).json({
+            success: true,
+            message: 'Credit created successfully!',
+            creditor: updatedStock
+         })
+    }
+    //this will save the credit to the credit DB
+    const newCredit = await createCreditService(incomingData[i])
      res.status(201).json({
         success: true,
         message: 'Credit created successfully!',

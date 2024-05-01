@@ -53,7 +53,7 @@ export const getAccountByEmail = async(email) => {
 /////////////get individual account by id
 export const getAccountById = async(id) => {
    const findAccount = await AccountModel.findById(id)
-   console.log(findAccount, "here")
+   // console.log(findAccount, "here")
    if (findAccount && findAccount._id){
      return (true, findAccount) 
    } else {

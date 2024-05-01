@@ -1,4 +1,5 @@
 import { Creditor } from "../../models/creditorModel.js";
+import { Types } from "mongoose";
 
 
 export const createCreditorService = async(data) => {
@@ -12,7 +13,8 @@ export const getCreditorsService = async() => {
 }
 
 export const getCreditorsByIdService = async(id) => {
-    const creditor = await Creditor.findById(id)
+    const creditor = await Creditor.find({createdBy: new Types.ObjectId(id)})
+    // console.log(creditor)
     return creditor
 }
 

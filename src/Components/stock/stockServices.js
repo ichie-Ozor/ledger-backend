@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Stock } from "../../models/stockModel.js";
 
 export const createStockService = async(data) => {
@@ -11,7 +12,7 @@ export const getStocksService = async() => {
 }
 
 export const getStocksByIdService = async(id) => {
-    const stock = await Stock.findById(id)
+    const stock = await Stock.find({account: new Types.ObjectId(id)})
     return stock
 }
 

@@ -8,7 +8,7 @@ import {
 import APIError from '../../utils/customError.js';
 
 export const createCategory = async(req, res, next) => {
-    console.log(req.body)
+    // console.log(req.body)
     const categoryItem = req.body;
     if (!categoryItem) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -43,7 +43,7 @@ export const getCategory = async(req, res, next) => {
 
 export const getCategoryById = async(req, res, next) => {
     const id = req.params.id
-    console.log(req.params.id)
+    // console.log(req.params)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
     }
@@ -84,7 +84,8 @@ export const editCategory = async(req, res, next) => {
 }
 
 export const deleteCategory = async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
+    // console.log(id, req.body)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
     }

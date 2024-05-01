@@ -17,7 +17,7 @@ export const creditSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['Animal', 'Cotton', 'Food', 'Tools',"food", "transport", "home", "fun", "health", "other"],
+        // enum: ['Animal', 'Cotton', 'Food', 'Tools',"food", "transport", "home", "fun", "health", "other"],
         required: true
     },
     qty: {
