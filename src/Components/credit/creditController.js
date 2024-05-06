@@ -10,11 +10,11 @@ import { getStocksByIdService, editStocksService } from '../stock/stockServices.
 import APIError from '../../utils/customError.js';
 
 export const createCredit = async(req, res, next) => {
-    console.log(req.body)
+    console.log(req.body, "it here")
     const incomingData = req.body
     try {
     for(let i = 0; i < incomingData.length; i++){
-        console.log(incomingData[i])
+        console.log(incomingData[i], "see incoming data")
 
     const {businessId, creditorId, description, category, qty, rate, date} = incomingData[i];
     if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
@@ -27,8 +27,8 @@ export const createCredit = async(req, res, next) => {
     console.log(getStock, businessId, "see stock")
 
     //if the stock is less than the credit, return a response
-    if(getStock.category !== category && getStock.qty < qty){
-        return res.status(200).json({
+    if(getStock[0].category !== category && getStock[0].qty < qty){
+         res.status(200).json({
             success: true,
             message: 'There is not enough items in the stock DB'
           })
@@ -36,7 +36,7 @@ export const createCredit = async(req, res, next) => {
 
    //check if the stock has the item
    if(getStock.category !== category || getStock.length === 0) {
-     return res.status(200).json({
+       res.status(200).json({
        success: true,
        message: 'There is no item in the stock DB'
      })
@@ -48,7 +48,7 @@ export const createCredit = async(req, res, next) => {
         editedStock.qty = stockDiff
         const updatedStock = await editStocksService(businessId, editedStock)
 
-        return res.status(201).json({
+            res.status(201).json({
             success: true,
             message: 'Credit created successfully!',
             creditor: updatedStock
