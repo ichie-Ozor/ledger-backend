@@ -30,11 +30,20 @@ export const createCredit = async(req, res, next) => {
 
 
 
-    //if the stock is less than the credit, return a response
     for(let i = 0; i < getStock.length; i++){
+        //if the stock.goods is not the same as the description, return a response
+        if(getStock.goods !== description &&  getStock.category !== category){
+            return res.status(400).json({
+                success: false,
+                message: "the goods description and category do not match",
+                code: 103,
+                credit: incomingData[i]
+            })
+        }
+        //if the stock is less than the credit, return a response
     if(getStock[i].goods === description && getStock[i].qty < qty){
-            return res.status(200).json({
-            success: true,
+            return res.status(400).json({
+            success: false,
             message: 'There is not enough items in the stock DB',
             code: 100,
             credit:incomingData[i] 
@@ -57,11 +66,6 @@ export const createCredit = async(req, res, next) => {
               })
         }
         await new_stock.save()
-        //     res.status(201).json({
-        //     success: true,
-        //     message: 'Credit created successfully!',
-        //     // creditor: updatedStock
-        //  })
       } 
     }
 

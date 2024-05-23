@@ -16,6 +16,10 @@ export const getStocksByIdService = async(id) => {
     return stock
 }
 
+export const findStockService = async (description, category, account) => {
+    return await Stock.find({goods: description, category, account })
+}
+
 export const editStocksService = async(id, data) => {
     const updatedStock = await Stock.findByIdAndUpdate(id, data)
     return updatedStock
