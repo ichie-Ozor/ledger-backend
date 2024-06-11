@@ -9,6 +9,7 @@ import {
     deleteAccountService 
 } from './accountServices.js'
 import APIError from '../utils/customError.js'
+import { createAssessToken, createRefreshToken } from '../auth/authServices.js'
 
 
 
@@ -47,22 +48,10 @@ export const createAccount = async(req, res) => {
     }
     const newUser = await createAccountService(req.body)
     if(newUser){
-        /////////assess Tokem
-        const assessToken = await JWT.sign(
-            { businessName },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "15000s"
-            }
-        );
+        // /////////assess Tokem
+        const assessToken = await createAssessToken(email)
         //////////////Refresh Token
-        const refreshToken = await JWT.sign(
-            { businessName },
-            process.env.REFRESH_SECRET,
-            {
-                expiresIn: "15000s"
-            }
-        );
+        const refreshToken = await createRefreshToken(email)
         res.json({
             status: "Success",
             message: `Account with the name ${newUser.fullName} has being created successfully`,

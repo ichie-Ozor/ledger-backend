@@ -14,6 +14,7 @@ import { errorHandler, notFound } from "./middleware/authMiddleware.js";
 import { categoryRouter } from "./Components/category/categoryRouter.js";
 import { creditorBalRouter } from "./Components/creditorBal/creditorBalRoutes.js";
 import { debtorBalRouter } from "./Components/debtorBal/debtorBalRoutes.js";
+import { profileRoute } from "./Components/profile/profileRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/auth", authRoute)
 app.use("/account",accountRoute)
 app.use("/sales", salesRouter)
 app.use("/stock", stockRouter)
+app.use("/profile", profileRoute)
 app.use("/category", categoryRouter)
 app.use("/debtor", debtorRouter)
 app.use("/creditor", creditorRouter)

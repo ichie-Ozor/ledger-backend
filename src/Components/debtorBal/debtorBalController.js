@@ -12,7 +12,7 @@ export const createDebtorBal = async(req, res, next) => {
     console.log(req.body, "us")
     try{
         const {businessId, balance, debtorId, firstName, lastName, paid, phoneNumber, purchase} =  req.body
-        if(!businessId || !balance || !debtorId || !firstName || !lastName || !paid || !phoneNumber || !purchase){
+        if(!businessId || !debtorId || !firstName || !lastName || !paid || !phoneNumber || !purchase){
             return next(APIError.badRequest('Please supply all the payment details of the debtor'))
         }
         const newDebtorBal = await createDebtorBalService(req.body)

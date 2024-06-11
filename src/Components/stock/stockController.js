@@ -6,9 +6,14 @@ import {
     deleteStockService
 } from './stockServices.js'
 import APIError from '../../utils/customError.js';
+import { AccountModel } from '../../models/accountModel.js';
+import { Types } from "mongoose";
+import { sendMail } from '../../utils/sendMail.js';
 
 export const createStock = async(req, res, next) => {
     const incomingData = req.body
+    const {account} = req.body
+    console.log(req.body)
     try {
     for (let i = 0; i < incomingData.length; i++){
     const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
@@ -21,6 +26,10 @@ export const createStock = async(req, res, next) => {
      req.body.total = total
     }
      const newStock = await createStockService(req.body)
+     const businessOwner = await AccountModel.find({_id: new Types.ObjectId(account)})
+     const {email} = businessOwner[0]
+     console.log(businessOwner, email, req.body, "bussiness owner")
+     sendMail("simeon_mc2000@yahoo.com", req.body, "This is the stock")
      res.status(201).json({
         success: true,
         message: 'Stock created successfully!',

@@ -26,14 +26,6 @@ export const salesSchema = new Schema({
         type: Number,
         required: true
     },
-    // paid: {
-    //     type: Boolean,
-    //     required: true
-    // },
-    // balance: {
-    //     type: Number,
-    //     required: true
-    // },
     date: {
         type: Date,
         required: true

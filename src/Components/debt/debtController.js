@@ -7,20 +7,29 @@ import {
     deleteDebtService
 } from './debtServices.js'
 import APIError from '../../utils/customError.js';
+import { createStockService } from '../stock/stockServices.js';
 
 export const createDebt = async(req, res, next) => {
-    console.log(req.body, "here")
+    console.log(req.body, "debt")
     const incomingData = req.body
     try {
     for (let i = 0; i < incomingData.length; i++){
-        console.log(incomingData[i])
+        console.log(incomingData[i], "each debt")
         const {businessId, debtorId, description, category, qty, rate, date} = incomingData[i];
     if (!businessId || !debtorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-    // const total = qty * rate
-   
-    //  req.body.total = total
+    let price = 1.2 * rate
+    const stock_entry = {
+        account : businessId,
+        goods: description,
+        category,
+        qty,
+        cost: rate,
+        sellingPrice: price 
+    }
+    console.log(stock_entry, "stock entry")
+    createStockService(stock_entry)
      const newDebt= await createDebtService(incomingData[i])
      res.status(201).json({
         success: true,
