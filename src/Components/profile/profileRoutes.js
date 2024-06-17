@@ -9,5 +9,5 @@ import {
 
 export const profileRoute = express.Router();
 
-profileRoute.route("/profile").post(createProfile).get(getAllProfileController)
+profileRoute.route("/").post(createProfile).get(getAllProfileController)
 profileRoute.route("/:id").put(editProfileController).delete(deleteProfile).get(getProfileByIdController)

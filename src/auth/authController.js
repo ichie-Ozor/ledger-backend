@@ -106,7 +106,7 @@ export const signInAccount = async(req, res) => {
     console.log(authToken, "verifyToken")
     const token = authToken.split(" ")[1];
 //    const  verifiedToken = await JWT.verify(token, process.env.JWT_SECRET)
-    const verifiedToken = verifyTokenService(token)
+    const verifiedToken = await verifyTokenService(token)
     console.log(verifiedToken, "verified")
     if(!verifiedToken){
      return res.status(403).json({
