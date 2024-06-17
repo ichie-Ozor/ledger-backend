@@ -1,5 +1,6 @@
 // import { AuthModel } from "./authModel.js";
 // import bycryptjs from 'bcryptjs'
+import { AccountModel } from '../models/accountModel.js'
 import JWT from 'jsonwebtoken';
 
 // ////////////creating an account
@@ -51,12 +52,13 @@ import JWT from 'jsonwebtoken';
 // }
 
 export const createAssessToken = async(accountEmail) => {
+   // const userDetail = await AccountModel.find({email: accountEmail})
     ///JWT token is created here
     const assessToken = await JWT.sign(
       { accountEmail },
       process.env.JWT_SECRET,
       {
-          expiresIn: "3m"
+          expiresIn: "3s"
       }
   );
   return assessToken

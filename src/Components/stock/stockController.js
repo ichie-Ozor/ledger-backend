@@ -98,16 +98,17 @@ export const editStock = async(req, res, next) => {
 }
 
 export const deleteStock = async(req, res, next) => {
-    const {id} = req.body
-    if (!id) {
+    const {_id} = req.body[0]
+    console.log(_id, req.body, "stock id")
+    if (!_id) {
         return next(APIError.badRequest('Stock ID is required'))
     }
     try {
-        const findStock = await getStocksByIdService(id)
+        const findStock = await getStocksByIdService(_id)
         if (!findStock) {
             return next(APIError.notFound('Stock not found!'))
         }
-        const deletedStock = await deleteStockService(id, req.body)
+        const deletedStock = await deleteStockService(_id, req.body)
         res.status(200).json({
             success: true,
             message: 'Stock deleted successfully!',

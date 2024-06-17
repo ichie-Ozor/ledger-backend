@@ -4,5 +4,6 @@ import { createCreditor, deleteCreditor, editCreditor, getCreditors, getCreditor
 export const creditorRouter = express.Router()
 
 creditorRouter.route('/').post(createCreditor).get(getCreditors)
-creditorRouter.route('/:id').put(editCreditor).delete(deleteCreditor).get(getCreditorById)
+creditorRouter.route('/:id').get(getCreditorById)
+creditorRouter.route('/:account/:password/:id').put(editCreditor).delete(deleteCreditor)
 

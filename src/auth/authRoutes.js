@@ -6,7 +6,7 @@ import { signInAccount, verifyRefreshToken, verifyToken } from './authController
 const authRoute = express.Router();
 
 authRoute.route("/signin").post(signInAccount)
-authRoute.route("/verifyToken").post(verifyToken)
+authRoute.route("/verifyToken").get(verifyToken)
 authRoute.route("/verifyRefreshToken").post(verifyRefreshToken)
 
 export default authRoute;

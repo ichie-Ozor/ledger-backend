@@ -71,7 +71,7 @@ export const signInAccount = async(req, res) => {
          message: "You have successfully signed in",
          userDetail,
          assessToken,
-         refreshToken
+        //  refreshToken
 
      })
     }
@@ -83,6 +83,7 @@ export const signInAccount = async(req, res) => {
     const checkToken = verifyTokenService(assessToken)
     const checkRefreshToken = verifyTokenService(refreshToken)
     const authToken = req.headers["authorization"];
+    console.log(authToken, "verifyRefreshToken")
     const token = authToken.split(" ")[1]
     const { email } = token
     // check if the token is expired, then check if the refresh token is still alive. if bothe are expired, return error
@@ -100,10 +101,13 @@ export const signInAccount = async(req, res) => {
     // async function verify(req, res){
  export const verifyToken = async(req, res) => {
     // this verify the token from the frontend
+    console.log(req.headers, "headers")
     const authToken = req.headers["authorization"];
+    console.log(authToken, "verifyToken")
     const token = authToken.split(" ")[1];
 //    const  verifiedToken = await JWT.verify(token, process.env.JWT_SECRET)
     const verifiedToken = verifyTokenService(token)
+    console.log(verifiedToken, "verified")
     if(!verifiedToken){
      return res.status(403).json({
         message: "token verification failed",
@@ -113,9 +117,13 @@ export const signInAccount = async(req, res) => {
     const { accountEmail } = verifiedToken 
     // using the verifiedToken fetch the user info and add it to the response
     const userDetail = await AccountModel.find({email: accountEmail})
+    const assessToken = await createAssessToken(accountEmail)
+    // const refreshToken = await createRefreshToken(accountEmail)
     return res.status(200).json({
       login: true,
       userDetail,
+      assessToken,
+    //   refreshToken
     })
    }
    

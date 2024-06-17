@@ -30,7 +30,6 @@ export const getAllProfileService = async() => {
 
 export const getProfileByIdService = async (id) => {
     const owners = await ProfileModel.find({account: new Types.ObjectId(id)})
-    console.log(owners, "owner")
     return owners 
 } 
 

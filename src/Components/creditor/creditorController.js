@@ -5,6 +5,8 @@ import {
     getCreditorsService, 
     deleteCreditorService
 } from './creditorServices.js'
+import bcrypt from "bcryptjs";
+import { getProfileByIdService } from '../profile/profileService.js';
 import APIError from '../../utils/customError.js';
 
 export const createCreditor = async(req, res, next) => {
@@ -85,7 +87,8 @@ export const editCreditor = async(req, res, next) => {
 }
 
 export const deleteCreditor = async(req, res, next) => {
-    const {id} = req.params
+    const {id, account, password} = req.params
+    console.log(req.body, id, req.params, "delete creditor")
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
@@ -94,6 +97,27 @@ export const deleteCreditor = async(req, res, next) => {
         if (!findCreditor) {
             return next(APIError.notFound('Creditor not found!'))
         }
+        /////fetch the profile 
+        const ownerProfile = await getProfileByIdService(account)
+        console.log(ownerProfile, "owner profile")
+        //////compare the password from the req..body with that of the profile
+        const comparePassword = await bcrypt.compare(password, ownerProfile[0].password)
+        console.log(comparePassword)
+        /////if true, then delete, if false return an error 
+        if(ownerProfile.lenght === 0 ){
+            return res.status(400).json({
+                success: false,
+                message: "You are not authorized to carry out this action"
+            })
+        }
+        if(!comparePassword){
+            return res.status(403).json({
+                status: 403,
+                success: false,
+                message: "Please put in the correct password, else you will not be allowed to delete"
+            })
+        }
+       
         const deletedCreditor = await deleteCreditorService(id, req.body)
         res.status(200).json({
             success: true,
