@@ -13,23 +13,24 @@ import { sendMail } from '../../utils/sendMail.js';
 export const createStock = async(req, res, next) => {
     const incomingData = req.body
     const {account} = req.body
-    console.log(req.body)
+    // console.log(req.body)
     try {
     for (let i = 0; i < incomingData.length; i++){
     const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
-    console.log(req.body, account, goods)
+    console.log(req.body, account, goods, incomingData[i])
     if (!account || !goods || !category || !qty || !cost || !sellingPrice) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
     const total = qty * cost
    
      req.body.total = total
-    }
-     const newStock = await createStockService(req.body)
      const businessOwner = await AccountModel.find({_id: new Types.ObjectId(account)})
+     console.log(businessOwner, account, incomingData[i], "stockxx")
      const {email} = businessOwner[0]
      console.log(businessOwner, email, req.body, "bussiness owner")
      sendMail("simeon_mc2000@yahoo.com", req.body, "This is the stock")
+    }
+     const newStock = await createStockService(req.body)
      res.status(201).json({
         success: true,
         message: 'Stock created successfully!',

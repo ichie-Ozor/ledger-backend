@@ -10,50 +10,43 @@ import APIError from '../../utils/customError.js';
 import { Stock } from '../../models/stockModel.js'
 
 export const createSales = async(req, res, next) => {
-    // console.log(req.body, "here")
+    console.log(req.body, "here")
     const incomingData = req.body
-    console.log(incomingData.length, incomingData, "sales from the front")
     try {
-    for(let i = 0; i < incomingData.length; i++){
-        console.log(incomingData[i],"before")
-
-    const {account, description, category, qty, rate, date} = incomingData[i];
+    // for(let i = 0; i < incomingData.length; i++){
+    const {account, description, category, qty, rate, date} = incomingData;
     if (!account || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
     
     // import stock from the DB
-    const getStock = await getStocksByIdService(account)
-    console.log(getStock, account, "see stock/sales")
+    await getStocksByIdService(account)
 
-
-    
-        
     // const { description, category, account } = incomingData[0]
     const stock = await findStockService(description, category, account)
-    console.log(stock, "findStockService")
+
     if(!stock || stock.length === 0) {
         return res.status(400).json({
             success: false,
-            message: `The ${incomingData[i].description} description and category does not match what is in the stock`,
-            sale: incomingData[i]
+            message: `The ${incomingData.description} description and category does not match what is in the stock`,
+            sale: incomingData
         })
     }
     if( stock[0].qty < qty ){
         return res.status(400).json({
             success: false,
             message: "There is not enough quantity of this stock in the database",
-            sale: incomingData[i]
+            sale: incomingData
           })
     } 
     if(stock[0].qty >= qty){
         let new_stock = await Stock.findById(stock[0]._id).exec()
        new_stock.qty = stock[0].qty - qty
        await new_stock.save()
-        res.status(200).json({
-        success: true,
-        message: 'This goods is successfully removed from the stock'
-    })
+    //     res.status(200).json({
+    //     success: true,
+    //     message: 'This goods is successfully removed from the stock'
+    // })
       // if stock.qty === 0, delete from the stock
     if(new_stock.qty === 0){
         console.log("stock deleted")
@@ -106,18 +99,18 @@ export const createSales = async(req, res, next) => {
 
 
     // this one saves the incoming sale into the sales DB
-    const newSales = await createSalesService(incomingData[i])
+    const newSales = await createSalesService(incomingData)
      res.status(201).json({
         success: true,
         message: 'Sales created successfully!',
         sales: newSales
      })
 
-    }
+    // }
    } catch (error) {
     // next(APIError.customError(error.message))
     console.log(error)
-    res.status(500).json({
+    return res.status(500).json({
         success: false,
         message: 'There was a problem creating this sales!'
      })

@@ -104,7 +104,7 @@ export const deleteCreditor = async(req, res, next) => {
         const comparePassword = await bcrypt.compare(password, ownerProfile[0].password)
         console.log(comparePassword)
         /////if true, then delete, if false return an error 
-        if(ownerProfile.lenght === 0 ){
+        if(ownerProfile.length === 0 ){
             return res.status(400).json({
                 success: false,
                 message: "You are not authorized to carry out this action"
@@ -112,7 +112,6 @@ export const deleteCreditor = async(req, res, next) => {
         }
         if(!comparePassword){
             return res.status(403).json({
-                status: 403,
                 success: false,
                 message: "Please put in the correct password, else you will not be allowed to delete"
             })

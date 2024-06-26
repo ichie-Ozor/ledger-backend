@@ -7,6 +7,7 @@ import {
     emailExistService
 } from './debtorServices.js'
 import APIError from '../../utils/customError.js';
+import { getProfileByIdService } from '../profile/profileService.js';
 
 export const createDebtor = async(req, res, next) => {
     console.log(req.body)
@@ -88,7 +89,7 @@ export const editDebtor = async(req, res, next) => {
 }
 
 export const deleteDebtor = async(req, res, next) => {
-    const {id} = req.params
+    const {id, password, account} = req.params
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
@@ -97,6 +98,25 @@ export const deleteDebtor = async(req, res, next) => {
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }
+        ////////////fetch the profile
+        const ownerProfile = await getProfileByIdService(account)
+        console.log(ownerProfile, "owner profile")
+        //////compare the passwowrd from the req.body with that of the profile
+        const comparePassword = await bcrypt.compare(password, ownerProfile[0].password) 
+        //////////if true, delete. if false, throw an error
+        if(ownerProfile.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "You are not authorized to carry out ths action. You cant delete this!"
+            })
+        }
+        if(!comparePassword){
+            return res.status(403).json({
+                success: false,
+                message: "Please put in the correct password, else you will not be able to delete" 
+            })
+        }
+
         const deletedDebtor = await deleteDebtorService(id, req.body)
         res.status(200).json({
             success: true,
