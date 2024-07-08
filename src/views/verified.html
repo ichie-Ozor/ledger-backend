@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="content"></div>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const error = urlParams.get("error")
+        const message = urlParams.get("message");
+
+        const bodyContent = !error ?
+        `<div>
+            <h1>Email has being verified</h1>
+         </div>` :
+         `<div>
+            <h1>${message}</h1>
+         </div>
+         `
+
+         const contentDiv = document.getElementById('content')
+         contentDiv.innerHTML = bodyContent
+    </script>
+</body>
+</html>

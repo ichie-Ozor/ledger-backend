@@ -6,7 +6,8 @@ import {
     getAllAccountsService,
     getAccountById,
     editAccountService,
-    deleteAccountService 
+    deleteAccountService,
+    changePasswordService 
 } from './accountServices.js'
 import APIError from '../utils/customError.js'
 import { createAssessToken, createRefreshToken } from '../auth/authServices.js'
@@ -118,9 +119,34 @@ export const editAccount = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Account updated successfully",
-            Account: updatedAccount
+            // Account: updatedAccount
         })
     } catch (error) {
+        next(APIError.customError(error.message))
+    }
+}
+
+export const forgetPassword = async(req, res, next) => {
+    const {email} =req.params
+    
+    const {password} =req.body
+    if(!email){
+        return next(APIError.badRequest("Please a correct email required"))
+    }
+    try{
+        const findAccount = await getAccountByEmail(email)
+        // console.log(findAccount, "NEW")
+        if(!findAccount){
+            return next(APIError.notFound("Account with this email is not found"))
+        }
+        // console.log(email, req.body, "REQUEST")
+        
+        const newPassword = await changePasswordService(password)
+        console.log(newPassword)
+        findAccount.password = newPassword
+        console.log(findAccount, "NEW",newPassword)
+        await editAccountService(findAccount._id, findAccount)
+    }catch (error) {
         next(APIError.customError(error.message))
     }
 }

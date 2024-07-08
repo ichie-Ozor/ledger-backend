@@ -12,7 +12,8 @@ export const getCreditsService = async() => {
 }
 
 export const getCreditsByIdService = async(id) => {
-    const creditor = await Credit.findById(id)
+    const creditor = await Credit.findOne({_id: new Types.ObjectId(id)})
+    console.log(creditor, id, "creditor")
     return creditor
 }
 
@@ -28,7 +29,9 @@ export const editCreditService = async(id, data) => {
     return updatedCredit
 }
 
-export const deleteCreditService = async(id) => {
-    const deletedCredit = await Credit.findByIdAndDelete(id)
+export const deleteCreditService = async(value) => {
+    console.log(value, "value")
+    const { _id} = value
+    const deletedCredit = await Credit.findByIdAndDelete(_id, value)
     return deletedCredit
 }

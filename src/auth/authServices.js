@@ -58,7 +58,7 @@ export const createAssessToken = async(accountEmail) => {
       { accountEmail },
       process.env.JWT_SECRET,
       {
-          expiresIn: "3s"
+          expiresIn: "15m"
       }
   );
   return assessToken

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoute from "./auth/authRoutes.js";
+import {verificationRouter} from "./verification/verificationRoute.js"
 import {creditorRouter} from "./Components/creditor/creditorRoutes.js";
 import {creditRouter} from "./Components/credit/creditRoutes.js";
 import {debtorRouter} from "./Components/debtor/debtorRoutes.js";
@@ -34,6 +35,7 @@ app.use(cors(corsOptions))
 
 app.use("/auth", authRoute)
 app.use("/account",accountRoute)
+app.use("/verification", verificationRouter)
 app.use("/sales", salesRouter)
 app.use("/stock", stockRouter)
 app.use("/profile", profileRoute)

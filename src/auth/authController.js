@@ -65,7 +65,7 @@ export const signInAccount = async(req, res) => {
         })
     } else {
        const assessToken = await createAssessToken(email)
-       const refreshToken = await createRefreshToken(email)
+    //    const refreshToken = await createRefreshToken(email)
      res.json({
          status: "Success",
          message: "You have successfully signed in",
@@ -81,13 +81,13 @@ export const signInAccount = async(req, res) => {
     const {assessToken, refreshToken} = req.body
     
     const checkToken = verifyTokenService(assessToken)
-    const checkRefreshToken = verifyTokenService(refreshToken)
+    // const checkRefreshToken = verifyTokenService(refreshToken)
     const authToken = req.headers["authorization"];
-    console.log(authToken, "verifyRefreshToken")
+    // console.log(authToken, "verifyRefreshToken")
     const token = authToken.split(" ")[1]
     const { email } = token
     // check if the token is expired, then check if the refresh token is still alive. if bothe are expired, return error
-    checkToken && checkRefreshToken ? 
+    checkToken ? 
     createAssessToken(email) : 
     res.status(403).json({
         success: false,
@@ -100,22 +100,23 @@ export const signInAccount = async(req, res) => {
    
     // async function verify(req, res){
  export const verifyToken = async(req, res) => {
+    console.log(req.header, "req.header here")
+    try{
     // this verify the token from the frontend
-    console.log(req.headers, "headers")
     const authToken = req.headers["authorization"];
-    console.log(authToken, "verifyToken")
-    const token = authToken.split(" ")[1];
-//    const  verifiedToken = await JWT.verify(token, process.env.JWT_SECRET)
+    const token = authToken?.split(" ")[1];
+    if(!token && token.length < 10){
+       return res.status(403).json({
+        message: "This token is invalid"
+       })
+    }
     const verifiedToken = await verifyTokenService(token)
-    console.log(verifiedToken, "verified")
     if(!verifiedToken){
      return res.status(403).json({
         message: "token verification failed",
      })
    } else {
-    // extract the email from the token 
     const { accountEmail } = verifiedToken 
-    // using the verifiedToken fetch the user info and add it to the response
     const userDetail = await AccountModel.find({email: accountEmail})
     const assessToken = await createAssessToken(accountEmail)
     // const refreshToken = await createRefreshToken(accountEmail)
@@ -126,5 +127,7 @@ export const signInAccount = async(req, res) => {
     //   refreshToken
     })
    }
-   
+ } catch (err){
+    console.log(err, "errrrrrrrrrr")
+ }
  }

@@ -8,17 +8,18 @@ import {
 } from './creditServices.js'
 import { getStocksByIdService, editStocksService, deleteStockService } from '../stock/stockServices.js';
 import APIError from '../../utils/customError.js';
-import { get, Types } from 'mongoose';
+// import { get, Types } from 'mongoose';
 import { Stock } from '../../models/stockModel.js';
+import { 
+    getCreditorBalByIdService,
+    deleteCreditorBalService } from '../creditorBal/creditorBalService.js';
 
 export const createCredit = async(req, res, next) => {
+    try {
     // console.log(req.body, "credit req.body")
     const incomingData = req.body
-    try {
-    for(let i = 0; i < incomingData.length; i++){
-        // console.log(incomingData[i], "see incoming credit")
-
-    const {businessId, creditorId, description, category, qty, rate, date} = incomingData[i];
+    
+    const {businessId, creditorId, description, category, qty, rate, date} = incomingData;
 
     if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -26,54 +27,60 @@ export const createCredit = async(req, res, next) => {
     
     //get the stock 
     const getStock = await getStocksByIdService(businessId)
+    //    console.log(getStock, "stock from the db")
+     
+       const compareWithStock = getStock.filter((item) => item.goods === description && item.category === category)
+    //    console.log(compareWithStock, "compareWithStock")
 
-    for(let j = 0; j < getStock.length; i++){
+       let createCredit = false
+    for(let j = 0; j < compareWithStock.length; j++){
         //if the stock.goods is not the same as the description, return a response
-        if(getStock[j].goods !== description &&  getStock[j].category !== category){
+        // console.log(compareWithStock[j].goods, description, compareWithStock[j].category, category, "credit match")
+        if(compareWithStock[j].goods !== description &&  compareWithStock[j].category !== category){
             return res.status(400).json({
                 success: false,
                 message: "the goods description and category do not match",
                 code: 103,
-                credit: incomingData[i]
+                credit: incomingData
             })
         }
         //if the stock is less than the credit, return a response
-    if(getStock[j].goods === description && getStock[j].qty < qty){
+        if(compareWithStock[j].qty < qty){
             return res.status(400).json({
             success: false,
             message: 'There is not enough items in the stock DB',
             code: 100,
-            credit:incomingData[i] 
+            credit:incomingData 
           })
-      }
-    
-    //if the stock is greater than the credit, subtract it
-    if(getStock[j].goods === description && getStock[j].qty >= qty) {
-        let new_stock =await Stock.findById(getStock[j]._id).exec()
-        new_stock.qty = getStock[j].qty - qty
-        //////this code can replace the uptwo lines, source: chatgpt (not checked)
-        // getStock[j] -= qty
-        // console.log(new_stock.qty, "new stock")
-
-        // if the stock qty is = 0 remove it from the stock
-        if(new_stock.qty === 0){
-            await Stock.findByIdAndDelete(new_stock._id)
-            // return res.status(200).json({   ///delete this, source: chatgpt
-            //     success: true,
-            //     message: 'There is no more stock in the Database',
-            //   })
         }
-        await new_stock.save()
-      } 
-    }
 
-    //this will save the credit to the credit DB
-     const newCredit = await createCreditService(incomingData[i])
-     res.status(201).json({    
-        success: true,
-        message: 'Credit created successfully!',
-        creditor: newCredit
-     })
+        const new_stock = compareWithStock[j].qty - qty
+        compareWithStock[j].qty = new_stock
+
+        if(compareWithStock[j].qty === 0){
+            await Stock.findByIdAndDelete(compareWithStock[j]._id)
+        }
+
+        await editStocksService(compareWithStock[j]._id, compareWithStock[j])
+        if(compareWithStock[j].qty >= qty) {
+        //this will save the credit to the credit DB
+        const newCredit = await createCreditService(incomingData)
+        res.status(201).json({    
+            success: true,
+            message: 'Credit created successfully!',
+            creditor: newCredit
+        })
+        creditCreated = true;
+        break;
+        }
+     
+     if(!createCredit){
+        return res.status(400).json({
+            success: false,
+            message: "Failed to create credit due to insufficient stock or mismatch",
+            credit: incomingData
+        });
+     }
     }
    } catch (error) {
     next(APIError.customError(error.message))
@@ -161,22 +168,34 @@ export const editCredit = async(req, res, next) => {
 }
 
 export const deleteCredit = async(req, res, next) => {
-    const {id} = req.body
+    // let err = []
+    const {id} = req.params
+    console.log(id,req.params,'rrrrrrrrrrrrrrrr')
     if (!id) {
+        // err.push("Credit ID is required")
         return next(APIError.badRequest('Credit ID is required'))
     }
     try {
-        const findCredit = await getCreditsByIdService(id)
+        const findCredit = await getCreditsByIdService(id)  ////trouble here
+        console.log(findCredit, id, "findcredit")
         if (!findCredit) {
+            // err.push('Credit not found')
             return next(APIError.notFound('Credit not found!'))
         }
-        const deletedCredit = await deleteCreditService(id, req.body)
+        const deletedCredit = await deleteCreditService(findCredit)
+        const getbody = await getCreditorBalByIdService(id)
+        const deleteCreditBal = await deleteCreditorBalService(id)
+        console.log(deleteCreditBal, deletedCredit, id, getbody, "credit controller delete")
         res.status(200).json({
             success: true,
             message: 'Credit deleted successfully!',
-            creditor: deletedCredit
+            creditor: deletedCredit,
+            creditorBal: deleteCreditBal
          })
     } catch (error) {
         next(APIError.customError(error.message))
+        // res.status(400).json({
+        //     err
+        // })
     }
 }

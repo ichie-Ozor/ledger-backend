@@ -22,6 +22,15 @@ export const createAccountService = async(body) => {
    // })
    return auth
 }
+
+////////////change password
+export const changePasswordService = async(body) => {
+ const salt = bycryptjs.genSaltSync(10)
+ const hashedPassword = bycryptjs.hashSync(body, salt)
+ return hashedPassword
+}
+
+
 ////////////if the account exist
 export const accountExistService = async(email) => {
    const findAccount = await AccountModel.findOne({email})
