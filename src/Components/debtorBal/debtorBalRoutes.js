@@ -11,5 +11,6 @@ import {
 export const debtorBalRouter = express.Router()
 
 debtorBalRouter.route('/').post(createDebtorBal).get(getDebtorBal)
-debtorBalRouter.route('/:id').put(editDebtorBal).delete(deleteDebtorBal).get(getDebtorBalById)
+debtorBalRouter.route('/:id').put(editDebtorBal).delete(deleteDebtorBal)
+debtorBalRouter.route('/debtorTotal/:debtorId').get(getDebtorBalById)
 debtorBalRouter.route('/:debtorId').get(getDebtorBalByDebtorId)

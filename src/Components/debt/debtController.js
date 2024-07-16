@@ -7,7 +7,12 @@ import {
     deleteDebtService
 } from './debtServices.js'
 import APIError from '../../utils/customError.js';
-import { createStockService } from '../stock/stockServices.js';
+import { 
+    createStockService, 
+    editStocksService, 
+    findStockService,
+    getStocksByIdService
+} from '../stock/stockServices.js';
 
 export const createDebt = async(req, res, next) => {
     console.log(req.body, "debt")
@@ -24,12 +29,21 @@ export const createDebt = async(req, res, next) => {
         account : businessId,
         goods: description,
         category,
-        qty,
+        qty: Number(qty),
         cost: rate,
         sellingPrice: price 
     }
-    console.log(stock_entry, "stock entry")
-    createStockService(stock_entry)
+    ///fetch stock from the backend
+    const fetchStock = await findStockService(description, category, businessId)
+    ////check if the stock has the product and the price is the same, you add the qty only
+    const sameStock = fetchStock.filter((item) => item.cost === rate)
+    if(sameStock.length > 0 && fetchStock.length !== 0){
+        sameStock[0].qty += Number(qty);
+    } else {
+        ///if the price is not the same
+        createStockService(stock_entry)
+    }    
+    // 
      const newDebt= await createDebtService(incomingData[i])
      res.status(201).json({
         success: true,
@@ -124,7 +138,8 @@ export const editDebt = async(req, res, next) => {
 }
 
 export const deleteDebt= async(req, res, next) => {
-    const {id} = req.body
+    const {id} = req.params
+    console.log(id, "id")
     if (!id) {
         return next(APIError.badRequest('Debt ID is required'))
     }
@@ -133,11 +148,26 @@ export const deleteDebt= async(req, res, next) => {
         if (!findDebt) {
             return next(APIError.notFound('Debtnot found!'))
         }
-        const deletedDebt= await deleteDebtService(id, req.body)
+        
+        const {description, category, businessId, qty} = findDebt
+        const accountId = businessId.toString()
+        //fetch the stock from DB
+        const fetchStock = await getStocksByIdService(accountId)
+        //filter the stock that has the same description and category
+        const filtered_stock = fetchStock.filter((item) => item.goods === description && item.category === category)
+
+        //update the qty
+        filtered_stock[0].qty -= qty
+        //isolate the id from the stock
+        const _id = filtered_stock[0]._id.toString()
+
+        //update the stock
+        await editStocksService(_id, filtered_stock[0])
+    
+        await deleteDebtService(id) 
         res.status(200).json({
             success: true,
             message: 'Debt deleted successfully!',
-            Debt: deleteDebt
          })
     } catch (error) {
         next(APIError.customError(error.message))

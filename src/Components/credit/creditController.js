@@ -16,10 +16,11 @@ import {
 
 export const createCredit = async(req, res, next) => {
     try {
-    // console.log(req.body, "credit req.body")
+    console.log(req.body, "credit req.body")
     const incomingData = req.body
-    
-    const {businessId, creditorId, description, category, qty, rate, date} = incomingData;
+    for (let i = 0; i < incomingData.length; i++){
+        console.log(incomingData[i], "each credit")
+    const {businessId, creditorId, description, category, qty, rate, date} = incomingData[i];
 
     if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -41,7 +42,7 @@ export const createCredit = async(req, res, next) => {
                 success: false,
                 message: "the goods description and category do not match",
                 code: 103,
-                credit: incomingData
+                credit: incomingData[i]
             })
         }
         //if the stock is less than the credit, return a response
@@ -50,7 +51,7 @@ export const createCredit = async(req, res, next) => {
             success: false,
             message: 'There is not enough items in the stock DB',
             code: 100,
-            credit:incomingData 
+            credit:incomingData[i]
           })
         }
 
@@ -64,7 +65,7 @@ export const createCredit = async(req, res, next) => {
         await editStocksService(compareWithStock[j]._id, compareWithStock[j])
         if(compareWithStock[j].qty >= qty) {
         //this will save the credit to the credit DB
-        const newCredit = await createCreditService(incomingData)
+        const newCredit = await createCreditService(incomingData[i])
         res.status(201).json({    
             success: true,
             message: 'Credit created successfully!',
@@ -73,7 +74,9 @@ export const createCredit = async(req, res, next) => {
         creditCreated = true;
         break;
         }
-     
+        // break
+      }
+    }
      if(!createCredit){
         return res.status(400).json({
             success: false,
@@ -81,7 +84,7 @@ export const createCredit = async(req, res, next) => {
             credit: incomingData
         });
      }
-    }
+    
    } catch (error) {
     next(APIError.customError(error.message))
    }
@@ -168,34 +171,33 @@ export const editCredit = async(req, res, next) => {
 }
 
 export const deleteCredit = async(req, res, next) => {
-    // let err = []
     const {id} = req.params
-    console.log(id,req.params,'rrrrrrrrrrrrrrrr')
     if (!id) {
-        // err.push("Credit ID is required")
         return next(APIError.badRequest('Credit ID is required'))
     }
     try {
-        const findCredit = await getCreditsByIdService(id)  ////trouble here
-        console.log(findCredit, id, "findcredit")
+        const findCredit = await getCreditsByIdService(id) 
         if (!findCredit) {
-            // err.push('Credit not found')
             return next(APIError.notFound('Credit not found!'))
         }
-        const deletedCredit = await deleteCreditService(findCredit)
-        const getbody = await getCreditorBalByIdService(id)
-        const deleteCreditBal = await deleteCreditorBalService(id)
-        console.log(deleteCreditBal, deletedCredit, id, getbody, "credit controller delete")
+        const {description, category, businessId, qty} = findCredit
+        const accountId = businessId.toString()
+        // get stock and add the qty that was deducted
+        const fetchStock = await getStocksByIdService(accountId)
+        //filter the stock
+        const filtered_stock = fetchStock.filter((item) => item.goods === description && item.category === category)
+        //update the qty
+        filtered_stock[0].qty += qty
+        //isolate the id and stringify
+        const _id = filtered_stock[0]._id.toString()
+        //update the stock
+        await editStocksService(_id, filtered_stock[0])
+        await deleteCreditService(findCredit)
         res.status(200).json({
             success: true,
             message: 'Credit deleted successfully!',
-            creditor: deletedCredit,
-            creditorBal: deleteCreditBal
          })
     } catch (error) {
         next(APIError.customError(error.message))
-        // res.status(400).json({
-        //     err
-        // })
     }
 }

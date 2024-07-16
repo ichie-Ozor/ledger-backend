@@ -30,7 +30,6 @@ export const editCreditService = async(id, data) => {
 }
 
 export const deleteCreditService = async(value) => {
-    console.log(value, "value")
     const { _id} = value
     const deletedCredit = await Credit.findByIdAndDelete(_id, value)
     return deletedCredit

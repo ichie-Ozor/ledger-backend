@@ -43,12 +43,13 @@ export const getDebtorBal = async(req, res, next) => {
 }
 
 export const getDebtorBalById = async(req, res, next) => {
-    const {id} = req.body
-    if(!id){
+    const {debtorId} = req.params
+    console.log(debtorId, req.params)
+    if(!debtorId){
         return next(APIError.badRequest("Debtor Id required"))
     }
     try{
-        const findDebtorBal = await getDebtorBalByIdService(id)
+        const findDebtorBal = await getDebtorBalByIdService(debtorId)
         if(!findDebtorBal) {
             return next(APIError.notFound("This Debtor Bal not found"))
         }

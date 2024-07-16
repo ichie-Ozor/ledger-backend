@@ -12,7 +12,7 @@ export const getDebtorBalService = async() => {
 }
 
 export const getDebtorBalByIdService = async(id) => {
-    const debtorBal = await DebtorBal.findById(id)
+    const debtorBal = await DebtorBal.find({businessId: new Types.ObjectId(id)})
     return debtorBal
 }
 

@@ -100,7 +100,7 @@ export const signInAccount = async(req, res) => {
    
     // async function verify(req, res){
  export const verifyToken = async(req, res) => {
-    console.log(req.header, "req.header here")
+    console.log(req.headers, req.headers["authorization"], "req.header here")
     try{
     // this verify the token from the frontend
     const authToken = req.headers["authorization"];
@@ -129,5 +129,10 @@ export const signInAccount = async(req, res) => {
    }
  } catch (err){
     console.log(err, "errrrrrrrrrr")
+    res.json({
+        status: 403,
+        message: "There is something wrong with the token",
+        err
+    })
  }
  }

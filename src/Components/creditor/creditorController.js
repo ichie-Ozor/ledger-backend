@@ -44,7 +44,7 @@ export const getCreditors = async(req, res, next) => {
 }
 
 export const getCreditorById = async(req, res, next) => {
-    console.log(req.params)
+    // console.log(req.params)
     const {id} = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
@@ -89,7 +89,7 @@ export const editCreditor = async(req, res, next) => {
 
 export const deleteCreditor = async(req, res, next) => {
     const {id, account, password} = req.params
-    console.log(req.body, id, req.params, "delete creditor")
+    // console.log(req.body, id, req.params, "delete creditor")
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
@@ -100,10 +100,10 @@ export const deleteCreditor = async(req, res, next) => {
         }
         /////fetch the profile 
         const ownerProfile = await getProfileByIdService(account)
-        console.log(ownerProfile, "owner profile")
+        // console.log(ownerProfile, "owner profile")
         //////compare the password from the req..body with that of the profile
         const comparePassword = await bcrypt.compare(password, ownerProfile[0].password)
-        console.log(comparePassword)
+        // console.log(comparePassword)
         /////if true, then delete, if false return an error 
         if(ownerProfile.length === 0 ){
             return res.status(400).json({

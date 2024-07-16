@@ -43,12 +43,13 @@ export const getCreditorBal = async(req, res, next) => {
 }
 
 export const getCreditorBalById = async(req, res, next) => {
-    const {id} = req.params
-    if(!id){
+    console.log(req.params, "creditorBal controller")
+    const {creditorId} = req.params
+    if(!creditorId){
         return next(APIError.badRequest("creditor Id required"))
     }
     try{
-        const findCreditorBal = await getCreditorBalByIdService(id)
+        const findCreditorBal = await getCreditorBalByIdService(creditorId)
         if(!findCreditorBal){
             return next(APIError.notFound('This creditor Bal not found'))
         }
@@ -64,13 +65,13 @@ export const getCreditorBalById = async(req, res, next) => {
 
 export const getCreditorBalByCreditorId = async(req, res, next) => {
     const {creditorId} = req.params
-    // console.log(creditorId)
+    console.log(creditorId, "fffffffff")
     if(!creditorId){
         return next(APIError.badRequest('Creditor Id required'))
     }
    try { 
      const findCreditorBal = await getCreditorBalByCreditorIdService(creditorId)
-    //  console.log(findCreditorBal, " findCreditorBal controller")
+     console.log(findCreditorBal, " findCreditorBal controller")
      if(!findCreditorBal){
         return next(APIError.notFound('Creditor not found'))
      }

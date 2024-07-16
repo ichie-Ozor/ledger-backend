@@ -14,14 +14,14 @@ export const getCreditorBalService = async() => {
 
 export const getCreditorBalByIdService = async(id) => {
     console.log(id, "creditorBalbefore")
-    const creditorBal = await CreditorBal.findById(id)
+    const creditorBal = await CreditorBal.find({businessId: new Types.ObjectId(id)})
     console.log(creditorBal, "creditor Bal")
     return creditorBal
 }
 
 export const getCreditorBalByCreditorIdService = async(creditorId) => {
     const creditorBal = await CreditorBal.find({creditorId: new Types.ObjectId(creditorId)})
-    // console.log(creditorBal, "creditorBall Service")
+    console.log(creditorBal, "creditorBall Service")
     return creditorBal
 }
 
