@@ -4,6 +4,6 @@ import { createDebtor, deleteDebtor, editDebtor, getDebtorById, getDebtors } fro
 export const debtorRouter = express.Router()
 
 debtorRouter.route('/').post(createDebtor).get(getDebtors)
-debtorRouter.route('/:id').get(getDebtorById)
-debtorRouter.route('/:account/:password/:id').put(editDebtor).delete(deleteDebtor)
+debtorRouter.route('/:id').get(getDebtorById).put(editDebtor)
+debtorRouter.route('/:account/:password/:id').delete(deleteDebtor)
 

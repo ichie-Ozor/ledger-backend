@@ -31,6 +31,11 @@ export const editCreditService = async(id, data) => {
 
 export const deleteCreditService = async(value) => {
     const { _id} = value
-    const deletedCredit = await Credit.findByIdAndDelete(_id, value)
+    const deletedCredit = await Credit.findByIdAndDelete(_id)
     return deletedCredit
+}
+
+export const deleteManyCreditService = async(id) => {
+    const deletedItems = await Credit.deleteMany({creditorId: id})
+    return deletedItems
 }

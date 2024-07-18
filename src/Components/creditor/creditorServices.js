@@ -19,8 +19,17 @@ export const getCreditorsByIdService = async(id) => {
 }
 
 export const editCreditorService = async(id, data) => {
-    const updatedCreditor = await Creditor.findByIdAndUpdate(id, data, {new: true})
+    try{
+    const updatedCreditor = await Creditor.findByIdAndUpdate(
+        {_id: id},
+        {$set: data}, 
+        {new: true}
+    )
     return updatedCreditor
+    } catch(error) {
+        console.error('Error occured trying to update the creditors', error)
+        throw error
+    }
 }
 
 export const deleteCreditorService = async(id) => {

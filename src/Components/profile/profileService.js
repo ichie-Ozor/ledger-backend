@@ -34,10 +34,17 @@ export const getProfileByIdService = async (id) => {
 } 
 
 export const editProfileService = async (id, data) => {
-    console.log(id, data, "data")
-    const updatedOwner = await ProfileModel.findByIdAndUpdate(id, data)
-    console.log(updatedOwner, "update")
+    try{
+    const updatedOwner = await ProfileModel.findByIdAndUpdate(
+        {_id: id},
+        {$set: data},
+        {new: true}
+    )
     return updatedOwner
+    } catch (error){
+        console.error('Error updating profile', error)
+        throw error
+    }
 }
 
 export const deleteProfileService = async (id) => {

@@ -16,8 +16,17 @@ export const getDebtorsByIdService = async(id) => {
 }
 
 export const editDebtorService = async(id, data) => {
-    const updatedDebtor = await Debtor.findByIdAndUpdate(id, data)
+    try{
+    const updatedDebtor = await Debtor.findByIdAndUpdate(
+        {_id: id},
+        {$set: data},
+        {new: true}
+    );
     return updatedDebtor
+    } catch (error) {
+        console.error('Error updating debtor', error)
+        throw error
+    }
 }
 
 export const deleteDebtorService = async(id) => {

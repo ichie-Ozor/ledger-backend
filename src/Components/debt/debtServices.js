@@ -30,3 +30,8 @@ export const deleteDebtService = async(id) => {
     const deletedDebt = await Debt.findByIdAndDelete(id)
     return deletedDebt
 }
+
+export const deleteManyDebtService = async(id) => {
+    const deletedItems = await Debt.deleteMany({debtorId: id})
+    return deletedItems
+}

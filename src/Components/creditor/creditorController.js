@@ -5,9 +5,11 @@ import {
     getCreditorsService, 
     deleteCreditorService
 } from './creditorServices.js'
+import { deleteManyCreditService } from '../credit/creditServices.js';
 import bcrypt from "bcryptjs";
 import { getProfileByIdService } from '../profile/profileService.js';
 import APIError from '../../utils/customError.js';
+import { deleteCreditorBalService } from '../creditorBal/creditorBalService.js';
 
 export const createCreditor = async(req, res, next) => {
     // console.log(req.body, "see me")
@@ -80,7 +82,6 @@ export const editCreditor = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Creditor updated successfully!',
-            creditor: updatedCreditor
          })
     } catch (error) {
         next(APIError.customError(error.message))
@@ -89,7 +90,7 @@ export const editCreditor = async(req, res, next) => {
 
 export const deleteCreditor = async(req, res, next) => {
     const {id, account, password} = req.params
-    // console.log(req.body, id, req.params, "delete creditor")
+    console.log(req.body, id, req.params, "delete creditor")
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
@@ -98,13 +99,10 @@ export const deleteCreditor = async(req, res, next) => {
         if (!findCreditor) {
             return next(APIError.notFound('Creditor not found!'))
         }
-        /////fetch the profile 
+
         const ownerProfile = await getProfileByIdService(account)
-        // console.log(ownerProfile, "owner profile")
-        //////compare the password from the req..body with that of the profile
         const comparePassword = await bcrypt.compare(password, ownerProfile[0].password)
-        // console.log(comparePassword)
-        /////if true, then delete, if false return an error 
+
         if(ownerProfile.length === 0 ){
             return res.status(400).json({
                 success: false,
@@ -118,7 +116,9 @@ export const deleteCreditor = async(req, res, next) => {
             })
         }
        
-        const deletedCreditor = await deleteCreditorService(id, req.body)
+        await deleteCreditorService(id)
+        await deleteManyCreditService(id)
+        await deleteCreditorBalService(id)
         res.status(200).json({
             success: true,
             message: 'Creditor deleted successfully!',

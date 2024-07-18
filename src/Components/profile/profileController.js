@@ -6,10 +6,12 @@ import {
     deleteProfileService,
     profileExistService
 } from './profileService.js'
+import bcrypt from "bcryptjs";
 import APIError from '../../utils/customError.js'
 
 
 export const createProfile = async(req, res, next) => {
+    console.log(req.body)
     const {account, firstName, lastName, businessName, password } = req.body
     if(!firstName || !lastName || !businessName || !password ){
         return res.json({
@@ -74,14 +76,16 @@ export const getAllProfileController = async(req, res) => {
 
 //////////////get a profile by Id
 export const getProfileByIdController = async(req, res) => {
-   const {id} = req.params
-   if(id){
-    const getProfile = await getProfileByIdService(id)
-    // console.log(getProfile)
+   const {accountId, password} = req.params
+   
+    const getProfile = await getProfileByIdService(accountId)
+
+    const comparePassword = await bcrypt.compare(password, getProfile[0].password)
+
+    if(comparePassword){
     res.json({
         status: "Success",
         message: "Profile retrieved successfully",
-        getProfile
     })
    } else {
     res.json({
@@ -105,7 +109,6 @@ export const editProfileController = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Profile udate successful",
-            Profile: updatedProfile 
         })
     } catch (error) {
         next(APIError.badRequest(error.message))

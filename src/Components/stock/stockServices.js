@@ -28,7 +28,6 @@ export const editStocksService = async(id, data) => {
             {$set: data},
             {new: true}
         );
-        console.log(updatedStock, "edit stock")
         return updatedStock
     } catch (error) {
         console.error('Error updating stock', error)

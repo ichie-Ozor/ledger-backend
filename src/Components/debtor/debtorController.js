@@ -7,7 +7,10 @@ import {
     emailExistService
 } from './debtorServices.js'
 import APIError from '../../utils/customError.js';
+import bcrypt from "bcryptjs";
 import { getProfileByIdService } from '../profile/profileService.js';
+import { deleteManyDebtService } from '../debt/debtServices.js';
+import { deleteManyDebtorBalService } from '../debtorBal/debtorBalService.js';
 
 export const createDebtor = async(req, res, next) => {
     console.log(req.body)
@@ -77,11 +80,10 @@ export const editDebtor = async(req, res, next) => {
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }
-        const updatedDebtor = await editDebtorService(id, req.body)
+        await editDebtorService(id, req.body)
         res.status(200).json({
             success: true,
             message: 'Debtor updated successfully!',
-            debtor: updatedDebtor
          })
     } catch (error) {
         next(APIError.customError(error.message))
@@ -100,7 +102,6 @@ export const deleteDebtor = async(req, res, next) => {
         }
         ////////////fetch the profile
         const ownerProfile = await getProfileByIdService(account)
-        console.log(ownerProfile, "owner profile")
         //////compare the passwowrd from the req.body with that of the profile
         const comparePassword = await bcrypt.compare(password, ownerProfile[0].password) 
         //////////if true, delete. if false, throw an error
@@ -117,11 +118,12 @@ export const deleteDebtor = async(req, res, next) => {
             })
         }
 
-        const deletedDebtor = await deleteDebtorService(id, req.body)
+                  await deleteDebtorService(id)
+                  await deleteManyDebtService(id)
+                  await deleteManyDebtorBalService(id)
         res.status(200).json({
             success: true,
             message: 'Debtor deleted successfully!',
-            debtor: deletedDebtor
          })
     } catch (error) {
         next(APIError.customError(error.message))

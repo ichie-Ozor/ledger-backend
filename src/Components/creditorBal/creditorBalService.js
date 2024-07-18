@@ -34,3 +34,8 @@ export const deleteCreditorBalService = async(id) => {
     const deletedCreditorBal = await CreditorBal.findByIdAndDelete(id)
     return deletedCreditorBal
 }
+
+export const deleteManyCreditorBalService = async(id) => {
+    const deletedCreditBal = await CreditorBal.deleteMany({creditorId: id})
+    return deletedCreditBal
+}
