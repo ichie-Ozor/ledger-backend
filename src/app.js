@@ -20,7 +20,7 @@ import { profileRoute } from "./Components/profile/profileRoutes.js";
 dotenv.config();
 
 const corsOptions = {
-  Origin: 'htps://localhost:3000',
+  Origin: 'https://localhost:3000',
   credentials: true,
   optionSuccessStatus: 200
 }

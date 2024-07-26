@@ -4,5 +4,5 @@ import { createDebt, deleteDebt, editDebt, getDebtsByDebtorId, getDebts } from '
 export const debtRouter = express.Router()
 
 debtRouter.route('/').post(createDebt).get(getDebts)
-debtRouter.route('/:id').put(editDebt).delete(deleteDebt)
+debtRouter.route('/:id/:password').put(editDebt).delete(deleteDebt)
 debtRouter.route('/:debtorId').get(getDebtsByDebtorId)

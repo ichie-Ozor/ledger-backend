@@ -8,18 +8,20 @@ import {
 } from './creditServices.js'
 import { getStocksByIdService, editStocksService, deleteStockService } from '../stock/stockServices.js';
 import APIError from '../../utils/customError.js';
+import bcrypt from 'bcryptjs'
 // import { get, Types } from 'mongoose';
 import { Stock } from '../../models/stockModel.js';
+import { getProfileByIdService } from '../profile/profileService.js';
 import { 
     getCreditorBalByIdService,
     deleteCreditorBalService } from '../creditorBal/creditorBalService.js';
 
 export const createCredit = async(req, res, next) => {
     try {
-    console.log(req.body, "credit req.body")
+    // console.log(req.body, "credit req.body")
     const incomingData = req.body
     for (let i = 0; i < incomingData.length; i++){
-        console.log(incomingData[i], "each credit")
+        // console.log(incomingData[i], "each credit")
     const {businessId, creditorId, description, category, qty, rate, date} = incomingData[i];
 
     if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
@@ -171,7 +173,9 @@ export const editCredit = async(req, res, next) => {
 }
 
 export const deleteCredit = async(req, res, next) => {
-    const {id} = req.params
+    const {id, password} = req.params
+    console.log(req.body, req.params, "deleted item")
+
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))
     }
@@ -182,11 +186,22 @@ export const deleteCredit = async(req, res, next) => {
         }
         const {description, category, businessId, qty} = findCredit
         const accountId = businessId.toString()
+        const getProfileDetails = await getProfileByIdService(accountId)
+
+        const comparePassword = await bcrypt.compare(password, getProfileDetails[0].password)
         // get stock and add the qty that was deducted
-        const fetchStock = await getStocksByIdService(accountId)
+        if(!comparePassword){
+            return res.status(403).json({
+                success: false,
+                message: "you are not allowed to do this",
+            })
+        } else {
+       
+        const fetchStock = await getStocksByIdService(businessId)
         //filter the stock
         const filtered_stock = fetchStock.filter((item) => item.goods === description && item.category === category)
         //update the qty
+    
         filtered_stock[0].qty += qty
         //isolate the id and stringify
         const _id = filtered_stock[0]._id.toString()
@@ -197,6 +212,7 @@ export const deleteCredit = async(req, res, next) => {
             success: true,
             message: 'Credit deleted successfully!',
          })
+        }
     } catch (error) {
         next(APIError.customError(error.message))
     }

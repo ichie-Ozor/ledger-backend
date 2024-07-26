@@ -13,6 +13,8 @@ import {
     findStockService,
     getStocksByIdService
 } from '../stock/stockServices.js';
+import bcrypt from 'bcryptjs'
+import { getProfileByIdService } from '../profile/profileService.js';
 
 export const createDebt = async(req, res, next) => {
     console.log(req.body, "debt")
@@ -138,8 +140,8 @@ export const editDebt = async(req, res, next) => {
 }
 
 export const deleteDebt= async(req, res, next) => {
-    const {id} = req.params
-    console.log(id, "id")
+    const {id, password} = req.params
+    console.log(id, req.params, "debt, id")
     if (!id) {
         return next(APIError.badRequest('Debt ID is required'))
     }
@@ -151,6 +153,17 @@ export const deleteDebt= async(req, res, next) => {
         
         const {description, category, businessId, qty} = findDebt
         const accountId = businessId.toString()
+
+        const getProfileDetails = await getProfileByIdService(accountId)
+
+        const comparePassword = await bcrypt.compare(password, getProfileDetails[0].password)
+
+        if(!comparePassword){
+            return res.status(403).json({
+                success: false,
+                message: "you are not allowed to do this",
+            })
+        } else {
         //fetch the stock from DB
         const fetchStock = await getStocksByIdService(accountId)
         //filter the stock that has the same description and category
@@ -163,12 +176,12 @@ export const deleteDebt= async(req, res, next) => {
 
         //update the stock
         await editStocksService(_id, filtered_stock[0])
-    
         await deleteDebtService(id) 
         res.status(200).json({
             success: true,
             message: 'Debt deleted successfully!',
          })
+        }
     } catch (error) {
         next(APIError.customError(error.message))
     }

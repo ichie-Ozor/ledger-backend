@@ -13,7 +13,6 @@ export const getCreditsService = async() => {
 
 export const getCreditsByIdService = async(id) => {
     const creditor = await Credit.findOne({_id: new Types.ObjectId(id)})
-    console.log(creditor, id, "creditor")
     return creditor
 }
 

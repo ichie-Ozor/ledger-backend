@@ -122,7 +122,6 @@ export const deleteCreditor = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Creditor deleted successfully!',
-            creditor: deletedCreditor
          })
     } catch (error) {
         next(APIError.customError(error.message))
