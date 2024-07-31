@@ -16,7 +16,7 @@ export const signInAccount = async(req, res) => {
          message: "Please enter your login credentials."
      })
     }
-    if(email === "ozor@gmail.com" && password === "ozo?yes:no"){
+    if(email === "ozord1st@gmail.com" && password === "ozo?yes:no"){
         return res.status(200).json({
             role: "admin",
             message: "this is an admin"
@@ -128,7 +128,6 @@ export const signInAccount = async(req, res) => {
     })
    }
  } catch (err){
-    console.log(err, "errrrrrrrrrr")
     res.json({
         status: 403,
         message: "There is something wrong with the token",
