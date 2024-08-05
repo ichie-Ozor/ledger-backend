@@ -5,8 +5,15 @@ import {
     filePageRoute 
 } from './verificationController.js'
 
+import {
+    emailLinkService,
+    sendVerificationService,
+    forgetPasswordEmailLinkService
+} from './verificationService.js'
+
 export const verificationRouter = express.Router()
 
-verificationRouter.route("/user").post(sendVerificationEmailController)
+verificationRouter.route("/user").post(sendVerificationService)
 verificationRouter.route("/verifed").get(filePageRoute) 
-verificationRouter.route("/verify/:id/:uniqueString").get(emailLinkController)
+verificationRouter.route("/verify/:id/:uniqueString").get(emailLinkService)
+verificationRouter.route("/:password/:id/:uniqueString").get(forgetPasswordEmailLinkService)

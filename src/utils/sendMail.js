@@ -10,7 +10,8 @@ export const sendMail = async (email, subject, text) => {
         auth: {
             user: process.env.USER,
             pass: process.env.PASS
-        }
+        },
+        connectionTimeout: 30000
     })
     await transporter.sendMail({
         from: process.env.USER,

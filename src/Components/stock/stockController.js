@@ -17,7 +17,6 @@ export const createStock = async(req, res, next) => {
     try {
     for (let i = 0; i < incomingData.length; i++){
     const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
-    console.log(req.body, account, goods, incomingData[i])
     if (!account || !goods || !category || !qty || !cost || !sellingPrice) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
@@ -25,7 +24,6 @@ export const createStock = async(req, res, next) => {
    
      req.body.total = total
      const businessOwner = await AccountModel.find({_id: new Types.ObjectId(account)})
-     console.log(businessOwner, account, incomingData[i], "stockxx")
      const {email} = businessOwner[0]
      console.log(businessOwner, email, req.body, "bussiness owner")
      sendMail("simeon_mc2000@yahoo.com", req.body, "This is the stock")

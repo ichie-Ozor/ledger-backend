@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body{
+            background-color: #000099;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <div id="content"></div>
@@ -14,10 +31,10 @@
         const message = urlParams.get("message");
 
         const bodyContent = !error ?
-        `<div>
+        `<div class="content">
             <h1>Email has being verified</h1>
          </div>` :
-         `<div>
+         `<div class="content">
             <h1>${message}</h1>
          </div>
          `

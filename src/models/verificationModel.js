@@ -9,12 +9,12 @@ export const verificationSchema = new Schema({
     type: String,
     unique: true
 },
-  createAt: {
+  createdAt: {
     type: Date,
 },
-  expiredAt: {
+  expiresAt: {
     type: Date
   }
 })
 
-export const VerificationModel = medol("Verification", verificationSchema)
+export const VerificationModel = model("Verification", verificationSchema)

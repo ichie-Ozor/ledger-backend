@@ -24,7 +24,7 @@ export const createAccountService = async(body) => {
 }
 
 ////////////change password
-export const changePasswordService = async(body) => {
+export const encryptPasswordService = async(body) => {
  const salt = bycryptjs.genSaltSync(10)
  const hashedPassword = bycryptjs.hashSync(body, salt)
  return hashedPassword

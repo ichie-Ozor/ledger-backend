@@ -7,9 +7,13 @@ import {
     getAccountById,
     editAccountService,
     deleteAccountService,
-    changePasswordService 
+    encryptPasswordService 
 } from './accountServices.js'
+import { sendMail } from '../utils/sendMail.js'
 import APIError from '../utils/customError.js'
+import { VerificationModel } from "../models/verificationModel.js";
+import bycryptjs from 'bcryptjs'
+import { v4 as uuidv4 } from 'uuid';
 import { createAssessToken, createRefreshToken } from '../auth/authServices.js'
 
 
@@ -128,24 +132,41 @@ export const editAccount = async(req, res, next) => {
 
 export const forgetPassword = async(req, res, next) => {
     const {email} =req.params
-    
     const {password} =req.body
     if(!email){
         return next(APIError.badRequest("Please a correct email required"))
     }
     try{
         const findAccount = await getAccountByEmail(email)
-        // console.log(findAccount, "NEW")
         if(!findAccount){
             return next(APIError.notFound("Account with this email is not found"))
         }
-        // console.log(email, req.body, "REQUEST")
         
-        const newPassword = await changePasswordService(password)
-        console.log(newPassword)
-        findAccount.password = newPassword
-        console.log(findAccount, "NEW",newPassword)
-        await editAccountService(findAccount._id, findAccount)
+        const currentUrl = "http://localhost:8080/";
+        const uniqueString = uuidv4() + findAccount._id
+        const salt = bycryptjs.genSaltSync(10)
+        const hashedUniquString = bycryptjs.hashSync(uniqueString, salt)
+        
+        const newPassword = await encryptPasswordService(password)
+        let subject = "Verify your Email!";
+        let text = `<p>An attempt is made to change your password. Are you the one? click this link</p>
+                    <p>Press <a href=${currentUrl + "verification/"+ newPassword + "/" + findAccount._id + "/" + uniqueString}>here</a></p>
+                    <b>This link will expire in 6 hours time</b>
+                    <p>If you are not the one who initiated this change, please ignore it</p>`
+
+        const newVerification = new VerificationModel({
+            userId: findAccount._id,
+            uniqueString: hashedUniquString,
+            createdat: Date.now(),
+            expiresAt: Date.now() + 21600000
+        })
+       console.log(newVerification, "new verification")
+            await newVerification.save()
+            await sendMail("simeon_mc2000@yahoo.com", subject, text)
+            res.json({
+                    status: "Pending",
+                    message: "Verification email sent, please check your email"
+            })
     }catch (error) {
         next(APIError.customError(error.message))
     }
