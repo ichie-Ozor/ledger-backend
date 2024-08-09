@@ -11,6 +11,7 @@
   "author": "Ichie Ozor",
   "license": "ISC",
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

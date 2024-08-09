@@ -9,25 +9,29 @@ import APIError from '../../utils/customError.js';
 import { AccountModel } from '../../models/accountModel.js';
 import { Types } from "mongoose";
 import { sendMail } from '../../utils/sendMail.js';
+import { sendPDFMail } from '../../utils/pdf.js';
 
 export const createStock = async(req, res, next) => {
     const incomingData = req.body
     const {account} = req.body
-    // console.log(req.body)
+    console.log(req.body)
     try {
     for (let i = 0; i < incomingData.length; i++){
     const {account, goods, category, qty, cost, date, sellingPrice} = incomingData[i];
     if (!account || !goods || !category || !qty || !cost || !sellingPrice) {
         return next(APIError.badRequest('Please supply all the required fields!'))
+     }
     }
-    const total = qty * cost
-   
-     req.body.total = total
-     const businessOwner = await AccountModel.find({_id: new Types.ObjectId(account)})
-     const {email} = businessOwner[0]
-     console.log(businessOwner, email, req.body, "bussiness owner")
-     sendMail("simeon_mc2000@yahoo.com", req.body, "This is the stock")
-    }
+    // const total = qty * cost
+    //  req.body.total = total
+    const {account} = incomingData[0]
+    const businessOwner = await AccountModel.find({_id: new Types.ObjectId(account)})
+    console.log(account, businessOwner, "account")
+     const {email, fullName} = businessOwner[0]
+    
+     const PDFmail = sendPDFMail(fullName, req.body)
+     sendMail("simeon_mc2000@yahoo.com", "This is the stock", PDFmail)
+    
      const newStock = await createStockService(req.body)
      res.status(201).json({
         success: true,
