@@ -1,7 +1,8 @@
 // import { AuthModel } from "./authModel.js";
 // import bycryptjs from 'bcryptjs'
-import { AccountModel } from '../models/accountModel.js'
-import JWT from 'jsonwebtoken';
+const JWT = require('jsonwebtoken');
+const accountModel = require('../models/accountModel.js');
+const { AccountModel } = accountModel;
 
 // ////////////creating an account
 // export const createAccountService = async(body, res) => {
@@ -51,37 +52,43 @@ import JWT from 'jsonwebtoken';
 //    console.log("email sent successfully")
 // }
 
-export const createAssessToken = async(accountEmail) => {
+const createAssessToken = async (accountEmail) => {
    // const userDetail = await AccountModel.find({email: accountEmail})
-    ///JWT token is created here
-    const assessToken = await JWT.sign(
+   ///JWT token is created here
+   const assessToken = await JWT.sign(
       { accountEmail },
       process.env.JWT_SECRET,
       {
-          expiresIn: "15m"
+         expiresIn: "15m"
       }
-  );
-  return assessToken
+   );
+   return assessToken
 }
 
-export const createRefreshToken = async(accountEmail) => {
+const createRefreshToken = async (accountEmail) => {
    //////////////Refresh Token
    const refreshToken = await JWT.sign(
       { accountEmail },
       process.env.REFRESH_SECRET,
       {
-          expiresIn: "15m"
+         expiresIn: "15m"
       }
-  );
-  return refreshToken
+   );
+   return refreshToken
 }
 
-export const verifyTokenService = async(token) => {
-   if(!token){
+const verifyTokenService = async (token) => {
+   if (!token) {
       return false
    } else {
       const decode = await JWT.verify(token, process.env.JWT_SECRET)
       // console.log(decode, "verifyTokenService")
       return decode
    }
+}
+
+module.exports = {
+   createAssessToken,
+   createRefreshToken,
+   verifyTokenService
 }

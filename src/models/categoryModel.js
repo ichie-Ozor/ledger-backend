@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const categorySchema = new Schema({
+const categorySchema = new Schema({
     account: {
         type: Schema.Types.ObjectId,
         ref: "Account",
@@ -11,6 +11,8 @@ export const categorySchema = new Schema({
         type: String,
         required: true
     }
-    }, {timestamps: true});
+}, { timestamps: true });
 
-export const Category = model("Category", categorySchema);
+const Category = model("Category", categorySchema);
+
+module.exports = Category;

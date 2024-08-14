@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const creditSchema = new Schema({
+const creditSchema = new Schema({
     creditorId: {
         type: Schema.Types.ObjectId,
         ref: "Creditor",
@@ -43,6 +43,8 @@ export const creditSchema = new Schema({
         type: Date,
         required: true
     }
-    }, {timestamps: true});
+}, { timestamps: true });
 
-export const Credit = model("Credit", creditSchema);
+const Credit = model("Credit", creditSchema);
+
+module.exports = Credit

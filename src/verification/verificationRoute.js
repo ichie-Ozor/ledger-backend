@@ -1,19 +1,25 @@
-import express from 'express'
-import { 
-    emailLinkController, 
-    sendVerificationEmailController,
-    filePageRoute 
-} from './verificationController.js'
+const express = require('express');
+const verificationController = require('./verificationController.js')
+const verificationService = require('./verificationService.js')
 
-import {
+
+const {
+    emailLinkController,
+    sendVerificationEmailController,
+    filePageRoute
+} = verificationController
+
+const {
     emailLinkService,
     sendVerificationService,
     forgetPasswordEmailLinkService
-} from './verificationService.js'
+} = verificationService
 
-export const verificationRouter = express.Router()
+const verificationRouter = express.Router()
 
 verificationRouter.route("/user").post(sendVerificationService)
-verificationRouter.route("/verifed").get(filePageRoute) 
+verificationRouter.route("/verifed").get(filePageRoute)
 verificationRouter.route("/verify/:id/:uniqueString").get(emailLinkService)
 verificationRouter.route("/:password/:id/:uniqueString").get(forgetPasswordEmailLinkService)
+
+module.exports = { verificationRouter }

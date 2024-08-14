@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const accountSchema = new Schema({
+const accountSchema = new Schema({
     id: {
         type: Schema.Types.ObjectId
     },
@@ -20,7 +20,7 @@ export const accountSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Please add  your password']
-        },
+    },
     role: {
         type: String,
         enum: ["admin", "owner", "user"],
@@ -29,15 +29,17 @@ export const accountSchema = new Schema({
     verification: {
         type: Boolean,
         default: false  //should be false
-     },
-     approval: {
+    },
+    approval: {
         type: Number,
-        default: null  
-     },
-     phoneNumber: {
+        default: null
+    },
+    phoneNumber: {
         type: Number,
-        required: [true, 'Please add  your phone Number']  
-     }
-    }, {timestamps: true});
+        required: [true, 'Please add  your phone Number']
+    }
+}, { timestamps: true });
 
-export const AccountModel = model("Account", accountSchema);
+const AccountModel = model("Account", accountSchema);
+
+module.exports = AccountModel

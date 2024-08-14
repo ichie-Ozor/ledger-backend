@@ -1,14 +1,15 @@
-import express from 'express'
-import { 
-    createAccount, 
-    getAllAcountController, 
+const express = require('express')
+const accountController = require('./accountController.js')
+const {
+    createAccount,
+    getAllAcountController,
     getAccountByEmailController,
     editAccount,
     forgetPassword,
     deleteAccount
-} from './accountController.js';
+} = accountController;
 
-export const accountRoute = express.Router();
+const accountRoute = express.Router();
 
 accountRoute.route('/:id').put(editAccount).delete(deleteAccount)
 accountRoute.route('/:email').post(forgetPassword)
@@ -17,4 +18,5 @@ accountRoute.route("/getaccount").get(getAllAcountController)
 accountRoute.route("/getaccount/:email").get(getAccountByEmailController)
 
 
+module.exports = accountRoute
 

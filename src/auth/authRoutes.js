@@ -1,5 +1,10 @@
-import express from 'express'
-import { signInAccount, verifyRefreshToken, verifyToken } from './authController.js'
+const express = require('express');
+const authController = require('./authController.js')
+const {
+    signInAccount,
+    verifyRefreshToken,
+    verifyToken
+} = authController
 
 
 
@@ -9,4 +14,4 @@ authRoute.route("/signin").post(signInAccount)
 authRoute.route("/verifyToken").get(verifyToken)
 authRoute.route("/verifyRefreshToken").post(verifyRefreshToken)
 
-export default authRoute;
+module.exports = authRoute;

@@ -1,18 +1,21 @@
-import {
+const APIError = require('../../utils/customError.js')
+const debtorBalService = require('./debtorBalService.js')
+
+const {
     createDebtorBalService,
     getDebtorBalService,
     getDebtorBalByIdService,
     getDebtorBalByDebtorService,
     editDebtorBalService,
     deleteDebtorBalService
-} from './debtorBalService.js'
-import APIError from '../../utils/customError.js'
+} = debtorBalService
 
-export const createDebtorBal = async(req, res, next) => {
+
+const createDebtorBal = async (req, res, next) => {
     console.log(req.body, "us")
-    try{
-        const {businessId, balance, debtorId, firstName, lastName, paid, phoneNumber, purchase} =  req.body
-        if(!businessId || !debtorId || !firstName || !lastName || !paid || !phoneNumber || !purchase){
+    try {
+        const { businessId, balance, debtorId, firstName, lastName, paid, phoneNumber, purchase } = req.body
+        if (!businessId || !debtorId || !firstName || !lastName || !paid || !phoneNumber || !purchase) {
             return next(APIError.badRequest('Please supply all the payment details of the debtor'))
         }
         const newDebtorBal = await createDebtorBalService(req.body)
@@ -26,10 +29,10 @@ export const createDebtorBal = async(req, res, next) => {
     }
 }
 
-export const getDebtorBal = async(req, res, next) => {
-    try{
+const getDebtorBal = async (req, res, next) => {
+    try {
         const debtorBal = await getDebtorBalService()
-        if(!debtorBal){
+        if (!debtorBal) {
             return next(APIError.notFound("This Debtor Balance was not found"))
         }
         res.status(200).json({
@@ -37,20 +40,20 @@ export const getDebtorBal = async(req, res, next) => {
             message: "Debtor Balance retrieved successfully",
             debtorBal
         })
-    } catch(error) {
+    } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const getDebtorBalById = async(req, res, next) => {
-    const {debtorId} = req.params
+const getDebtorBalById = async (req, res, next) => {
+    const { debtorId } = req.params
     console.log(debtorId, req.params)
-    if(!debtorId){
+    if (!debtorId) {
         return next(APIError.badRequest("Debtor Id required"))
     }
-    try{
+    try {
         const findDebtorBal = await getDebtorBalByIdService(debtorId)
-        if(!findDebtorBal) {
+        if (!findDebtorBal) {
             return next(APIError.notFound("This Debtor Bal not found"))
         }
         res.status(200).json({
@@ -58,19 +61,19 @@ export const getDebtorBalById = async(req, res, next) => {
             message: "Debtor Bal retirieved successfully",
             debtorBal: findDebtorBal
         })
-    } catch(error) {
+    } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const getDebtorBalByDebtorId = async(req, res, next) => {
-    const {debtorId} = req.params
-    if(!debtorId){
+const getDebtorBalByDebtorId = async (req, res, next) => {
+    const { debtorId } = req.params
+    if (!debtorId) {
         return next(APIError.badRequest("Debtor Id required"))
     }
-    try{
+    try {
         const findDebtorBal = await getDebtorBalByDebtorService(debtorId)
-        if(!findDebtorBal) {
+        if (!findDebtorBal) {
             return next(APIError.notFound('Debtor not found'))
         }
         res.status(200).json({
@@ -83,14 +86,14 @@ export const getDebtorBalByDebtorId = async(req, res, next) => {
     }
 }
 
-export const editDebtorBal = async(req, res, next) => {
-    const {id} = req.body
-    if(!id){
+const editDebtorBal = async (req, res, next) => {
+    const { id } = req.body
+    if (!id) {
         return next(APIError.badRequest('debt Id required'))
     }
     try {
         const findDebtorBal = await getDebtorBalByIdService(id)
-        if(!findDebtorBal){
+        if (!findDebtorBal) {
             return next(APIError.notFound('creditor Bal not found'))
         }
         const updatedDebtorBal = await editDebtorBalService(id, req.body)
@@ -99,25 +102,33 @@ export const editDebtorBal = async(req, res, next) => {
             message: "Debt bal update successfully",
             debtorBal: updatedDebtorBal
         })
-    } catch(error) {
+    } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-
-export const deleteDebtorBal = async(req, res, next) => {
-    const {id} = req.body
-    if(!id){
+const deleteDebtorBal = async (req, res, next) => {
+    const { id } = req.body
+    if (!id) {
         return next(APIError.badRequest('creditor id not found'))
     }
-    try{
+    try {
         const deletedDebtorBal = await deleteDebtorBalService(id, req.body)
         res.status(200).json({
             success: true,
             message: "debtor Bal deleted successfully",
             deletedDebtorBal
         })
-    } catch(error) {
+    } catch (error) {
         next(APIError.customError(error.message))
     }
+}
+
+module.exports = {
+    createDebtorBal,
+    getDebtorBal,
+    getDebtorBalById,
+    getDebtorBalByDebtorId,
+    editDebtorBal,
+    deleteDebtorBal
 }

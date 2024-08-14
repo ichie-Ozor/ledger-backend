@@ -1,47 +1,49 @@
-import {
-    createCategoryService, 
-    editCategoryService, 
-    getCategoryByIdService, 
-    getCategoryService, 
-    deleteCategoryService
-} from './categoryService.js'
-import APIError from '../../utils/customError.js';
+const categoryService = require('./categoryService.js')
+const APIError = require('../../utils/customError.js');
 
-export const createCategory = async(req, res, next) => {
+const {
+    createCategoryService,
+    editCategoryService,
+    getCategoryByIdService,
+    getCategoryService,
+    deleteCategoryService
+} = categoryService
+
+const createCategory = async (req, res, next) => {
     // console.log(req.body)
     const categoryItem = req.body;
     if (!categoryItem) {
         return next(APIError.badRequest('Please supply all the required fields!'))
     }
-   try {
-     const newCategory = await createCategoryService(req.body)
-     res.status(201).json({
-        success: true,
-        message: 'Category created successfully!',
-        category: newCategory
-     })
-   } catch (error) {
-    next(APIError.customError(error.message))
-   }
-}
-
-export const getCategory = async(req, res, next) => {
- try {
-       const categories = await getCategoryService()
-       if (!categories) {
-       return next(APIError.notFound('No category found!'))
-       }
-       res.status(200).json({
-           success: true,
-           message: 'Categorys retrieved successfully!',
-           categories
+    try {
+        const newCategory = await createCategoryService(req.body)
+        res.status(201).json({
+            success: true,
+            message: 'Category created successfully!',
+            category: newCategory
         })
- } catch (error) {
-    next(APIError.customError(error.message))
- }
+    } catch (error) {
+        next(APIError.customError(error.message))
+    }
 }
 
-export const getCategoryById = async(req, res, next) => {
+const getCategory = async (req, res, next) => {
+    try {
+        const categories = await getCategoryService()
+        if (!categories) {
+            return next(APIError.notFound('No category found!'))
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Categorys retrieved successfully!',
+            categories
+        })
+    } catch (error) {
+        next(APIError.customError(error.message))
+    }
+}
+
+const getCategoryById = async (req, res, next) => {
     const id = req.params.id
     // console.log(req.params)
     if (!id) {
@@ -56,14 +58,14 @@ export const getCategoryById = async(req, res, next) => {
             success: true,
             message: 'Category retrieved successfully!',
             category: findCategory
-         })
+        })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const editCategory = async(req, res, next) => {
-    const {id} = req.body
+const editCategory = async (req, res, next) => {
+    const { id } = req.body
     if (!id) {
         return next(APIError.badRequest('Category ID are is required'))
     }
@@ -77,14 +79,14 @@ export const editCategory = async(req, res, next) => {
             success: true,
             message: 'Category updated successfully!',
             category: updatedCategory
-         })
+        })
     } catch (error) {
         next(APIError.customError(error.message))
     }
 }
 
-export const deleteCategory = async(req, res, next) => {
-    const {id} = req.params
+const deleteCategory = async (req, res, next) => {
+    const { id } = req.params
     // console.log(id, req.body)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
@@ -99,8 +101,16 @@ export const deleteCategory = async(req, res, next) => {
             success: true,
             message: 'Category deleted successfully!',
             category: deleteCategory
-         })
+        })
     } catch (error) {
         next(APIError.customError(error.message))
     }
+}
+
+module.exports = {
+    createCategory,
+    getCategory,
+    getCategoryById,
+    editCategory,
+    deleteCategory
 }
