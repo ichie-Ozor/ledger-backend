@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
-export const profileSchema = new Schema({
-    account: { 
+const profileSchema = new Schema({
+    account: {
         type: Schema.Types.ObjectId,
         ref: "Account",
         required: [true, "Account id is needed"]
@@ -22,6 +22,8 @@ export const profileSchema = new Schema({
         type: String,
         required: [true, "Please a password"]
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
-export const ProfileModel = model("Profile", profileSchema);
+const ProfileModel = model("Profile", profileSchema);
+
+module.exports = ProfileModel

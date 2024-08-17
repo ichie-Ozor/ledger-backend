@@ -1,7 +1,10 @@
-import express from 'express'
-import { createStock, deleteStock, editStock, getStocks, getStockById } from './stockController.js'
+const express = require('express')
+const stockController = require('./stockController.js')
+const { createStock, deleteStock, editStock, getStocks, getStockById } = stockController
 
-export const stockRouter = express.Router()
+const stockRouter = express.Router()
 
 stockRouter.route('/').post(createStock).get(getStocks)
 stockRouter.route('/:id').put(editStock).delete(deleteStock).get(getStockById)
+
+module.exports = stockRouter

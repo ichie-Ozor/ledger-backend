@@ -2,7 +2,6 @@ const Express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const accountRoute = require("./account/accountRoutes.js")
-// import {accountRoute} from ;
 const connectDB = require("./config/db.js");
 const authRoute = require("./auth/authRoutes.js");
 const verificationRouter = require("./verification/verificationRoute.js")

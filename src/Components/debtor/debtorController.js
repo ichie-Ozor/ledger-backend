@@ -136,6 +136,7 @@ const deleteDebtor = async (req, res, next) => {
 module.exports = {
     createDebtor,
     getDebtors,
+    getDebtorById,
     editDebtor,
     deleteDebtor
 }

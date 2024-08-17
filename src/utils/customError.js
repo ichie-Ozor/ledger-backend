@@ -5,26 +5,26 @@ class APIError extends Error {
         this.status = status
     }
 
-    static badRequest(msg){
+    static badRequest(msg) {
         const message = msg || "Invalid request!"
         return new APIError(400, message)
     }
-    static unAuthorized(msg){
+    static unAuthorized(msg) {
         const message = msg || "access denied!"
         return new APIError(401, message)
     }
-    static unAuthenticated(msg){
+    static unAuthenticated(msg) {
         const message = msg || "You need to login first!"
         return new APIError(403, message)
     }
-    static notFound(msg){
+    static notFound(msg) {
         const message = msg || "Resource not found!"
         return new APIError(400, message)
     }
-    static customError(msg){
+    static customError(msg) {
         const message = msg || "Internal server error!"
         return new APIError(500, message)
     }
 }
 
-export default APIError
+module.exports = APIError

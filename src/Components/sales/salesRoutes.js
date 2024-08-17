@@ -1,7 +1,10 @@
-import express from 'express'
-import { createSales, deleteSales, editSales, getSales } from './salesController.js'
+const express = require('express')
+const salesController = require('./salesController.js')
+const { createSales, deleteSales, editSales, getSales } = salesController
 
-export const salesRouter = express.Router()
+const salesRouter = express.Router()
 
 salesRouter.route('/').post(createSales).get(getSales)
 salesRouter.route('/:id').put(editSales).delete(deleteSales)
+
+module.exports = salesRouter

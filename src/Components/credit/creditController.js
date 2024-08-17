@@ -180,7 +180,6 @@ const editCredit = async (req, res, next) => {
 
 const deleteCredit = async (req, res, next) => {
     const { id, password } = req.params
-    console.log(req.body, req.params, "deleted item")
 
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))

@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
-export const creditorBalSchema = new Schema({
+const creditorBalSchema = new Schema({
     creditorId: {
         type: Schema.Types.ObjectId,
         ref: "Creditor",
@@ -29,12 +29,14 @@ export const creditorBalSchema = new Schema({
     },
     phoneNumber: {
         type: Number,
-        required: true, 
+        required: true,
     },
     purchase: {
         type: Number,
         required: true
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
-export const CreditorBal = model("CreditorBal", creditorBalSchema)
+const CreditorBal = model("CreditorBal", creditorBalSchema)
+
+module.exports = CreditorBal

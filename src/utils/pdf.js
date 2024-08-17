@@ -1,4 +1,4 @@
-export const sendPDFMail = (user, data) => {
+const sendPDFMail = (user, data) => {
     const formattedDate = new Date().toLocaleDateString();
 
     const dataHTML = data.map(i => (
@@ -82,3 +82,5 @@ export const sendPDFMail = (user, data) => {
         </div>
     `;
 }
+
+module.exports = { sendPDFMail }

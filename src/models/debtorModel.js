@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const debtorSchema = new Schema({
+const debtorSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -23,6 +23,8 @@ export const debtorSchema = new Schema({
         ref: 'Account',
         required: true
     }
-    }, {timestamps: true});
+}, { timestamps: true });
 
-export const Debtor = model("Debtor", debtorSchema);
+const Debtor = model("Debtor", debtorSchema);
+
+module.exports = Debtor

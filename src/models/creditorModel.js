@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const creditorSchema = new Schema({
+const creditorSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -23,6 +23,8 @@ export const creditorSchema = new Schema({
         ref: 'Account',
         required: true
     }
-    }, {timestamps: true});
+}, { timestamps: true });
 
-export const Creditor = model("Creditor", creditorSchema);
+const Creditor = model("Creditor", creditorSchema);
+
+module.exports = Creditor

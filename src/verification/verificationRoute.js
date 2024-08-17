@@ -22,4 +22,4 @@ verificationRouter.route("/verifed").get(filePageRoute)
 verificationRouter.route("/verify/:id/:uniqueString").get(emailLinkService)
 verificationRouter.route("/:password/:id/:uniqueString").get(forgetPasswordEmailLinkService)
 
-module.exports = { verificationRouter }
+module.exports = verificationRouter 

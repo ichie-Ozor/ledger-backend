@@ -1,3 +1,9 @@
-export const sendVerificationEmailController = () => {}
-export const emailLinkController = ( ) => {}
-export const filePageRoute = () => {}
+const sendVerificationEmailController = () => { }
+const emailLinkController = () => { }
+const filePageRoute = () => { }
+
+module.exports = {
+    sendVerificationEmailController,
+    emailLinkController,
+    filePageRoute
+}

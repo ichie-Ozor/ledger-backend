@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
-export const salesSchema = new Schema({
+const salesSchema = new Schema({
     account: {
         type: Schema.Types.ObjectId,
         ref: "Account",
@@ -30,6 +30,8 @@ export const salesSchema = new Schema({
         type: Date,
         required: true
     }
-    }, {timestamps: true});
+}, { timestamps: true });
 
-export const Sales = model("Sales", salesSchema);
+const Sales = model("Sales", salesSchema);
+
+module.exports = Sales
