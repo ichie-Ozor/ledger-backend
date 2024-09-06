@@ -29,8 +29,8 @@ const getAllProfileService = async () => {
 }
 
 const getProfileByIdService = async (id) => {
-    console.log(id, "getProfileByIdService")
     const owners = await ProfileModel.find({ account: new Types.ObjectId(id) })
+    // const owners = await ProfileModel.find({ account: id })
     return owners
 }
 

@@ -10,7 +10,6 @@ const {
 } = categoryService
 
 const createCategory = async (req, res, next) => {
-    // console.log(req.body)
     const categoryItem = req.body;
     if (!categoryItem) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -45,7 +44,6 @@ const getCategory = async (req, res, next) => {
 
 const getCategoryById = async (req, res, next) => {
     const id = req.params.id
-    // console.log(req.params)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
     }
@@ -87,7 +85,6 @@ const editCategory = async (req, res, next) => {
 
 const deleteCategory = async (req, res, next) => {
     const { id } = req.params
-    // console.log(id, req.body)
     if (!id) {
         return next(APIError.badRequest('Category ID is required'))
     }

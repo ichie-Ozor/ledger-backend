@@ -1,4 +1,4 @@
-const { CreditorBal } = require("../../models/creditorBalModal.js");
+const CreditorBal = require("../../models/creditorBalModal.js");
 const { Types } = require("mongoose");
 
 
@@ -13,15 +13,12 @@ const getCreditorBalService = async () => {
 }
 
 const getCreditorBalByIdService = async (id) => {
-    console.log(id, "creditorBalbefore")
     const creditorBal = await CreditorBal.find({ businessId: new Types.ObjectId(id) })
-    console.log(creditorBal, "creditor Bal")
     return creditorBal
 }
 
 const getCreditorBalByCreditorIdService = async (creditorId) => {
     const creditorBal = await CreditorBal.find({ creditorId: new Types.ObjectId(creditorId) })
-    console.log(creditorBal, "creditorBall Service")
     return creditorBal
 }
 

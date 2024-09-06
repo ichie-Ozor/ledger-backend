@@ -12,7 +12,6 @@ const {
 
 
 const createDebtorBal = async (req, res, next) => {
-    console.log(req.body, "us")
     try {
         const { businessId, balance, debtorId, firstName, lastName, paid, phoneNumber, purchase } = req.body
         if (!businessId || !debtorId || !firstName || !lastName || !paid || !phoneNumber || !purchase) {
@@ -47,7 +46,6 @@ const getDebtorBal = async (req, res, next) => {
 
 const getDebtorBalById = async (req, res, next) => {
     const { debtorId } = req.params
-    console.log(debtorId, req.params)
     if (!debtorId) {
         return next(APIError.badRequest("Debtor Id required"))
     }

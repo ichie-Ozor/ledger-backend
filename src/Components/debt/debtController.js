@@ -22,11 +22,9 @@ const {
 const { getProfileByIdService } = profileService;
 
 const createDebt = async (req, res, next) => {
-    console.log(req.body, "debt")
     const incomingData = req.body
     try {
         for (let i = 0; i < incomingData.length; i++) {
-            console.log(incomingData[i], "each debt")
             const { businessId, debtorId, description, category, qty, rate, date } = incomingData[i];
             if (!businessId || !debtorId || !description || !category || !qty || !rate || !date) {
                 return next(APIError.badRequest('Please supply all the required fields!'))
@@ -101,13 +99,11 @@ const getDebtById = async (req, res, next) => {
 
 const getDebtsByDebtorId = async (req, res, next) => {
     const { debtorId } = req.params
-    console.log(debtorId, "na me be this")
     if (!debtorId) {
         return next(APIError.badRequest('Debt ID is required'))
     }
     try {
         const findDebt = await getDebtsByDebtorIdService(debtorId)
-        console.log(findDebt)
         if (!findDebt) {
             return next(APIError.notFound('Debt not found!'))
         }
@@ -117,7 +113,6 @@ const getDebtsByDebtorId = async (req, res, next) => {
             debts: findDebt
         })
     } catch (error) {
-        console.log(error)
         next(APIError.customError(error.message))
     }
 }
@@ -145,7 +140,6 @@ const editDebt = async (req, res, next) => {
 
 const deleteDebt = async (req, res, next) => {
     const { id, password } = req.params
-    console.log(id, req.params, "debt, id")
     if (!id) {
         return next(APIError.badRequest('Debt ID is required'))
     }

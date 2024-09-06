@@ -13,8 +13,8 @@ const getCreditorsService = async () => {
 }
 
 const getCreditorsByIdService = async (id) => {
-    const creditor = await Creditor.find({ createdBy: new Types.ObjectId(id) })
-    // console.log(creditor)
+    // const creditor = await Creditor.find({ createdBy: new Types.ObjectId(id) })  its deprecated
+    const creditor = await Creditor.find({ createdBy: id })
     return creditor
 }
 

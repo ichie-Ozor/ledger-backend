@@ -13,7 +13,6 @@ const APIError = require('../../utils/customError.js');
 const { Stock } = require('../../models/stockModel.js')
 
 const createSales = async (req, res, next) => {
-    console.log(req.body, "here")
     const incomingData = req.body
     try {
         const { account, description, category, qty, rate, date } = incomingData;
@@ -47,7 +46,6 @@ const createSales = async (req, res, next) => {
 
             // if stock.qty === 0, delete from the stock
             if (new_stock.qty === 0) {
-                console.log("stock deleted")
                 await Stock.findByIdAndDelete(new_stock._id)
                 return res.status(400).json({
                     success: false,
@@ -131,8 +129,6 @@ const editSales = async (req, res, next) => {
 }
 
 const deleteSales = async (req, res, next) => {
-    console.log(req.body, "data here")
-    console.log(req.body[0]._id)
     const id = req.body[0]._id
     if (!id) {
         return next(APIError.badRequest('Sales ID is required'))

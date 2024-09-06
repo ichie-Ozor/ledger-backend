@@ -42,7 +42,7 @@ const getAllAccountsService = async () => {
 /////////////get individual account   +  needed for signin
 const getAccountByEmail = async (email) => {
    const findAccount = await AccountModel.findOne({ email })
-   //  console.log(findAccount, "here")
+   console.log(findAccount, "jjjhere account service")
    if (!findAccount || !findAccount.email) {
       return false
    } else {

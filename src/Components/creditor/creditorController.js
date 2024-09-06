@@ -14,7 +14,6 @@ const APIError = require('../../utils/customError.js');
 const { deleteCreditorBalService } = require('../creditorBal/creditorBalService.js');
 
 const createCreditor = async (req, res, next) => {
-    // console.log(req.body, "see me")
     const { firstName, lastName, phoneNumber, businessName, email, createdBy } = req.body;
     if (!firstName || !lastName || !phoneNumber || !businessName || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))
@@ -48,18 +47,15 @@ const getCreditors = async (req, res, next) => {
 }
 
 const getCreditorById = async (req, res, next) => {
-    // console.log(req.params)
     const { id } = req.params
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }
     try {
         const findCreditor = await getCreditorsByIdService(id)
-        // console.log(findCreditor, id)
         if (!findCreditor) {
             return next(APIError.notFound('Creditor not found!'))
         }
-        console.log(findCreditor)
         res.status(200).json({
             success: true,
             message: 'Creditor retrieved successfully!',
@@ -92,7 +88,6 @@ const editCreditor = async (req, res, next) => {
 
 const deleteCreditor = async (req, res, next) => {
     const { id, account, password } = req.params
-    console.log(req.body, id, req.params, "delete creditor")
     if (!id) {
         return next(APIError.badRequest('Creditor ID is required'))
     }

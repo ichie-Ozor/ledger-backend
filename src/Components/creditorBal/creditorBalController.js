@@ -14,7 +14,6 @@ const {
 
 
 const createCreditorBal = async (req, res, next) => {
-    // console.log(req.body, "na us be this")
     try {
         const { businessId, balance, creditorId, firstName, lastName, paid, phoneNumber, purchase } = req.body
         if (!businessId || !balance || !creditorId || !firstName || !lastName || !phoneNumber || !paid || !purchase) {
@@ -48,7 +47,6 @@ const getCreditorBal = async (req, res, next) => {
 }
 
 const getCreditorBalById = async (req, res, next) => {
-    console.log(req.params, "creditorBal controller")
     const { creditorId } = req.params
     if (!creditorId) {
         return next(APIError.badRequest("creditor Id required"))
@@ -70,13 +68,11 @@ const getCreditorBalById = async (req, res, next) => {
 
 const getCreditorBalByCreditorId = async (req, res, next) => {
     const { creditorId } = req.params
-    console.log(creditorId, "fffffffff")
     if (!creditorId) {
         return next(APIError.badRequest('Creditor Id required'))
     }
     try {
         const findCreditorBal = await getCreditorBalByCreditorIdService(creditorId)
-        console.log(findCreditorBal, " findCreditorBal controller")
         if (!findCreditorBal) {
             return next(APIError.notFound('Creditor not found'))
         }
@@ -114,7 +110,6 @@ const editCreditorBal = async (req, res, next) => {
 
 const deleteCreditorBal = async (req, res, next) => {
     const { id } = req.body
-    console.log(req.body, "req.body")
     if (!id) {
         return next(APIError.badRequest('creditor id not found'))
     }

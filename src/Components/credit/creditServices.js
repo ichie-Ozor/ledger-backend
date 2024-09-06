@@ -1,4 +1,4 @@
-const { Credit } = require("../../models/creditModel.js");
+const Credit = require("../../models/creditModel.js");
 const { Types } = require("mongoose");
 
 const createCreditService = async (data) => {
@@ -18,8 +18,7 @@ const getCreditsByIdService = async (id) => {
 
 const getCreditsByCreditorIdService = async (creditorId) => {
     const credits = await Credit.find({ creditorId: new Types.ObjectId(creditorId) })
-    // const credits = await Credit.find({creditorId: creditorId})
-    // console.log(credits, "see am")
+    // const credits = await Credit.find({ creditorId: creditorId })
     return credits
 }
 

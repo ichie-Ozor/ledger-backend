@@ -21,7 +21,7 @@ const { createAssessToken, createRefreshToken } = require('../auth/authServices.
 
 ///////////////////Create an account
 const createAccount = async (req, res) => {
-
+    console.log("create account here")
     const { fullName, businessName, email, password } = req.body
     if (!fullName || !businessName || !email || !password) {
         return res.json({
@@ -44,6 +44,7 @@ const createAccount = async (req, res) => {
             message: "Password is too small"
         })
     }
+    console.log('accountExist', "account exist")
     const accountExist = await accountExistService(email)
     if (accountExist) {
         return res.json({
@@ -52,6 +53,14 @@ const createAccount = async (req, res) => {
         })
     }
     const newUser = await createAccountService(req.body)
+    const userDetail = {
+        id: newUser._id,
+        businessName,
+        email,
+        phoneNumber,
+        fullName,
+        approval
+    }
     if (newUser) {
         // /////////assess Tokem
         const assessToken = await createAssessToken(email)
@@ -61,7 +70,7 @@ const createAccount = async (req, res) => {
             status: "Success",
             message: `Account with the name ${newUser.fullName} has being created successfully`,
             assessToken,
-            refreshToken
+            userDetail
         })
     } else (
         res.json({
@@ -143,6 +152,7 @@ const forgetPassword = async (req, res, next) => {
         }
 
         const currentUrl = "http://localhost:8080/";
+        // const currentUrl = "https://newledger-f7b180e5a9de.herokuapp.com"
         const uniqueString = uuidv4() + findAccount._id
         const salt = bycryptjs.genSaltSync(10)
         const hashedUniquString = bycryptjs.hashSync(uniqueString, salt)

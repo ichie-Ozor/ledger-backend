@@ -101,7 +101,7 @@ const verifyRefreshToken = (req, res) => {
 
 // async function verify(req, res){
 const verifyToken = async (req, res) => {
-    console.log(req.headers, req.headers["authorization"], "req.header here")
+    // console.log(req.headers, req.headers["authorization"], "req.header here")
     try {
         // this verify the token from the frontend
         const authToken = req.headers["authorization"];

@@ -14,7 +14,6 @@ const {
 
 
 const createProfile = async (req, res, next) => {
-    console.log(req.body)
     const { account, firstName, lastName, businessName, password } = req.body
     if (!firstName || !lastName || !businessName || !password) {
         return res.json({

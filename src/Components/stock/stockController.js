@@ -16,7 +16,6 @@ const { sendPDFMail } = require('../../utils/pdf.js');
 const createStock = async (req, res, next) => {
     const incomingData = req.body
     const { account } = req.body
-    console.log(req.body)
     try {
         for (let i = 0; i < incomingData.length; i++) {
             const { account, goods, category, qty, cost, date, sellingPrice } = incomingData[i];
@@ -28,7 +27,6 @@ const createStock = async (req, res, next) => {
         //  req.body.total = total
         const { account } = incomingData[0]
         const businessOwner = await AccountModel.find({ _id: new Types.ObjectId(account) })
-        console.log(account, businessOwner, "account")
         const { email, fullName } = businessOwner[0]
 
         const PDFmail = sendPDFMail(fullName, req.body)
@@ -104,7 +102,6 @@ const editStock = async (req, res, next) => {
 
 const deleteStock = async (req, res, next) => {
     const { _id } = req.body[0]
-    console.log(_id, req.body, "stock id")
     if (!_id) {
         return next(APIError.badRequest('Stock ID is required'))
     }

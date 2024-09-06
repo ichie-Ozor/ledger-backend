@@ -16,7 +16,6 @@ const { deleteManyDebtService } = require('../debt/debtServices.js');
 const { deleteManyDebtorBalService } = require('../debtorBal/debtorBalService.js');
 
 const createDebtor = async (req, res, next) => {
-    console.log(req.body)
     const { firstName, lastName, phoneNumber, businessName, createdBy } = req.body;
     if (!firstName || !lastName || !phoneNumber || !businessName || !createdBy) {
         return next(APIError.badRequest('Please supply all the required fields!'))

@@ -24,10 +24,8 @@ const { getCreditorBalByIdService, deleteCreditorBalService } = require('../cred
 
 const createCredit = async (req, res, next) => {
     try {
-        // console.log(req.body, "credit req.body")
         const incomingData = req.body
         for (let i = 0; i < incomingData.length; i++) {
-            // console.log(incomingData[i], "each credit")
             const { businessId, creditorId, description, category, qty, rate, date } = incomingData[i];
 
             if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
@@ -36,15 +34,12 @@ const createCredit = async (req, res, next) => {
 
             //get the stock 
             const getStock = await getStocksByIdService(businessId)
-            //    console.log(getStock, "stock from the db")
 
             const compareWithStock = getStock.filter((item) => item.goods === description && item.category === category)
-            //    console.log(compareWithStock, "compareWithStock")
 
             let createCredit = false
             for (let j = 0; j < compareWithStock.length; j++) {
                 //if the stock.goods is not the same as the description, return a response
-                // console.log(compareWithStock[j].goods, description, compareWithStock[j].category, category, "credit match")
                 if (compareWithStock[j].goods !== description && compareWithStock[j].category !== category) {
                     return res.status(400).json({
                         success: false,
@@ -115,9 +110,7 @@ const getCredits = async (req, res, next) => {
 }
 
 const getCreditById = async (req, res, next) => {
-    // console.log(req.body)
     const { id } = req.params
-    console.log(id, "id hereeee")
     if (!id) {
         return next(APIError.badRequest('Credit ID is required'))
     }
@@ -138,7 +131,6 @@ const getCreditById = async (req, res, next) => {
 
 const getCreditByCreditorId = async (req, res, next) => {
     const { creditorId } = req.params
-    // console.log(req.params, "here")
     if (!creditorId) {
         return next(APIError.badRequest('Credit ID is required'))
     }

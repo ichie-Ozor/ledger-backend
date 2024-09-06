@@ -1,4 +1,4 @@
-const { DebtorBal } = require("../../models/DebtorBalModel.js");
+const DebtorBal = require("../../models/DebtorBalModel.js");
 const { Types } = require('mongoose');
 
 const createDebtorBalService = async (data) => {

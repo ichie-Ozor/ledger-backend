@@ -1,4 +1,4 @@
-const { Debt } = require("../../models/debtModel.js");
+const Debt = require("../../models/debtModel.js");
 const { Types } = require("mongoose");
 
 const createDebtService = async (data) => {
@@ -18,6 +18,7 @@ const getDebtsByIdService = async (id) => {
 
 const getDebtsByDebtorIdService = async (debtorId) => {
     const debts = await Debt.find({ debtorId: new Types.ObjectId(debtorId) })
+    // const debts = await Debt.find({ debtorId: debtorId })
     return debts
 }
 
