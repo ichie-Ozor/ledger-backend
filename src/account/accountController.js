@@ -53,6 +53,7 @@ const createAccount = async (req, res) => {
         })
     }
     const newUser = await createAccountService(req.body)
+    const { approval } = newUser
     const userDetail = {
         id: newUser._id,
         businessName,
