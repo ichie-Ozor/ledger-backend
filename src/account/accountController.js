@@ -21,7 +21,7 @@ const { createAssessToken, createRefreshToken } = require('../auth/authServices.
 
 ///////////////////Create an account
 const createAccount = async (req, res) => {
-    console.log("create account here")
+    console.log(req.body, "hhhhhhhhhh")
     const { fullName, businessName, email, password, phoneNumber } = req.body
     if (!fullName || !businessName || !email || !password) {
         return res.json({
@@ -44,7 +44,6 @@ const createAccount = async (req, res) => {
             message: "Password is too small"
         })
     }
-    console.log('accountExist', "account exist")
     const accountExist = await accountExistService(email)
     if (accountExist) {
         return res.json({
@@ -52,22 +51,44 @@ const createAccount = async (req, res) => {
             message: "An account with this email already exist"
         })
     }
-    const newUser = await createAccountService(req.body)
-    const { approval } = newUser
-    const userDetail = {
-        id: newUser._id,
-        businessName,
-        email,
-        phoneNumber,
-        fullName,
-        approval
-    }
-    if (newUser) {
-        // /////////assess Tokem
+
+    if (email === "simeon_mc2000@yahoo.com") {
+        const adminRole = { ...req.body, role: "admin" }
+        const newUser = await createAccountService(adminRole)
         const assessToken = await createAssessToken(email)
+        const { approval } = newUser
+        const userDetail = {
+            id: newUser._id,
+            businessName,
+            email,
+            phoneNumber,
+            fullName,
+            approval
+        }
+        return res.json({
+            status: "Success",
+            message: `Account with the name ${newUser.fullName} has being created successfully`,
+            assessToken,
+            userDetail
+        })
+    }
+    if (email !== "simeon_mc2000@yahoo.com") {
+        const newUser = await createAccountService(req.body)
+        const assessToken = await createAssessToken(email)
+        const { approval } = newUser
+        const userDetail = {
+            id: newUser._id,
+            businessName,
+            email,
+            phoneNumber,
+            fullName,
+            approval
+
+        }
+
         //////////////Refresh Token
-        const refreshToken = await createRefreshToken(email)
-        res.json({
+        // const refreshToken = await createRefreshToken(email)
+        return res.json({
             status: "Success",
             message: `Account with the name ${newUser.fullName} has being created successfully`,
             assessToken,

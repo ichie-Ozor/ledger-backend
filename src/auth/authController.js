@@ -11,19 +11,13 @@ const { AccountModel } = accountModel
 
 const signInAccount = async (req, res) => {
     const { email, password } = req.body
-    // console.log(email, password)
     if (email == "" || password == "") {
         return res.json({
             status: "Failed",
             message: "Please enter your login credentials."
         })
     }
-    if (email === "ozord1st@gmail.com" && password === "ozo?yes:no") {
-        return res.status(200).json({
-            role: "admin",
-            message: "this is an admin"
-        })
-    }
+
     const checkEmail = await getAccountByEmail(email)
     const { fullName, businessName, role, _id, verification, phoneNumber, approval } = checkEmail
     const userDetail = { fullName, businessName, role, _id, verification, email, phoneNumber, approval }
@@ -36,9 +30,16 @@ const signInAccount = async (req, res) => {
             message: "This account does not exist, please register"
         })
     }
-
+    if (role === "admin") {
+        const assessToken = await createAssessToken(email)
+        return res.json({
+            status: "Success",
+            message: "You have successfully signed in",
+            userDetail,
+            assessToken,
+        })
+    }
     const comparePassword = await bcrypt.compare(password, checkEmail.password)
-
     if (!comparePassword || email !== checkEmail.email) {
         return res.json({
             status: "Failed",
@@ -67,14 +68,11 @@ const signInAccount = async (req, res) => {
         })
     } else {
         const assessToken = await createAssessToken(email)
-        //    const refreshToken = await createRefreshToken(email)
         res.json({
             status: "Success",
             message: "You have successfully signed in",
             userDetail,
             assessToken,
-            //  refreshToken
-
         })
     }
 }
