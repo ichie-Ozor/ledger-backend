@@ -4,6 +4,7 @@ const sendPDFMail = (user, data) => {
     const dataHTML = data.map(i => (
         `<div class="render">
             <span>${i.goods}</span>
+            <span>${i.category}</span>
             <span>${i.qty}</span>
             <span>${i.cost}</span>
         </div>`
@@ -74,6 +75,7 @@ const sendPDFMail = (user, data) => {
         </div>
         <div class="item">
            <span>Description</span>
+           <span>Category</span>
            <span>Qty</span>
            <span>Cost</span>
         </div>

@@ -8,59 +8,65 @@ const {
     getSalesService,
     deleteSalesService
 } = salesService
-const { findStockService, getStocksByIdService } = require('../stock/stockServices.js');
+const { findStockService, getStocksByIdService, editStocksService } = require('../stock/stockServices.js');
+const { getProfileByIdService } = require('../profile/profileService.js')
 const APIError = require('../../utils/customError.js');
-const { Stock } = require('../../models/stockModel.js')
+const Stock = require('../../models/stockModel.js')
+const bcrypt = require('bcryptjs')
 
 const createSales = async (req, res, next) => {
-    const incomingData = req.body
     try {
-        const { account, description, category, qty, rate, date } = incomingData;
-        if (!account || !description || !category || !qty || !rate || !date) {
-            return next(APIError.badRequest('Please supply all the required fields!'))
-        }
+        const incomingData = req.body
+        for (let i = 0; i < incomingData.length; i++) {
+            const { account, description, category, qty, rate, date } = incomingData[i];
+            if (!account || !description || !category || !qty || !rate || !date) {
+                return next(APIError.badRequest('Please supply all the required fields!'))
+            }
 
-        // import stock from the DB
-        await getStocksByIdService(account)
+            let createSales = false
+            // import stock from the DB
+            //await getStocksByIdService(account)
 
-        const stock = await findStockService(description, category, account)
+            const stock = await findStockService(description, category, account)
 
-        if (!stock || stock.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: `The ${incomingData.description} description and category does not match what is in the stock`,
-                sale: incomingData
-            })
-        }
-        if (stock[0].qty < qty) {
-            return res.status(400).json({
-                success: false,
-                message: "There is not enough quantity of this stock in the database",
-                sale: incomingData
-            })
-        }
-        if (stock[0].qty >= qty) {
-            let new_stock = await Stock.findById(stock[0]._id).exec()
-            new_stock.qty = stock[0].qty - qty
-            await new_stock.save()
-
-            // if stock.qty === 0, delete from the stock
-            if (new_stock.qty === 0) {
-                await Stock.findByIdAndDelete(new_stock._id)
+            if (!stock || stock.length === 0) {
                 return res.status(400).json({
                     success: false,
-                    message: 'This goods is finished from the stock'
+                    message: `The ${incomingData[i].description} description and category does not match what is in the stock`,
+                    sale: incomingData[i]
                 })
             }
-        }
+            if (stock[0].qty < qty) {
+                return res.status(400).json({
+                    success: false,
+                    message: "There is not enough quantity of this stock in the database",
+                    sale: incomingData[i]
+                })
+            }
+            if (stock[0].qty >= qty) {
+                let new_stock = await Stock.findById(stock[0]._id).exec()
+                new_stock.qty = stock[0].qty - qty
+                await new_stock.save()
 
-        // this one saves the incoming sale into the sales DB
-        const newSales = await createSalesService(incomingData)
-        res.status(201).json({
-            success: true,
-            message: 'Sales created successfully!',
-            sales: newSales
-        })
+                // if stock.qty === 0, delete from the stock
+                if (new_stock.qty === 0) {
+                    await Stock.findByIdAndDelete(new_stock._id)
+                    return res.status(400).json({
+                        success: false,
+                        message: 'This goods is finished from the stock'
+                    })
+                }
+            }
+
+            // this one saves the incoming sale into the sales DB
+            const newSales = await createSalesService(incomingData)
+            res.status(201).json({
+                success: true,
+                message: 'Sales created successfully!',
+            })
+            createSales = true;
+            break;
+        }
     } catch (error) {
         // next(APIError.customError(error.message))
         console.log(error)
@@ -130,20 +136,49 @@ const editSales = async (req, res, next) => {
 
 const deleteSales = async (req, res, next) => {
     const id = req.body[0]._id
+    const { password } = req.params
     if (!id) {
         return next(APIError.badRequest('Sales ID is required'))
     }
+
     try {
         const findSales = await getSalesByIdService(id)
         if (!findSales) {
             return next(APIError.notFound('Sales not found!'))
         }
-        await deleteSalesService(id, req.body)
-        res.status(200).json({
-            success: true,
-            message: 'Sales deleted successfully!',
-            sales: deleteSales
-        })
+        const { account, qty, description, category } = findSales
+        const accountId = account.toString()
+        const getProfileDetails = await getProfileByIdService(accountId)
+
+        const comparePassword = await bcrypt.compare(password, getProfileDetails[0].password)
+        if (!comparePassword) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not allowed to do this!"
+            })
+        } else {
+            //fetch the stock
+            const fetchStock = await getStocksByIdService(accountId)
+            //filter the stock
+            const filtered_stock = fetchStock.filter((item) => item.goods === description && item.category === category)
+            if (filtered_stock.length === 0) {
+                const newStockItem = JSON.parse(JSON.stringify(req.body[0]));
+                filtered_stock.push(newStockItem);
+            } else {
+                //update the qty
+                filtered_stock[0].qty += qty
+                const _id = filtered_stock[0]._id.toString()
+                //update the stock
+                await editStocksService(_id, filtered_stock[0])
+            }
+            await deleteSalesService(id)
+            res.status(200).json({
+                success: true,
+                message: 'Sales deleted successfully!',
+                sales: deleteSales
+            })
+        }
+
     } catch (error) {
         next(APIError.customError(error.message))
     }

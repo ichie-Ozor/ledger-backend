@@ -7,10 +7,12 @@ const {
     getStocksService,
     deleteStockService
 } = stockService
+const { getProfileByIdService } = require('../profile/profileService.js')
 const APIError = require('../../utils/customError.js');
 const AccountModel = require('../../models/accountModel.js');
 const { Types } = require("mongoose");
-const { sendMail } = require('../../utils/sendMail.js');
+const sendMail = require('../../utils/sendMail.js');
+const bcrypt = require('bcryptjs')
 const { sendPDFMail } = require('../../utils/pdf.js');
 
 const createStock = async (req, res, next) => {
@@ -30,7 +32,7 @@ const createStock = async (req, res, next) => {
         const { email, fullName } = businessOwner[0]
 
         const PDFmail = sendPDFMail(fullName, req.body)
-        sendMail("simeon_mc2000@yahoo.com", "This is the stock", PDFmail)
+        sendMail(email, "This is the stock", PDFmail)
 
         const newStock = await createStockService(req.body)
         res.status(201).json({
@@ -102,6 +104,8 @@ const editStock = async (req, res, next) => {
 
 const deleteStock = async (req, res, next) => {
     const { _id } = req.body[0]
+    const { id, password } = req.params
+    console.log(req.params, req.body, "params")
     if (!_id) {
         return next(APIError.badRequest('Stock ID is required'))
     }
@@ -110,12 +114,24 @@ const deleteStock = async (req, res, next) => {
         if (!findStock) {
             return next(APIError.notFound('Stock not found!'))
         }
-        const deletedStock = await deleteStockService(_id, req.body)
-        res.status(200).json({
-            success: true,
-            message: 'Stock deleted successfully!',
-            Stock: deletedStock
-        })
+        const getProfileDetails = await getProfileByIdService(id)
+        console.log(getProfileDetails, "profile")
+
+        const comparePassword = await bcrypt.compare(password, getProfileDetails[0].password)
+        if (!comparePassword) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not allowed to do this!"
+            })
+        } else {
+            const deletedStock = await deleteStockService(_id, req.body)
+            res.status(200).json({
+                success: true,
+                message: 'Stock deleted successfully!',
+                Stock: deletedStock
+            })
+        }
+
     } catch (error) {
         next(APIError.customError(error.message))
     }

@@ -5,6 +5,7 @@ const { createStock, deleteStock, editStock, getStocks, getStockById } = stockCo
 const stockRouter = express.Router()
 
 stockRouter.route('/').post(createStock).get(getStocks)
-stockRouter.route('/:id').put(editStock).delete(deleteStock).get(getStockById)
+stockRouter.route('/:id/:password').put(editStock).delete(deleteStock)
+stockRouter.route('/:id').get(getStockById)
 
 module.exports = stockRouter
