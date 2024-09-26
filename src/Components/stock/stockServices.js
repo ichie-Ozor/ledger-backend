@@ -13,7 +13,6 @@ const getStocksService = async () => {
 
 const getStocksByIdService = async (id) => {
     const stock = await Stock.find({ account: new Types.ObjectId(id) })
-    console.log(id, stock, "lolololo")
     return stock
 }
 
