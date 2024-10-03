@@ -23,6 +23,7 @@ const { getProfileByIdService } = profileService;
 
 const createDebt = async (req, res, next) => {
     const incomingData = req.body
+    console.log(req.body, "debt here")
     try {
         for (let i = 0; i < incomingData.length; i++) {
             const { businessId, debtorId, description, category, qty, rate, date } = incomingData[i];
@@ -40,10 +41,13 @@ const createDebt = async (req, res, next) => {
             }
             ///fetch stock from the backend
             const fetchStock = await findStockService(description, category, businessId)
+            console.log(fetchStock, "from stock")
             ////check if the stock has the product and the price is the same, you add the qty only
             const sameStock = fetchStock.filter((item) => item.cost === rate)
             if (sameStock.length > 0 && fetchStock.length !== 0) {
+                console.log(sameStock[0], "before")
                 sameStock[0].qty += Number(qty);
+                console.log(sameStock[0], "after")
             } else {
                 ///if the price is not the same
                 createStockService(stock_entry)

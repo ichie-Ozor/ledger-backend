@@ -174,7 +174,7 @@ const getSales = async (req, res, next) => {
 }
 
 const getSalesById = async (req, res, next) => {
-    const { id } = req.body
+    const { id } = req.params
     if (!id) {
         return next(APIError.badRequest('Sales ID is required'))
     }
