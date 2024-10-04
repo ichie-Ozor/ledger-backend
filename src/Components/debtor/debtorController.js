@@ -53,12 +53,14 @@ const getDebtors = async (req, res, next) => {
 }
 
 const getDebtorById = async (req, res, next) => {
+    console.log(req.params, req.body, "req")
     const { id } = req.params
     if (!id) {
         return next(APIError.badRequest('Debtor ID is required'))
     }
     try {
         const findDebtor = await getDebtorsByIdService(id)
+        console.log(findDebtor, "finddebtor")
         if (!findDebtor) {
             return next(APIError.notFound('Debtor not found!'))
         }

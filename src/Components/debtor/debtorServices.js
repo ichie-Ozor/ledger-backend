@@ -11,7 +11,9 @@ const getDebtorsService = async () => {
 }
 
 const getDebtorsByIdService = async (id) => {
-    const creditor = await Debtor.findById(id)
+    console.log(id, "debtor service")
+    const creditor = await Debtor.find({ createdBy: id })
+    console.log(creditor, "debtorS")
     return creditor
 }
 

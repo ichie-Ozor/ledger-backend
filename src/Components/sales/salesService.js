@@ -1,4 +1,5 @@
 const Sales = require("../../models/salesModel.js");
+const { Types } = require("mongoose");
 
 const createSalesService = async (data) => {
     const newSales = await Sales.create(data)
@@ -11,7 +12,7 @@ const getSalesService = async () => {
 }
 
 const getSalesByIdService = async (id) => {
-    const sales = await Sales.findById(id)
+    const sales = await Sales.find({ account: new Types.ObjectId(id) })
     return sales
 }
 
