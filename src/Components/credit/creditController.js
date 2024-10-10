@@ -18,7 +18,7 @@ const {
     deleteStockService
 } = stockService;
 
-const { Stock } = require('../../models/stockModel.js');
+const Stock = require('../../models/stockModel.js');
 const { getProfileByIdService } = require('../profile/profileService.js');
 const { getCreditorBalByIdService, deleteCreditorBalService } = require('../creditorBal/creditorBalService.js');
 
@@ -59,8 +59,9 @@ const createCredit = async (req, res, next) => {
                 }
 
                 const new_stock = compareWithStock[j].qty - qty
+                console.log(new_stock, "before")
                 compareWithStock[j].qty = new_stock
-
+                console.log(new_stock, compareWithStock[j], compareWithStock[j]._id, "credit page")
                 if (compareWithStock[j].qty === 0) {
                     await Stock.findByIdAndDelete(compareWithStock[j]._id)
                 }

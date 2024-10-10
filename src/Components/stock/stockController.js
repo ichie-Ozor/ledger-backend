@@ -14,6 +14,7 @@ const { Types } = require("mongoose");
 const sendMail = require('../../utils/sendMail.js');
 const bcrypt = require('bcryptjs')
 const { sendPDFMail } = require('../../utils/pdf.js');
+const Stock = require('../../models/stockModel.js');
 
 const createStock = async (req, res, next) => {
     const incomingData = req.body
@@ -25,8 +26,6 @@ const createStock = async (req, res, next) => {
                 return next(APIError.badRequest('Please supply all the required fields!'))
             }
         }
-        // const total = qty * cost
-        //  req.body.total = total
         const { account } = incomingData[0]
         const businessOwner = await AccountModel.find({ _id: new Types.ObjectId(account) })
         const { email, fullName } = businessOwner[0]
@@ -78,6 +77,36 @@ const getStockById = async (req, res, next) => {
         })
     } catch (error) {
         next(APIError.customError(error.message))
+    }
+}
+
+const getStockByDate = async (req, res, next) => {
+    const { id } = req.params
+    const { from, to } = req.body
+    if (!from || !to) {
+        return res.json({
+            success: false,
+            message: "Please provide both 'from' and 'to' dates"
+        })
+    }
+    try {
+        const results = await Stock.find({
+            date: {
+                $gte: new Date(from),
+                $lte: new Date(to)
+            },
+            account: id
+        })
+        res.status(200).json({
+            success: true,
+            message: 'Filtered successfully',
+            filter: results
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong, Please later. Error" + err.message
+        })
     }
 }
 
@@ -141,7 +170,7 @@ module.exports = {
     createStock,
     getStocks,
     getStockById,
+    getStockByDate,
     editStock,
     deleteStock
-
 }

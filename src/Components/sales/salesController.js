@@ -12,7 +12,8 @@ const { findStockService, getStocksByIdService, editStocksService } = require('.
 const { getProfileByIdService } = require('../profile/profileService.js')
 const APIError = require('../../utils/customError.js');
 const Stock = require('../../models/stockModel.js')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const Sales = require('../../models/salesModel.js');
 
 // const createSales = async (req, res, next) => {
 //     try {
@@ -193,6 +194,31 @@ const getSalesById = async (req, res, next) => {
     }
 }
 
+const getSalesByDate = async (req, res, next) => {
+    const { id } = req.params
+    const { from, to } = req.body
+    if (!from || !to) {
+        return res.json({
+            success: false,
+            message: "Please provide both 'from' and 'to' dates"
+        })
+    }
+    try {
+        const result = await Sales.find({
+            date: {
+                $gte: new Date(from),
+                $lte: new Date(to)
+            },
+            account: id
+        })
+        res.status(200).json({
+            success: true,
+            message: "Sales filtered successfully",
+            filter: result
+        })
+    } catch (err) { console.log(err.message) }
+}
+
 const editSales = async (req, res, next) => {
     const { id } = req.body
     if (!id) {
@@ -268,6 +294,7 @@ module.exports = {
     createSales,
     getSales,
     getSalesById,
+    getSalesByDate,
     editSales,
     deleteSales
 }

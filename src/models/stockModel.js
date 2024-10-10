@@ -6,6 +6,9 @@ const stockSchema = new Schema({
         ref: "Account",
         required: true
     },
+    date: {
+        type: Date
+    },
     goods: {
         type: String,
         required: true
