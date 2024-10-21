@@ -21,6 +21,7 @@ const {
 const Stock = require('../../models/stockModel.js');
 const { getProfileByIdService } = require('../profile/profileService.js');
 const { getCreditorBalByIdService, deleteCreditorBalService } = require('../creditorBal/creditorBalService.js');
+const Credit = require('../../models/creditModel.js');
 
 const createCredit = async (req, res, next) => {
     try {
@@ -130,6 +131,36 @@ const getCreditById = async (req, res, next) => {
     }
 }
 
+const getCreditByDate = async (req, res, next) => {
+    const { id } = req.params
+    const { from, to } = req.body
+    if (!from || !to) {
+        return res.json({
+            success: false,
+            message: "Please provide both 'from' and 'to' dates"
+        })
+    }
+    try {
+        const result = await Credit.find({
+            date: {
+                $gte: new Date(from),
+                $lte: new Date(to)
+            },
+            creditorId: id
+        })
+        res.status(200).json({
+            success: true,
+            message: "Filtered successfully",
+            filter: result
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong, please try again later. Error" + err.message
+        })
+    }
+}
+
 const getCreditByCreditorId = async (req, res, next) => {
     const { creditorId } = req.params
     if (!creditorId) {
@@ -220,6 +251,7 @@ module.exports = {
     createCredit,
     getCredits,
     getCreditById,
+    getCreditByDate,
     getCreditByCreditorId,
     editCredit,
     deleteCredit

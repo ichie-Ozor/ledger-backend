@@ -105,7 +105,7 @@ const getStockByDate = async (req, res, next) => {
     } catch (err) {
         res.status(500).json({
             success: false,
-            message: "Something went wrong, Please later. Error" + err.message
+            message: "Something went wrong, please try again later. Error" + err.message
         })
     }
 }

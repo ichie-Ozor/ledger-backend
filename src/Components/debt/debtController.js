@@ -3,6 +3,7 @@ const stockServices = require('../stock/stockServices.js');
 const profileService = require('../profile/profileService.js')
 const APIError = require('../../utils/customError.js');
 const bcrypt = require('bcryptjs');
+const Debt = require('../../models/debtModel.js');
 
 const {
     createDebtService,
@@ -78,6 +79,37 @@ const getDebts = async (req, res, next) => {
         })
     } catch (error) {
         next(APIError.customError(error.message))
+    }
+}
+
+const getDebtByDate = async (req, res, next) => {
+    const { id } = req.params
+    const { from, to } = req.body
+
+    if (!from || !to) {
+        return res.json({
+            success: false,
+            message: "Please provide all the informations needed for this search"
+        })
+    }
+    try {
+        const result = await Debt.find({
+            date: {
+                $gte: new Date(from),
+                $lte: new Date(to)
+            },
+            debtorId: id
+        })
+        res.status(200).json({
+            success: false,
+            message: "Debt Filter successfully",
+            filter: result
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong, please try again later"
+        })
     }
 }
 
@@ -192,6 +224,7 @@ const deleteDebt = async (req, res, next) => {
 module.exports = {
     createDebt,
     getDebts,
+    getDebtByDate,
     getDebtById,
     getDebtsByDebtorId,
     editDebt,
