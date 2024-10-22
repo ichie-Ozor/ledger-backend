@@ -96,7 +96,6 @@ const createSales = async (req, res, next) => {
 
             // Find the stock
             const stock = await findStockService(description, category, account);
-            console.log(stock, "stockkkkkk")
 
             if (!stock || stock.length === 0) {
                 salesErrors.push({

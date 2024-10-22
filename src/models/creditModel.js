@@ -23,6 +23,11 @@ const creditSchema = new Schema({
         type: Number,
         required: true
     },
+    amt: {
+        type: String,
+        default: 'pcs',
+        required: false
+    },
     rate: {
         type: Number,
         required: true

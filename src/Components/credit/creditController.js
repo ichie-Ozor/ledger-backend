@@ -24,6 +24,7 @@ const { getCreditorBalByIdService, deleteCreditorBalService } = require('../cred
 const Credit = require('../../models/creditModel.js');
 
 const createCredit = async (req, res, next) => {
+    console.log(req.body, "credit body")
     try {
         const incomingData = req.body
         for (let i = 0; i < incomingData.length; i++) {
@@ -60,9 +61,9 @@ const createCredit = async (req, res, next) => {
                 }
 
                 const new_stock = compareWithStock[j].qty - qty
-                console.log(new_stock, "before")
+
                 compareWithStock[j].qty = new_stock
-                console.log(new_stock, compareWithStock[j], compareWithStock[j]._id, "credit page")
+
                 if (compareWithStock[j].qty === 0) {
                     await Stock.findByIdAndDelete(compareWithStock[j]._id)
                 }

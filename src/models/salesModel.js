@@ -22,6 +22,10 @@ const salesSchema = new Schema({
         type: Number,
         required: true
     },
+    cost: {
+        type: Number,
+        required: true
+    },
     total: {
         type: Number,
         required: true
