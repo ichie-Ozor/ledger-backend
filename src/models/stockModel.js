@@ -7,7 +7,8 @@ const stockSchema = new Schema({
         required: true
     },
     date: {
-        type: Date
+        type: Date,
+        default: Date.now()
     },
     goods: {
         type: String,
