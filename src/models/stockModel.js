@@ -14,14 +14,22 @@ const stockSchema = new Schema({
         required: true
     },
     category: {
-        // type: Schema.Types.ObjectId,
         type: String,
-        ref: 'Category',
         required: true
     },
     qty: {
         type: Number,
         required: true
+    },
+    pcs: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    crt: {
+        type: Number,
+        required: true,
+        default: 0
     },
     cost: {
         type: Number,

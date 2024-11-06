@@ -19,6 +19,7 @@ const Stock = require('../../models/stockModel.js');
 const createStock = async (req, res, next) => {
     const incomingData = req.body
     const { account } = req.body
+    console.log(req.body, "stock controller")
     try {
         for (let i = 0; i < incomingData.length; i++) {
             const { account, goods, category, qty, cost, date, sellingPrice } = incomingData[i];

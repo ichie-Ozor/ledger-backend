@@ -28,7 +28,7 @@ const createCredit = async (req, res, next) => {
     try {
         const incomingData = req.body
         for (let i = 0; i < incomingData.length; i++) {
-            const { businessId, creditorId, description, category, qty, rate, date } = incomingData[i];
+            const { businessId, creditorId, description, category, amt, qty, rate, date, crt } = incomingData[i];
 
             if (!businessId || !creditorId || !description || !category || !qty || !rate || !date) {
                 return next(APIError.badRequest('Please supply all the required fields!'))
@@ -39,19 +39,12 @@ const createCredit = async (req, res, next) => {
 
             const compareWithStock = getStock.filter((item) => item.goods === description && item.category === category)
 
-            let createCredit = false
+            let creditCreated = false
             for (let j = 0; j < compareWithStock.length; j++) {
-                //if the stock.goods is not the same as the description, return a response
-                if (compareWithStock[j].goods !== description && compareWithStock[j].category !== category) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "the goods description and category do not match",
-                        code: 103,
-                        credit: incomingData[i]
-                    })
-                }
+
+                const stockItem = compareWithStock[j]
                 //if the stock is less than the credit, return a response
-                if (compareWithStock[j].qty < qty) {
+                if (stockItem.qty < qty) {
                     return res.status(400).json({
                         success: false,
                         message: 'There is not enough items in the stock DB',
@@ -60,16 +53,19 @@ const createCredit = async (req, res, next) => {
                     })
                 }
 
-                const new_stock = compareWithStock[j].qty - qty
+                // const new_stock = stockItem.qty - qty
+                // stockItem.qty = new_stock
 
-                compareWithStock[j].qty = new_stock
+                let crtQty = qty * (stockItem.pcs || 1)
+                amt === "pcs" ? stockItem.qty -= qty : stockItem.qty -= crtQty
+
 
                 if (compareWithStock[j].qty === 0) {
-                    await Stock.findByIdAndDelete(compareWithStock[j]._id)
+                    await Stock.findByIdAndDelete(stockItem._id)
                 }
 
-                await editStocksService(compareWithStock[j]._id, compareWithStock[j])
-                if (compareWithStock[j].qty >= qty) {
+                await editStocksService(stockItem._id, stockItem)
+                if (stockItem.qty >= qty) {
                     //this will save the credit to the credit DB
                     const newCredit = await createCreditService(incomingData[i])
                     res.status(201).json({

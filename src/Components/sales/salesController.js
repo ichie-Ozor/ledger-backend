@@ -87,7 +87,7 @@ const createSales = async (req, res, next) => {
 
         console.log(req.body, "bodyyyyyyy")
         for (let i = 0; i < incomingData.length; i++) {
-            const { account, description, category, qty, rate, date } = incomingData[i];
+            const { account, description, category, qty, rate, date, crt, pcs } = incomingData[i];
 
             if (!account || !description || !category || !qty || !rate || !date) {
                 salesErrors.push({ sale: incomingData[i], message: 'Please supply all required fields' });
@@ -119,10 +119,13 @@ const createSales = async (req, res, next) => {
             // Fetch the stock by ID to update in the DB
             let new_stock = await Stock.findById(stock[0]._id).exec();
             new_stock.qty = stock[0].qty - qty
-            console.log(new_stock, "new stockkkk")
+
+            if (!new_stock.crt && crt) new_stock.crt = crt;
+            if (!new_stock.pcs && pcs) new_stock.pcs = pcs;
+
 
             // Save the updated stock
-            if (new_stock.qty === 0) {
+            if (new_stock.qty <= 0) {
                 await Stock.findByIdAndDelete(new_stock._id);
             } else {
                 await new_stock.save();
