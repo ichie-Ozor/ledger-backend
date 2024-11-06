@@ -24,7 +24,7 @@ const stockSchema = new Schema({
     pcs: {
         type: Number,
         required: true,
-        default: 0
+        default: 1
     },
     crt: {
         type: Number,
