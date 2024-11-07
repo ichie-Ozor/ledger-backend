@@ -38,25 +38,45 @@ const createProfile = async (req, res, next) => {
     }
 
     const profileExist = await profileExistService(account)
+    const salesErrors = [];
     if (profileExist) {
-        return res.json({
+        // return res.json({
+        //     status: "failed",
+        //     message: "An profile with this account already exist"
+        // })
+        salesErrors.push({
             status: "failed",
             message: "An profile with this account already exist"
         })
     }
     const newProfile = await createProfileService(req.body)
     if (newProfile) {
-        res.json({
+        // res.json({
+        //     status: 200,
+        //     message: "Profile created Successfully",
+        //     newProfile
+        // })
+        salesErrors.push({
             status: 200,
-            message: "Profile created Successfully",
-            newProfile
+            message: "Profile created Successfully"
         })
     } else (
-        res.json({
+        // res.json({
+        //     status: "failed",
+        //     message: "Profile creation failed"
+        // })
+        salesErrors.push({
             status: "failed",
             message: "Profile creation failed"
         })
     )
+    if (salesErrors.length > 0) {
+        return res.status(207).json({
+            success: false,
+            message: "there wAre errors encountered",
+            error: salesErrors
+        })
+    }
 }
 
 ////////////get all profile

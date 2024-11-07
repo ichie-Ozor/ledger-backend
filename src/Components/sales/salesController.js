@@ -141,7 +141,7 @@ const createSales = async (req, res, next) => {
                 success: false,
                 message: "Some sales encountered issues",
                 errors: salesErrors,
-                successfulSales
+                // successfulSales
             });
         }
 

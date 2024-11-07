@@ -11,19 +11,19 @@ const { AccountModel } = accountModel
 
 const signInAccount = async (req, res) => {
     const { email, password } = req.body
-    if (email == "" || password == "") {
-        return res.json({
-            status: "Failed",
-            message: "Please enter your login credentials."
-        })
-    }
+    // if (email == "" || password == "") {
+    //     return res.json({
+    //         status: "Failed",
+    //         message: "Please enter your login credentials."
+    //     })
+    // }
 
     const checkEmail = await getAccountByEmail(email)
     const { fullName, businessName, role, _id, verification, phoneNumber, approval } = checkEmail
     const userDetail = { fullName, businessName, role, _id, verification, email, phoneNumber, approval }
     const timer = Date.now() - approval
-    // console.log(checkEmail, checkEmail.verification, approval, "this")
-    if (!checkEmail) {               //this checks for wrong email and password
+
+    if (!checkEmail) {
         return res.json({
             status: "Failed",
             code: 401,
