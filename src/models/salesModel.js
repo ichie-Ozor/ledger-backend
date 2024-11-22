@@ -10,7 +10,7 @@ const salesSchema = new Schema({
         type: String,
         required: true
     },
-    payment_mode: {
+    payment: {
         type: String,
         required: true,
         default: "cash"

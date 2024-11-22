@@ -6,13 +6,13 @@ const profileSchema = new Schema({
         ref: "Account",
         required: [true, "Account id is needed"]
     },
-    firstName: {
+    name: {
         type: String,
-        required: [true, "first name is needed"]
+        required: [true, "name is needed"]
     },
-    lastName: {
+    businessAddress: {
         type: String,
-        required: [true, "Last name is needed"]
+        required: [true, "Business address is needed"]
     },
     businessName: {
         type: String,

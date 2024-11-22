@@ -14,18 +14,19 @@ const {
 
 
 const createProfile = async (req, res, next) => {
-    const { account, firstName, lastName, businessName, password } = req.body
-    if (!firstName || !lastName || !businessName || !password) {
+    const { account, name, address, businessName, password } = req.body
+
+    if (!firstName || !name || !businessName || !password) {
         return res.json({
             status: "Failed",
             message: "Incomplete credentials, Please complete the profile inputs"
         })
-    } else if (!/^[a-zA-Z ]*$/.test(firstName)) {
+    } else if (!/^[a-zA-Z ]*$/.test(name)) {
         res.json({
             status: "Failed",
             message: "Invalid first name entered"
         })
-    } else if (!/^[a-zA-Z ]*$/.test(lastName)) {
+    } else if (!/^[a-zA-Z ]*$/.test(address)) {
         res.json({
             status: "Failed",
             message: "Invalid last name entered"

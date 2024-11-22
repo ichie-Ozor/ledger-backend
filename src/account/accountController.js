@@ -22,7 +22,7 @@ const { createAssessToken, createRefreshToken } = require('../auth/authServices.
 ///////////////////Create an account
 const createAccount = async (req, res) => {
     console.log(req.body, "hhhhhhhhhh")
-    const { fullName, businessName, email, password, phoneNumber } = req.body
+    const { fullName, businessName, email, address, password, phoneNumber } = req.body
     if (!fullName || !businessName || !email || !password) {
         return res.json({
             status: "Failed",
@@ -61,6 +61,7 @@ const createAccount = async (req, res) => {
             id: newUser._id,
             businessName,
             email,
+            address,
             phoneNumber,
             fullName,
             approval
@@ -80,6 +81,7 @@ const createAccount = async (req, res) => {
             id: newUser._id,
             businessName,
             email,
+            address,
             phoneNumber,
             fullName,
             approval

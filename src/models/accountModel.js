@@ -12,6 +12,11 @@ const accountSchema = new Schema({
         type: String,
         required: [true, 'Business name is needed']
     },
+    address: {
+        type: String,
+        unique: true,
+        required: [true, 'address is needed']
+    },
     email: {
         type: String,
         unique: true,
