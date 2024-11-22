@@ -15,31 +15,37 @@ const {
 
 const createProfile = async (req, res, next) => {
     const { account, name, address, businessName, password } = req.body
-
-    if (!firstName || !name || !businessName || !password) {
+    const salesErrors = [];
+    const profileSuccess = []
+    console.log(req.body, "profile body")
+    if (!address || !name || !businessName || !password) {
+        console.log("aaaaaaaa")
         return res.json({
             status: "Failed",
             message: "Incomplete credentials, Please complete the profile inputs"
         })
     } else if (!/^[a-zA-Z ]*$/.test(name)) {
-        res.json({
+        console.log("bbbbbb")
+        return res.json({
             status: "Failed",
             message: "Invalid first name entered"
         })
     } else if (!/^[a-zA-Z ]*$/.test(address)) {
-        res.json({
+        console.log("ccccccccc")
+        return res.json({
             status: "Failed",
             message: "Invalid last name entered"
         })
     } else if (password.length < 5) {
-        res.json({
+        console.log("dddddddd")
+        return res.json({
             status: "Failed",
             message: "Password is too small"
         })
     }
 
     const profileExist = await profileExistService(account)
-    const salesErrors = [];
+
     if (profileExist) {
         // return res.json({
         //     status: "failed",
@@ -57,7 +63,8 @@ const createProfile = async (req, res, next) => {
         //     message: "Profile created Successfully",
         //     newProfile
         // })
-        salesErrors.push({
+        console.log(newProfile, "profile created")
+        profileSuccess.push({
             status: 200,
             message: "Profile created Successfully"
         })
@@ -72,10 +79,16 @@ const createProfile = async (req, res, next) => {
         })
     )
     if (salesErrors.length > 0) {
-        return res.status(207).json({
+        return res.status(407).json({
             success: false,
-            message: "there wAre errors encountered",
+            message: "there were errors encountered",
             error: salesErrors
+        })
+    } else {
+        return res.status(200).json({
+            success: true,
+            message: "profile created successfully",
+            profileSuccess
         })
     }
 }

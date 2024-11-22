@@ -10,7 +10,7 @@ const profileSchema = new Schema({
         type: String,
         required: [true, "name is needed"]
     },
-    businessAddress: {
+    address: {
         type: String,
         required: [true, "Business address is needed"]
     },

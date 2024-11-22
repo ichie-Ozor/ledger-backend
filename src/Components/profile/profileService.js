@@ -8,7 +8,7 @@ const createProfileService = async (data) => {
     const hashedPassword = bycryptjs.hashSync(data.password, salt)
     ownerProfile.password = hashedPassword
     await ownerProfile.save().then(result => {
-        console.log(result)
+        console.log(result, "profile created at service")
     })
     return ownerProfile
 }
