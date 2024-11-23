@@ -40,8 +40,32 @@ const invoiceSchema = new Schema({
     creditorFirstName: {
         type: String,
     },
-    creditorLastName: {
-        type: String
+    description: {
+        type: String,
+        required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
+    qty: {
+        type: Number,
+        required: true
+    },
+    rate: {
+        type: Number,
+        required: true
+    },
+    unit: {
+        type: String,
+    },
+    total: {
+        type: Number,
+        required: true
+    }
 
-})
+}, { timestamps: true });
+
+const Invoice = model("Invoice", invoiceSchema);
+
+module.exports = Invoice

@@ -19,25 +19,21 @@ const createProfile = async (req, res, next) => {
     const profileSuccess = []
     console.log(req.body, "profile body")
     if (!address || !name || !businessName || !password) {
-        console.log("aaaaaaaa")
         return res.json({
             status: "Failed",
             message: "Incomplete credentials, Please complete the profile inputs"
         })
     } else if (!/^[a-zA-Z ]*$/.test(name)) {
-        console.log("bbbbbb")
         return res.json({
             status: "Failed",
             message: "Invalid first name entered"
         })
     } else if (!/^[a-zA-Z ]*$/.test(address)) {
-        console.log("ccccccccc")
         return res.json({
             status: "Failed",
             message: "Invalid last name entered"
         })
     } else if (password.length < 5) {
-        console.log("dddddddd")
         return res.json({
             status: "Failed",
             message: "Password is too small"
@@ -47,10 +43,6 @@ const createProfile = async (req, res, next) => {
     const profileExist = await profileExistService(account)
 
     if (profileExist) {
-        // return res.json({
-        //     status: "failed",
-        //     message: "An profile with this account already exist"
-        // })
         salesErrors.push({
             status: "failed",
             message: "An profile with this account already exist"
@@ -58,21 +50,12 @@ const createProfile = async (req, res, next) => {
     }
     const newProfile = await createProfileService(req.body)
     if (newProfile) {
-        // res.json({
-        //     status: 200,
-        //     message: "Profile created Successfully",
-        //     newProfile
-        // })
         console.log(newProfile, "profile created")
         profileSuccess.push({
             status: 200,
             message: "Profile created Successfully"
         })
     } else (
-        // res.json({
-        //     status: "failed",
-        //     message: "Profile creation failed"
-        // })
         salesErrors.push({
             status: "failed",
             message: "Profile creation failed"

@@ -16,6 +16,7 @@ const categoryRouter = require("./Components/category/categoryRouter.js");
 const creditorBalRouter = require("./Components/creditorBal/creditorBalRoutes.js");
 const debtorBalRouter = require("./Components/debtorBal/debtorBalRoutes.js");
 const profileRoute = require("./Components/profile/profileRoutes.js");
+const invoiceRouter = require("./Components/invoice/invoiceRouter.js");
 const { errorHandler, notFound } = authMiddleware;
 
 dotenv.config();
@@ -47,6 +48,7 @@ app.use("/credit", creditRouter)
 app.use("/debt", debtRouter)
 app.use("/debtorBal", debtorBalRouter)
 app.use("/creditorBal", creditorBalRouter)
+app.use("/invoice", invoiceRouter)
 
 app.get("/", (req, res) => {
   res.status(200).json({
