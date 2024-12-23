@@ -56,6 +56,7 @@ const createInvoice = async (req, res, next) => {
             }
 
             const createdInvoice = await createInvoiceService(req.body)
+            console.log(createdInvoice, "invoice created")
             successSave.push({
                 createdInvoice
             })

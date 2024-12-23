@@ -3,6 +3,7 @@ const { Types } = require('mongoose');
 
 const createInvoiceService = async (data) => {
     const createdInvoice = await Invoice.create(data)
+    console.log(createdInvoice, "service", data)
     return createdInvoice
 }
 
