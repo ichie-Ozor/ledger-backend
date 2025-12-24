@@ -85,7 +85,6 @@ const createSales = async (req, res, next) => {
         const salesErrors = [];
         const successfulSales = [];
 
-        console.log(req.body, "bodyyyyyyy")
         for (let i = 0; i < incomingData.length; i++) {
             const { account, description, category, qty, rate, date, crt, pcs } = incomingData[i];
 
@@ -168,7 +167,7 @@ const getSales = async (req, res, next) => {
         }
         res.status(200).json({
             success: true,
-            message: 'Saless retrieved successfully!',
+            message: 'Sales retrieved successfully!',
             sales
         })
     } catch (error) {

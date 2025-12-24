@@ -21,6 +21,9 @@ const profileSchema = new Schema({
     password: {
         type: String,
         required: [true, "Please a password"]
+    },
+    file: {
+        type: String,
     }
 }, { timestamps: true });
 

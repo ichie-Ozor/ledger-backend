@@ -34,6 +34,11 @@ const getProfileByIdService = async (id) => {
     return owners
 }
 
+const getFileByIdService = async (id) => {
+    const findProfile = await ProfileModel.find({ account: new Types.ObjectId(id) })
+    return findProfile
+}
+
 const editProfileService = async (id, data) => {
     try {
         const updatedOwner = await ProfileModel.findByIdAndUpdate(
@@ -58,6 +63,7 @@ module.exports = {
     profileExistService,
     getAllProfileService,
     getProfileByIdService,
+    getFileByIdService,
     editProfileService,
     deleteProfileService
 }

@@ -19,6 +19,7 @@ const signInAccount = async (req, res) => {
     // }
 
     const checkEmail = await getAccountByEmail(email)
+    // console.log(checkEmail, "sing in detail")
     const { fullName, businessName, role, _id, verification, phoneNumber, approval } = checkEmail
     const userDetail = { fullName, businessName, role, _id, verification, email, phoneNumber, approval }
     const timer = Date.now() - approval
@@ -127,8 +128,8 @@ const verifyToken = async (req, res) => {
             })
         }
     } catch (err) {
-        res.json({
-            status: 403,
+        res.status(500).json({
+            success: false,
             message: "There is something wrong with the token",
             err
         })

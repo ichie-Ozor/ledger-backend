@@ -1,23 +1,33 @@
 const profileService = require('./profileService.js')
 const bcrypt = require("bcryptjs");
+const path = require("path");
+const fs = require("fs");
 const APIError = require('../../utils/customError.js');
 
 const {
     createProfileService,
     getAllProfileService,
     getProfileByIdService,
+    getFileByIdService,
     editProfileService,
     deleteProfileService,
     profileExistService
 } = profileService
 
 
-
 const createProfile = async (req, res, next) => {
     const { account, name, address, businessName, password } = req.body
+
+    const profile = {
+        account,
+        name,
+        address,
+        businessName,
+        password,
+        file: req.file.path
+    }
     const salesErrors = [];
     const profileSuccess = []
-    console.log(req.body, "profile body")
     if (!address || !name || !businessName || !password) {
         return res.json({
             status: "Failed",
@@ -48,7 +58,7 @@ const createProfile = async (req, res, next) => {
             message: "An profile with this account already exist"
         })
     }
-    const newProfile = await createProfileService(req.body)
+    const newProfile = await createProfileService(profile)
     if (newProfile) {
         console.log(newProfile, "profile created")
         profileSuccess.push({
@@ -132,6 +142,28 @@ const getOneProfileByIdController = async (req, res) => {
     }
 }
 
+const getFileByIdController = async (req, res, next) => {
+    const { id } = req.params
+    if (!id) {
+        return next(APIError.badRequest("Profile id required"))
+    }
+    try {
+        const findProfile = await getFileByIdService(id)
+        if (!findProfile) {
+            return next(APIError.notFound("Account not found"))
+        }
+
+        res.sendFile(findProfile[0].file, {
+            headers: {
+                "Content-Type": "image/png",
+                "Content-Disposition": `attachment; filename=${path.basename(findProfile[0].file)}`
+            }
+        })
+    } catch (error) {
+        next(APIError.badRequest(error.message))
+    }
+}
+
 const editProfileController = async (req, res, next) => {
     const { id } = req.params
     if (!id) {
@@ -142,7 +174,7 @@ const editProfileController = async (req, res, next) => {
         if (!findProfile) {
             return next(APIError.notFound("Account not found"))
         }
-        const updatedProfile = await editProfileService(id, req.body)
+        await editProfileService(id, req.body)
         res.status(200).json({
             success: true,
             message: "Profile udate successful",
@@ -177,6 +209,7 @@ module.exports = {
     getAllProfileController,
     getOneProfileByIdController,
     getProfileByIdController,
+    getFileByIdController,
     editProfileController,
     deleteProfile
 }
